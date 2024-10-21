@@ -149,9 +149,9 @@ void sobre()
   printf("Desenvolvido por:\n");
   printf("Marjorie Luize Martins Costa\n");
   printf("& \n");
-  printf("Nuno Martins Guilhermino da Silva\n");
-  printf("Ciclo: Quarto\n");
-  printf("Curso: Ciencia da Computacao\n");
-  printf("Disciplina: Estrutura de Dados\n");
-  printf("Data: 20/10/2024\n");
+  printf("Nuno Martins Guilhermino da Silva\n\n");
+  printf("Ciclo: \nQuarto\n\n");
+  printf("Curso: \nCiencia da Computacao\n\n");
+  printf("Disciplina: \nEstrutura de Dados\n\n");
+  printf("Data: \n20/10/2024\n");
 }
