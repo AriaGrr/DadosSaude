@@ -4,15 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// #include "cjson\cJSON.h"
+
 #include "cJSON.h"
-
-// #include <cjson/cJSON.h>
-// #include "lib\cJSON\cJSON.c"
-// #include "cJSON.h"
-// #include "cJSON.c"
-
-// #include "funcoes.c"
 
 // Para
 #define ADD_FIELD(obj, name, type, value) \
@@ -79,21 +72,6 @@ typedef struct
      int qtde;
 } ABB;
 
-
-// typedef struct
-// {
-//     int prioridade;
-//     int estado;
-//     int categoria;
-//     char descricao[300];
-// } Tarefa;
-
-// typedef struct
-// {
-//     Tarefa tarefas[100];
-//     int qtd;
-// } ListaDeTarefas;
-
 // Aqui devemos colocar as funções que serão utilizadas do arquivo funcoes.c
 
 void clearBuffer();
@@ -104,32 +82,4 @@ cJSON* estruturaJson(void* data, const char* campo[], const char* tipo[]);
 void jsonEstrutura(const char* arquivo, void* estrutura, const char* campo[], const char* tipo[]);
 
 
-// char *estado(int e);
-// char *categoria(int c);
-
-// //Funções principais
-// int criarTarefa(ListaDeTarefas *lt);
-// int deletarTarefa(ListaDeTarefas *lt);
-// int alterarTarefa(ListaDeTarefas *lt);
-
-// // Funções para exportar
-// int exportarTarefas(ListaDeTarefas lt, char exportado[]); // Adicional, não feito.
-// int exportarPrioridade(ListaDeTarefas lt, char exportado[]);
-// int exportarCategoria(ListaDeTarefas lt, char exportado[]);
-// int exportarPCTarefa(ListaDeTarefas lt, char exportado[]);
-
-// //Funções de listagem
-// int listarTarefas(ListaDeTarefas lt);
-// int listarPrioridade(ListaDeTarefas lt);
-// int listarCategoria(ListaDeTarefas lt);
-// int listarPCTarefa(ListaDeTarefas lt);
-// int listarEstado(ListaDeTarefas lt);
-
-// void menuExportar();
-// void menuListagem();
-// void printMenu();
-// // fwrite
-// int salvarLista(ListaDeTarefas lt, char nome[]);
-// // fread
-// int carregarLista(ListaDeTarefas *lt, char nome[]);
 #endif //UNTITLED2_BIBLI_H
