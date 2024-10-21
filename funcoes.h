@@ -1,6 +1,5 @@
-// Pra que isso serve mesmo?
-#ifndef UNTITLED2_BIBLI_H
-#define UNTITLED2_BIBLI_H
+#ifndef FUNCOES_H
+#define FUNCOES_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,8 +78,8 @@ void clearBuffer();
 
 // void imprimirRegistro(Registro *r);
 
-cJSON* estruturaJson(void* data, const char* campo[], const char* tipo[]);
-void jsonEstrutura(const char* arquivo, void* estrutura, const char* campo[], const char* tipo[]);
+// cJSON* estruturaJson(void* data, const char* campo[], const char* tipo[]);
+// void jsonEstrutura(const char* arquivo, void* estrutura, const char* campo[], const char* tipo[]);
 
 
-#endif //UNTITLED2_BIBLI_H
+#endif //FUNCOES_H
