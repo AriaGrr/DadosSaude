@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib\cJSON.h"
+#include "lib/cJSON.h"
 
 // Para
 #define ADD_FIELD(obj, name, type, value) \

@@ -81,6 +81,8 @@ void clearBuffer()
 //     free(jsonString);
 // }
 
+
+
 // Funções de print dos menus
 
 void printMenu()
