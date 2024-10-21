@@ -108,7 +108,7 @@ void menuCadastro()
   printf("Operações:\n");
   printf("1 - Cadastrar novo paciente\n");
   printf("2 - Consultar paciente cadastrado\n");
-  printf("3 - Mostrar lista completa\n");
+  printf("3 - Mostrar lista de pacientes\n");
   printf("4 - Atualizar dados de paciente\n");
   printf("5 - Remover paciente\n");
 }

@@ -1,32 +1,31 @@
 #include "funcoes.h"
 
-
 // Alterar main pro projeto atual
 int main()
 {
-//     printf("Testando \n");
-//     Registro registro = {"João da Silva", 30, "123456789", 0};
-//     registro.entrada = (Data*)malloc(sizeof(Data));
-//     registro.entrada->dia = 15;
-//     registro.entrada->mes = 3;
-//     registro.entrada->ano = 2023;
-//     printf("Testando 1\n");
-//     const char *campos_registro[] = {"nome", "idade", "rg", "entrada.dia", "entrada.mes", "entrada.ano", NULL};
-//     const char *tipos_registro[] = {"char*", "int", "char*", "Data", "Data", "Data", NULL};
-//     printf("Testando 2\n");
-//     cJSON *json = estruturaJson(&registro, campos_registro, tipos_registro);
-//     printf("Testando 3\n");
-//     char *string_json = cJSON_Print(json);
-//     printf("Testando 4\n");
-//     FILE *fp = fopen("dados.json", "w");
-//     printf("Testando 5\n");
-//     fwrite(string_json, strlen(string_json), 1, fp);
-//     printf("Testando 6\n");
-//     fclose(fp);
-//     printf("Testando 7\n");
-//     cJSON_Delete(json);
-//     free(string_json);
-//     printf("Testando 8\n");
+    //     printf("Testando \n");
+    //     Registro registro = {"João da Silva", 30, "123456789", 0};
+    //     registro.entrada = (Data*)malloc(sizeof(Data));
+    //     registro.entrada->dia = 15;
+    //     registro.entrada->mes = 3;
+    //     registro.entrada->ano = 2023;
+    //     printf("Testando 1\n");
+    //     const char *campos_registro[] = {"nome", "idade", "rg", "entrada.dia", "entrada.mes", "entrada.ano", NULL};
+    //     const char *tipos_registro[] = {"char*", "int", "char*", "Data", "Data", "Data", NULL};
+    //     printf("Testando 2\n");
+    //     cJSON *json = estruturaJson(&registro, campos_registro, tipos_registro);
+    //     printf("Testando 3\n");
+    //     char *string_json = cJSON_Print(json);
+    //     printf("Testando 4\n");
+    //     FILE *fp = fopen("dados.json", "w");
+    //     printf("Testando 5\n");
+    //     fwrite(string_json, strlen(string_json), 1, fp);
+    //     printf("Testando 6\n");
+    //     fclose(fp);
+    //     printf("Testando 7\n");
+    //     cJSON_Delete(json);
+    //     free(string_json);
+    //     printf("Testando 8\n");
 
     // Registro nova_registro;
     // jsonEstrutura("dados.json", &nova_registro, campos_registro, tipos_registro);
@@ -50,6 +49,270 @@ int main()
     // }
     // printf("Testando\n");
 
-    
+    //   int cod;
+    // Ia ser usado para salvar os arquivos em txt, mas irei tentar fazer em json
+    //   char arquivo[] = "arquivo,";
+    //   char exportado[] = "-";
+    //   ArquivosPacientes lt;
+
+    //   cod = carregarLista(&lt, arquivo);
+    //   if (cod == 1)
+    //   {
+    //     lt.qtd = 0;
+    //   }
+    int opcao;
+    //   do
+    //   {
+    printMenu();
+    scanf("%d", &opcao);
+    printf("%d\n", opcao);
+    if (opcao == 0)
+    {
+        printf("Saindo...\n");
+    }
+    else if (opcao == 1)
+    {
+        // Menu de cadastro
+        system("clear");
+        menuCadastro();
+        int opcao2;
+        scanf("%d", &opcao2);
+        system("clear");
+        if (opcao2 == 1)
+        {
+            // Cadastrar novo paciente
+        }
+        else if (opcao2 == 2)
+        {
+            // Consultar paciente cadastrado
+        }
+        else if (opcao2 == 3)
+        {
+            // Mostrar lista completa
+        }
+        else if (opcao2 == 4)
+        {
+            // Atualizar dados de paciente
+        }
+        else if (opcao2 == 5)
+        {
+            // Remover paciente
+        }
+        else
+        {
+            printf("Opção não existe!\n");
+        }
+        printf("Pressione Enter para voltar ao menu...");
+        // Pausar o terminal
+        clearBuffer();
+        clearBuffer();
+        system("clear");
+    }
+    else if (opcao == 2)
+    {
+        system("clear");
+        menuAtendimento();
+        int opcao3;
+        scanf("%d", &opcao3);
+        system("clear");
+
+        if (opcao3 == 1)
+        {
+            // Adicionar paciente à fila de espera
+        }
+        else if (opcao3 == 2)
+        {
+            // Atender paciente
+        }
+        else if (opcao3 == 3)
+        {
+            // Mostrar fila de espera
+        }
+        else
+        {
+            printf("Opção não existe!\n");
+        }
+    }
+    else if (opcao == 3)
+    {
+        system("clear");
+        menuPesquisa();
+        int opcao3;
+        scanf("%d", &opcao3);
+        system("clear");
+
+        if (opcao3 == 1)
+        {
+            // Registros ordenados por ano
+        }
+        else if (opcao3 == 2)
+        {
+            // Registros ordenados por mês
+        }
+        else if (opcao3 == 3)
+        {
+            // Registros ordenados por dia
+        }
+        else if (opcao3 == 4)
+        {
+            // Registros ordenados por idade
+        }
+        else
+        {
+            printf("Opção não existe!\n");
+        }
+    }
+    else if (opcao == 4)
+    {
+        // Desfazer
+        system("clear");
+    }
+    else if (opcao == 5)
+    {
+        // Carregar
+        system("clear");
+    }
+    else if (opcao == 6)
+    {
+        // Salvar
+        system("clear");
+    }
+    else if (opcao == 7)
+    {
+        // Sobre
+        sobre();
+        system("clear");
+    }
+    else
+    {
+        printf("Opção não existe!\n");
+    }
+    //     cod = salvarLista(lt, arquivo);
+    //   } while (opcao != 0);
+
+    //   if (cod != 0)
+    //   {
+    //     printf("Erro ao salvar arquivo!\n");
+    //   }
     return 0;
 }
+
+// Exemplo de menu
+
+//   int cod;
+// Ia ser usado para salvar os arquivos em txt, mas irei tentar fazer em json
+//   char arquivo[] = "arquivos";
+//   char exportado[] = "-";
+//   ArquivosPacientes lt;
+
+//   cod = carregarLista(&lt, arquivo);
+//   if (cod == 1)
+//   {
+//     lt.qtd = 0;
+//   }
+//   int opcao;
+//   do
+//   {
+//     printMenu();
+//     scanf("%d", &opcao);
+//     printf("%d\n", opcao);
+//     if (opcao == 0)
+//     {
+//       printf("Saindo...\n");
+//     }
+//     else if (opcao == 1)
+//     {
+//       criarTarefa(&lt);
+//
+//       system("clear");
+//     }
+//     else if (opcao == 2)
+//     {
+//       deletarTarefa(&lt);
+//       system("clear");
+//     }
+//     else if (opcao == 3)
+//     {
+
+//       system("clear");
+
+//       menuListagem();
+//       int opcao2;
+//       scanf("%d", &opcao2);
+//       system("clear");
+//       if (opcao2 == 1)
+//       {
+//         listarTarefas(lt);
+//       }
+//       else if (opcao2 == 2)
+//       {
+//         listarPrioridade(lt);
+//       }
+//       else if (opcao2 == 3)
+//       {
+//         listarCategoria(lt);
+//       }
+//       else if (opcao2 == 4)
+//       {
+//         listarEstado(lt);
+//       }
+//       else if (opcao2 == 5)
+//       {
+//         listarPCTarefa(lt);
+//       }
+//       else
+//       {
+//         printf("Opção não existe!\n");
+//       }
+//       printf("Pressione Enter para voltar ao menu...");
+//       // Pausar o terminal
+//       clearBuffer();
+//       clearBuffer();
+//       system("clear");
+//     }
+//     else if (opcao == 4)
+//     {
+//       system("clear");
+//       menuExportar();
+//       int opcao3;
+//       scanf("%d", &opcao3);
+//       system("clear");
+
+//       if (opcao3 == 1)
+//       {
+//         exportarTarefas(lt, exportado);
+//       }
+//       else if (opcao3 == 2)
+//       {
+//         exportarPrioridade(lt, exportado);
+//       }
+//       else if (opcao3 == 3)
+//       {
+//         exportarCategoria(lt, exportado);
+//       }
+//       else if (opcao3 == 4)
+//       {
+//         exportarPCTarefa(lt, exportado);
+//       }
+//       else
+//       {
+//         printf("Opção não existe!\n");
+//       }
+//     }
+//     else if (opcao == 5)
+//     {
+//       system("clear");
+//       alterarTarefa(&lt);
+//     }
+//     else
+//     {
+//       printf("Opção não existe!\n");
+//     }
+//     cod = salvarLista(lt, arquivo);
+//   } while (opcao != 0);
+
+//   if (cod != 0)
+//   {
+//     printf("Erro ao salvar arquivo!\n");
+//   }
+//   return 0;

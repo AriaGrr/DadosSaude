@@ -75,7 +75,11 @@ typedef struct
 // Aqui devemos colocar as funções que serão utilizadas do arquivo funcoes.c
 
 void clearBuffer();
-
+void printMenu();
+void menuCadastro();
+void menuAtendimento();
+void menuPesquisa();
+void sobre();  
 // void imprimirRegistro(Registro *r);
 
 // cJSON* estruturaJson(void* data, const char* campo[], const char* tipo[]);
