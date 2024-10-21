@@ -97,7 +97,7 @@ void printMenu()
   //
   printf("7 - Sobre\n");
   printf("0 - Sair\n");
-  printf("Digite a opção desejada: ");
+  printf("Digite a opcao desejada: ");
 }
 
 // Cadastrar novo paciente em uma lista dinâmica encadeada, mantendo a ordem de registro (inserção no início);
