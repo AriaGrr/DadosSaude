@@ -61,8 +61,8 @@ int main()
     //     lt.qtd = 0;
     //   }
     int opcao;
-    //   do
-    //   {
+      do
+      {
     printMenu();
     scanf("%d", &opcao);
     printf("%d\n", opcao);
@@ -73,11 +73,11 @@ int main()
     else if (opcao == 1)
     {
         // Menu de cadastro
-        system("clear");
+        system("cls");
         menuCadastro();
         int opcao2;
         scanf("%d", &opcao2);
-        system("clear");
+        system("cls");
         if (opcao2 == 1)
         {
             // Cadastrar novo paciente
@@ -106,15 +106,15 @@ int main()
         // Pausar o terminal
         clearBuffer();
         clearBuffer();
-        system("clear");
+        system("cls");
     }
     else if (opcao == 2)
     {
-        system("clear");
+        system("cls");
         menuAtendimento();
         int opcao3;
         scanf("%d", &opcao3);
-        system("clear");
+        system("cls");
 
         if (opcao3 == 1)
         {
@@ -135,11 +135,11 @@ int main()
     }
     else if (opcao == 3)
     {
-        system("clear");
+        system("cls");
         menuPesquisa();
         int opcao3;
         scanf("%d", &opcao3);
-        system("clear");
+        system("cls");
 
         if (opcao3 == 1)
         {
@@ -165,30 +165,33 @@ int main()
     else if (opcao == 4)
     {
         // Desfazer
-        system("clear");
+        system("cls");
     }
     else if (opcao == 5)
     {
         // Carregar
-        system("clear");
+        system("cls");
     }
     else if (opcao == 6)
     {
         // Salvar
-        system("clear");
+        system("cls");
     }
     else if (opcao == 7)
     {
         // Sobre
         sobre();
-        system("clear");
+        // Pausar o terminal
+        clearBuffer();
+        clearBuffer();
+        system("cls");
     }
     else
     {
         printf("Opção não existe!\n");
     }
     //     cod = salvarLista(lt, arquivo);
-    //   } while (opcao != 0);
+      } while (opcao != 0);
 
     //   if (cod != 0)
     //   {
@@ -224,22 +227,22 @@ int main()
 //     {
 //       criarTarefa(&lt);
 //
-//       system("clear");
+//       system("cls");
 //     }
 //     else if (opcao == 2)
 //     {
 //       deletarTarefa(&lt);
-//       system("clear");
+//       system("cls");
 //     }
 //     else if (opcao == 3)
 //     {
 
-//       system("clear");
+//       system("cls");
 
 //       menuListagem();
 //       int opcao2;
 //       scanf("%d", &opcao2);
-//       system("clear");
+//       system("cls");
 //       if (opcao2 == 1)
 //       {
 //         listarTarefas(lt);
@@ -268,15 +271,15 @@ int main()
 //       // Pausar o terminal
 //       clearBuffer();
 //       clearBuffer();
-//       system("clear");
+//       system("cls");
 //     }
 //     else if (opcao == 4)
 //     {
-//       system("clear");
+//       system("cls");
 //       menuExportar();
 //       int opcao3;
 //       scanf("%d", &opcao3);
-//       system("clear");
+//       system("cls");
 
 //       if (opcao3 == 1)
 //       {
@@ -301,7 +304,7 @@ int main()
 //     }
 //     else if (opcao == 5)
 //     {
-//       system("clear");
+//       system("cls");
 //       alterarTarefa(&lt);
 //     }
 //     else
