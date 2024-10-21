@@ -144,6 +144,11 @@ int main()
             {
                 printf("Opcao nao existe!\n");
             }
+            printf("Pressione Enter para voltar ao menu...");
+            // Pausar o terminal
+            clearBuffer();
+            clearBuffer();
+            system("cls");
         }
         else if (opcao == 3)
         {
@@ -177,6 +182,11 @@ int main()
             {
                 printf("Opcao nao existe!\n");
             }
+            printf("Pressione Enter para voltar ao menu...");
+            // Pausar o terminal
+            clearBuffer();
+            clearBuffer();
+            system("cls");
         }
         else if (opcao == 4)
         {

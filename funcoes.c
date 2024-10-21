@@ -134,7 +134,7 @@ void menuPesquisa()
   // Mostrar registros ordenados por ano de registro;
   printf("1 - Registros ordenados por ano\n");
   // Mostrar registros ordenados por mês de registro;
-  printf("2 - Registros ordenados por mês\n");
+  printf("2 - Registros ordenados por mes\n");
   // Mostrar registros ordenados por dia de registro;
   printf("3 - Registros ordenados por dia\n");
   // Mostrar registros ordenados por idade do paciente.
