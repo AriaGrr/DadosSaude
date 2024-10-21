@@ -81,3 +81,72 @@ void clearBuffer()
 //     cJSON_Delete(root);
 //     free(jsonString);
 // }
+
+
+// Funções de print dos menus
+
+void printMenu()
+{
+  printf("Menu\n");
+  printf("1 - Cadastrar\n");
+  printf("2 - Atendimento\n");
+  printf("3 - Pesquisa\n");
+  printf("4 - Desfazer\n");
+  // Pode retirar essas opções para serem automáticas?
+  // Carrega ao iniciar o programa e salva ao sair
+  printf("5 - Carregar\n");
+  printf("6 - Salvar\n");
+  //
+  printf("7 - Sobre\n");
+  printf("0 - Sair\n");
+  printf("Digite a opção desejada: ");
+}
+
+// Cadastrar novo paciente em uma lista dinâmica encadeada, mantendo a ordem de registro (inserção no início);
+void menuCadastro()
+{
+  printf("Operações:\n");
+  printf("1 - Cadastrar novo paciente\n");
+  printf("2 - Consultar paciente cadastrado\n");
+  printf("3 - Mostrar lista completa\n");
+  printf("4 - Atualizar dados de paciente\n");
+  printf("5 - Remover paciente\n");
+}
+
+// Inserir um paciente, que já possua cadastro, em uma fila para atendimento;
+void menuAtendimento()
+{
+  printf("Operações:\n");
+  // Enfileirar paciente
+  printf("1 - Adicionar paciente à fila de espera\n");
+  // Desenfileirar paciente
+  printf("2 - Atender paciente\n");
+  // Mostrar fila
+  printf("3 - Mostrar fila de espera\n");
+}
+
+// Inserir um paciente, que já possua cadastro, em uma árvore binária de busca;
+void menuPesquisa()
+{
+  printf("Operações:\n");
+  // Mostrar registros ordenados por ano de registro;
+  printf("1 - Registros ordenados por ano\n");
+  // Mostrar registros ordenados por mês de registro;
+  printf("2 - Registros ordenados por mês\n");
+  // Mostrar registros ordenados por dia de registro;
+  printf("3 - Registros ordenados por dia\n");
+  // Mostrar registros ordenados por idade do paciente.
+  printf("4 - Registros ordenados por idade\n");
+}
+
+void sobre(){
+  printf("Sistema de atendimento hospitalar\n");
+  printf("Desenvolvido por:\n");
+  printf("Marjorie Luize Martins Costa\n");
+  printf("& \n");
+  printf("Nuno \n");
+  printf("Ciclo: 4°\n");
+  printf("Curso: Ciência da Computação\n");
+  printf("Disciplina: Estrutura de Dados\n");
+  printf("Data: 20/10/2024\n");
+}
