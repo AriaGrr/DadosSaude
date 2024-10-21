@@ -145,11 +145,11 @@ void menuPesquisa()
 
 void sobre()
 {
-  printf("Sistema de atendimento hospitalar\n");
+  printf("Sistema de atendimento hospitalar\n\n");
   printf("Desenvolvido por:\n");
   printf("Marjorie Luize Martins Costa\n");
   printf("& \n");
-  printf("Nuno \n");
+  printf("Nuno Martins Guilhermino da Silva\n");
   printf("Ciclo: Quarto\n");
   printf("Curso: Ciencia da Computacao\n");
   printf("Disciplina: Estrutura de Dados\n");

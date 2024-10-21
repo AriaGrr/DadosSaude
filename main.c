@@ -206,6 +206,7 @@ int main()
         else if (opcao == 7)
         {
             // Sobre
+            system("cls");
             sobre();
             // Pausar o terminal
             clearBuffer();
