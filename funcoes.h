@@ -9,26 +9,25 @@
 
 // Para
 #define ADD_FIELD(obj, name, type, value) \
-    cJSON_Add##type##ToObject(obj, #name, value)
+     cJSON_Add##type##ToObject(obj, #name, value)
 
 // Aqui devemos colocar os structs, tanto do arquivo a ser salvo quanto das estruturas que serão manipuladas
 
 // Registros de pacientes
 typedef struct
 {
-    int dia;
-    int mes;
-    int ano;
+     int dia;
+     int mes;
+     int ano;
 } Data;
 
 typedef struct
 {
-    char nome[50];
-    int idade;
-    char rg[10];
-    Data *entrada;
+     char nome[50];
+     int idade;
+     char rg[10];
+     Data *entrada;
 } Registro;
-
 
 // Item de menu: Cadastrar em uma LDE
 typedef struct ELista
@@ -79,11 +78,10 @@ void printMenu();
 void menuCadastro();
 void menuAtendimento();
 void menuPesquisa();
-void sobre();  
+void sobre();
 // void imprimirRegistro(Registro *r);
 
 // cJSON* estruturaJson(void* data, const char* campo[], const char* tipo[]);
 // void jsonEstrutura(const char* arquivo, void* estrutura, const char* campo[], const char* tipo[]);
-
 
 #endif //FUNCOES_H
