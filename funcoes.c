@@ -74,15 +74,39 @@ void clearBuffer()
 //      int qtde;
 // } ABB;
 
-// PILHA (DESAFIO)
-// typedef enum {
-//     ENFILEIRAR,
-//     DESENFILEIRAR
+// Se der errado aqui mudo pra um 
+// typedef enum
+// {
+//      ENFILEIRAR,
+//      DESENFILEIRAR
 // } Operacao;
 
-// typedef struct Pilha {
+// // Pilha dinamica usa anterior e próximo
+// typedef struct Celula
+// {
 //     Operacao operacao;
-//     struct Pilha *proximo;
+//     struct Celula *proximo;
+//     struct Celula *anterior;
+// } Celula;
+
+// ou 
+
+
+// // Pilha dinamica usa anterior e próximo
+// typedef struct Celula
+// {
+//      // 1 para enfileirar, 2 para desinfileirar
+//      int operacao;
+// //     Operacao operacao;
+//     struct Celula *proximo;
+//     struct Celula *anterior;
+// } Celula;
+
+// // Pilha (Stack) para armazenar as operações de enfileirar e desenfileirar
+// typedef struct
+// {
+//     Celula *topo;
+//     int qtd;
 // } Pilha;
 
 // typedef struct
@@ -129,9 +153,9 @@ cJSON *estruturaToJson(void *data, const char *campos[], const char *tipos[])
     case 'A': // EABB*
       cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((EABB **)data + i), campos, tipos));
       break;
-    case 'P': // Pilha*
-      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((Pilha **)data + i), campos, tipos));
-      break;
+    // case 'P': // Pilha*
+    //   cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((Pilha **)data + i), campos, tipos));
+    //   break;
     // ... outros tipos
     default:
       printf("Tipo de dado não suportado: %s\n", tipos[i]);
@@ -210,20 +234,22 @@ void jsonParaEstrutura(const cJSON *obj, void *estrutura, const char *campos[], 
         //   Celula *topo;
         //   int qtd;
         // } Pilha;
-        Pilha **pilha = (Pilha **)((char *)estrutura + i * sizeof(char *));
-        *pilha = (Pilha *)malloc(sizeof(Pilha));
-        (*pilha)->topo = NULL;
-        (*pilha)->qtd = 0;
-        cJSON *celula = item;
-        while (celula)
-        {
-          Celula *nova = (Celula *)malloc(sizeof(Celula));
-          nova->operacao = celula->valueint;
-          nova->proximo = (*pilha)->topo;
-          (*pilha)->topo = nova;
-          (*pilha)->qtd++;
-          celula = celula->next;
-        }
+
+
+        // Pilha **pilha = (Pilha **)((char *)estrutura + i * sizeof(char *));
+        // *pilha = (Pilha *)malloc(sizeof(Pilha));
+        // (*pilha)->topo = NULL;
+        // (*pilha)->qtd = 0;
+        // cJSON *celula = item;
+        // while (celula)
+        // {
+        //   Celula *nova = (Celula *)malloc(sizeof(Celula));
+        //   nova->operacao = celula->valueint;
+        //   nova->proximo = (*pilha)->topo;
+        //   (*pilha)->topo = nova;
+        //   (*pilha)->qtd++;
+        //   celula = celula->next;
+        // }
       }
       break;
         // ... outros tipos
@@ -249,15 +275,15 @@ cJSON *serializarTudo(Dados *dados)
   const char *tiposFila[] = {"EFila*", "EFila*", "int", NULL};
   const char *camposABB[] = {"raiz", "qtde", NULL};
   const char *tiposABB[] = {"EABB*", "int", NULL};
-  const char *camposPilha[] = {"operacao", "proximo", NULL};
-  const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
+  // const char *camposPilha[] = {"operacao", "proximo", NULL};
+  // const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
 
   // ... e assim por diante para as outras possiveis estruturas
 
   cJSON_AddItemToObject(root, "lista", estruturaToJson(dados->lista, camposLista, tiposLista));
   cJSON_AddItemToObject(root, "fila", estruturaToJson(dados->fila, camposFila, tiposFila));
   cJSON_AddItemToObject(root, "abb", estruturaToJson(dados->abb, camposABB, tiposABB));
-  cJSON_AddItemToObject(root, "pilha", estruturaToJson(dados->pilha, camposPilha, tiposPilha));
+  // cJSON_AddItemToObject(root, "pilha", estruturaToJson(dados->pilha, camposPilha, tiposPilha));
   // ...
 
   return root;
@@ -298,14 +324,14 @@ void desserializarTudo(const char *arquivo, Dados *dados)
   const char *tiposFila[] = {"EFila*", "EFila*", "int", NULL};
   const char *camposABB[] = {"raiz", "qtde", NULL};
   const char *tiposABB[] = {"EABB*", "int", NULL};
-  const char *camposPilha[] = {"operacao", "proximo", NULL};
-  const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
+  // const char *camposPilha[] = {"operacao", "proximo", NULL};
+  // const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
   // ... e assim por diante para as outras possiveis estruturas
 
   jsonParaEstrutura(root, dados->lista, camposLista, tiposLista);
   jsonParaEstrutura(root, dados->fila, camposFila, tiposFila);
   jsonParaEstrutura(root, dados->abb, camposABB, tiposABB);
-  jsonParaEstrutura(root, dados->pilha, camposPilha, tiposPilha);
+  // jsonParaEstrutura(root, dados->pilha, camposPilha, tiposPilha);
   // ...
 
   cJSON_Delete(root);

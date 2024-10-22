@@ -80,26 +80,28 @@ typedef struct
 // A partir daqui são estruturas com fonte: vozes da minha cabeça
 
 // Pilha para armazenar operações (enfileirar e desenfileirar), para desfazer
-typedef enum
-{
-     ENFILEIRAR,
-     DESENFILEIRAR
-} Operacao;
+// typedef enum
+// {
+//      ENFILEIRAR,
+//      DESENFILEIRAR
+// } Operacao;
 
+// Pilha dinamica usa anterior e próximo
 typedef struct Celula
 {
-    Operacao operacao;
-    struct Celula *proximo;
-//     struct Celula *anterior;
+     // 1 para enfileirar, 2 para desinfileirar
+     int operacao;
+     //     Operacao operacao;
+     struct Celula *proximo;
+     struct Celula *anterior;
 } Celula;
 
 // Pilha (Stack) para armazenar as operações de enfileirar e desenfileirar
 typedef struct
 {
-    Celula *topo;
-    int qtd;
+     Celula *topo;
+     int qtd;
 } Pilha;
-
 
 // Estrutura contêiner para armazenar as estruturas de dados do programa no JSON
 typedef struct
