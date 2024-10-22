@@ -13,75 +13,304 @@ void clearBuffer()
     ;
 }
 
-// TESTAR
+// Estruturas pra ficar mais facil de ver
+// Registros de pacientes
+// typedef struct
+// {
+//      int dia;
+//      int mes;
+//      int ano;
+// } Data;
 
-// // Função para criar um objeto cJSON a partir de uma estrutura de dados genérica
-// cJSON* estruturaJson(void* data, const char* campo[], const char* tipo[]) {
-//   // Função auxiliar para adicionar um campo ao objeto JSON
-//     cJSON* obj = cJSON_CreateObject();
+// typedef struct
+// {
+//      // char nome[50];
+//      char nome;
+//      int idade;
+//      // char rg[10];
+//      char rg;
+//      Data *entrada;
+// } Registro;
 
-//     // Macro para adicionar um campo ao objeto JSON
-//     for (int i = 0; campo[i] != NULL; i++) {
-//       // Adiciona o campo ao objeto JSON
-//         if (strcmp(tipo[i], "int") == 0) {
-//             // Adiciona um campo do tipo inteiro
-//             ADD_FIELD(obj, campo[i], Number, *((int*)data + i));
-//         } else if (strcmp(tipo[i], "char*") == 0) {
-//           // Adiciona um campo do tipo string
-//             ADD_FIELD(obj, campo[i], String, *((char**)data + i));
-//         // Adiciona um campo do tipo Data
-//         } else if (strcmp(tipo[i], "Data") == 0) {
-//             // Pega o ponteiro para a estrutura Data
-//             Data* data_ptr = (Data*)((char*)data + i * sizeof(char*));
-//             // Cria um objeto JSON para a estrutura Data
-//             cJSON* data_obj = cJSON_CreateObject();
-//             // Adiciona os campos da estrutura Data ao objeto JSON
-//             ADD_FIELD(data_obj, "dia", Number, data_ptr->dia);
-//             ADD_FIELD(data_obj, "mes", Number, data_ptr->mes);
-//             ADD_FIELD(data_obj, "ano", Number, data_ptr->ano);
-//             // Adiciona o objeto JSON da estrutura Data ao objeto JSON principal
-//             cJSON_AddItemToObject(obj, campo[i], data_obj);
-//         } else {
-//             // Tratar outros tipos de dados aqui
-//             printf("Tipo de dado não suportado: %s\n", tipo[i]);
-//         }
-//     }
-//     // Retorna o objeto JSON criado
-//     return obj;
-// }
+// // Item de menu: Cadastrar em uma LDE
+// typedef struct ELista
+// {
+//      Registro *dados;
+//      struct ELista *proximo;
+// } ELista;
 
-// // Função para ler um arquivo JSON e popular uma estrutura
-// void jsonEstrutura(const char* arquivo, void* estrutura, const char* campo[], const char* tipo[]) {
-//     FILE* fp = fopen(arquivo, "r");
-//     if (!fp) {
-//         perror("Erro ao abrir o arquivo");
-//         return;
-//     }
+// typedef struct
+// {
+//      ELista *inicio;
+//      int qtde;
+// } Lista;
 
-//     fseek(fp, 0, SEEK_END);
-//     long fsize = ftell(fp);
-//     fseek(fp, 0, SEEK_SET);
+// // Item de menu: Atendimento em uma Fila
+// typedef struct EFila
+// {
+//      Registro *dados;
+//      struct EFila *proximo;
+// } EFila;
 
-//     char* jsonString = (char*)malloc(fsize + 1);
-//     fread(jsonString, 1, fsize, fp);
-//     fclose(fp);
-//     jsonString[fsize] = 0;
+// typedef struct
+// {
+//      EFila *head;
+//      EFila *tail;
+//      int qtde;
+// } Fila;
 
-//     cJSON* root = cJSON_Parse(jsonString);
-//     if (!root) {
-//         printf("Erro ao analisar o JSON\n");
-//         free(jsonString);
-//         return;
-//     }
+// // Item de menu: Pesquisa
+// typedef struct EABB
+// {
+//      Registro *dados;
+//      // Filhos esquerdo e direito
+//      struct EABB *esq;
+//      struct EABB *dir;
+// } EABB;
 
-//     // Assumindo que o JSON raiz contém um único objeto representando a estrutura
-//     estruturaJson(estrutura, campo, tipo);
+// typedef struct
+// {
+//      EABB *raiz;
+//      int qtde;
+// } ABB;
 
-//     cJSON_Delete(root);
-//     free(jsonString);
-// }
+// PILHA (DESAFIO)
+// typedef enum {
+//     ENFILEIRAR,
+//     DESENFILEIRAR
+// } Operacao;
 
+// typedef struct Pilha {
+//     Operacao operacao;
+//     struct Pilha *proximo;
+// } Pilha;
 
+// typedef struct
+// {
+//      Lista *lista;
+//      Fila *fila;
+//      ABB *abb;
+//      Pilha *pilha;
+// } Dados;
+
+// Funções para inicializar as estruturas de dados com base em arquivos JSON
+
+// Função genérica para serializar uma estrutura
+cJSON *estruturaToJson(void *data, const char *campos[], const char *tipos[])
+{
+  cJSON *obj = cJSON_CreateObject();
+  int i = 0;
+  while (campos[i] != NULL)
+  {
+    switch (tipos[i][0])
+    {
+    case 'i': // int
+      cJSON_AddNumberToObject(obj, campos[i], *((int *)data + i));
+      break;
+    case 'c': // char*
+      cJSON_AddStringToObject(obj, campos[i], *((char **)data + i));
+      break;
+    case 'D': // Data
+    {
+      Data *data_ptr = (Data *)((char *)data + i * sizeof(char *));
+      cJSON *data_obj = cJSON_CreateObject();
+      cJSON_AddNumberToObject(data_obj, "dia", data_ptr->dia);
+      cJSON_AddNumberToObject(data_obj, "mes", data_ptr->mes);
+      cJSON_AddNumberToObject(data_obj, "ano", data_ptr->ano);
+      cJSON_AddItemToObject(obj, campos[i], data_obj);
+    }
+    break;
+    case 'L': // ELista*
+      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((ELista **)data + i), campos, tipos));
+      break;
+    case 'F': // EFila*
+      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((EFila **)data + i), campos, tipos));
+      break;
+    case 'A': // EABB*
+      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((EABB **)data + i), campos, tipos));
+      break;
+    case 'P': // Pilha*
+      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((Pilha **)data + i), campos, tipos));
+      break;
+    // ... outros tipos
+    default:
+      printf("Tipo de dado não suportado: %s\n", tipos[i]);
+    }
+    i++;
+  }
+  return obj;
+}
+
+// Função genérica para desserializar uma estrutura
+void jsonParaEstrutura(const cJSON *obj, void *estrutura, const char *campos[], const char *tipos[])
+{
+  int i = 0;
+  while (campos[i] != NULL)
+  {
+    cJSON *item = cJSON_GetObjectItem(obj, campos[i]);
+    if (item)
+    {
+      switch (tipos[i][0])
+      {
+      case 'i': // int
+        *((int *)estrutura + i) = item->valueint;
+        break;
+      case 'c': // char*
+        *((char **)estrutura + i) = strdup(item->valuestring);
+        break;
+      case 'D': // Data
+      {
+        Data *data_ptr = (Data *)((char *)estrutura + i * sizeof(char *));
+        cJSON *dia = cJSON_GetObjectItem(item, "dia");
+        cJSON *mes = cJSON_GetObjectItem(item, "mes");
+        cJSON *ano = cJSON_GetObjectItem(item, "ano");
+        data_ptr->dia = dia->valueint;
+        data_ptr->mes = mes->valueint;
+        data_ptr->ano = ano->valueint;
+      }
+      break;
+      case 'L': // ELista*
+      {
+        ELista **lista = (ELista **)((char *)estrutura + i * sizeof(char *));
+        *lista = (ELista *)malloc(sizeof(ELista));
+        jsonParaEstrutura(item, (*lista)->dados, campos, tipos);
+        (*lista)->proximo = NULL;
+      }
+      break;
+      case 'F': // EFila*
+      {
+        EFila **fila = (EFila **)((char *)estrutura + i * sizeof(char *));
+        *fila = (EFila *)malloc(sizeof(EFila));
+        jsonParaEstrutura(item, (*fila)->dados, campos, tipos);
+        (*fila)->proximo = NULL;
+      }
+      break;
+      case 'A': // EABB*
+      {
+        EABB **abb = (EABB **)((char *)estrutura + i * sizeof(char *));
+        *abb = (EABB *)malloc(sizeof(EABB));
+        jsonParaEstrutura(item, (*abb)->dados, campos, tipos);
+        (*abb)->esq = NULL;
+        (*abb)->dir = NULL;
+      }
+      break;
+      case 'P': // Pilha*
+      {
+        // ARRUMAR A PILHA EM TUDO
+        // typedef struct Celula
+        // {
+        //   Operacao operacao;
+        //   struct Celula *proximo;
+        //   struct Celula *anterior;
+        // } Celula;
+
+        // // Pilha (Stack) para armazenar as operações de enfileirar e desenfileirar
+        // typedef struct
+        // {
+        //   Celula *topo;
+        //   int qtd;
+        // } Pilha;
+        Pilha **pilha = (Pilha **)((char *)estrutura + i * sizeof(char *));
+        *pilha = (Pilha *)malloc(sizeof(Pilha));
+        (*pilha)->topo = NULL;
+        (*pilha)->qtd = 0;
+        cJSON *celula = item;
+        while (celula)
+        {
+          Celula *nova = (Celula *)malloc(sizeof(Celula));
+          nova->operacao = celula->valueint;
+          nova->proximo = (*pilha)->topo;
+          (*pilha)->topo = nova;
+          (*pilha)->qtd++;
+          celula = celula->next;
+        }
+      }
+      break;
+        // ... outros tipos
+      }
+    }
+    else
+    {
+      printf("Campo '%s' não encontrado no JSON\n", campos[i]);
+    }
+    i++;
+  }
+}
+
+// Função para serializar toda a estrutura de dados
+cJSON *serializarTudo(Dados *dados)
+{
+  cJSON *root = cJSON_CreateObject();
+
+  // Definir os campos e tipos de cada estrutura
+  const char *camposLista[] = {"inicio", "qtde", NULL};
+  const char *tiposLista[] = {"ELista*", "int", NULL};
+  const char *camposFila[] = {"head", "tail", "qtde", NULL};
+  const char *tiposFila[] = {"EFila*", "EFila*", "int", NULL};
+  const char *camposABB[] = {"raiz", "qtde", NULL};
+  const char *tiposABB[] = {"EABB*", "int", NULL};
+  const char *camposPilha[] = {"operacao", "proximo", NULL};
+  const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
+
+  // ... e assim por diante para as outras possiveis estruturas
+
+  cJSON_AddItemToObject(root, "lista", estruturaToJson(dados->lista, camposLista, tiposLista));
+  cJSON_AddItemToObject(root, "fila", estruturaToJson(dados->fila, camposFila, tiposFila));
+  cJSON_AddItemToObject(root, "abb", estruturaToJson(dados->abb, camposABB, tiposABB));
+  cJSON_AddItemToObject(root, "pilha", estruturaToJson(dados->pilha, camposPilha, tiposPilha));
+  // ...
+
+  return root;
+}
+
+// Função para desserializar toda a estrutura de dados
+void desserializarTudo(const char *arquivo, Dados *dados)
+{
+  // ... (lógica similar à função serializarTudo, mas no sentido inverso)
+  FILE *fp = fopen(arquivo, "r");
+  if (!fp)
+  {
+    perror("Erro ao abrir o arquivo");
+    return;
+  }
+
+  fseek(fp, 0, SEEK_END);
+  long fsize = ftell(fp);
+  fseek(fp, 0, SEEK_SET);
+
+  char *jsonString = (char *)malloc(fsize + 1);
+  fread(jsonString, 1, fsize, fp);
+  fclose(fp);
+  jsonString[fsize] = 0;
+
+  cJSON *root = cJSON_Parse(jsonString);
+  if (!root)
+  {
+    printf("Erro ao analisar o JSON\n");
+    free(jsonString);
+    return;
+  }
+
+  // Definir os campos e tipos de cada estrutura
+  const char *camposLista[] = {"inicio", "qtde", NULL};
+  const char *tiposLista[] = {"ELista*", "int", NULL};
+  const char *camposFila[] = {"head", "tail", "qtde", NULL};
+  const char *tiposFila[] = {"EFila*", "EFila*", "int", NULL};
+  const char *camposABB[] = {"raiz", "qtde", NULL};
+  const char *tiposABB[] = {"EABB*", "int", NULL};
+  const char *camposPilha[] = {"operacao", "proximo", NULL};
+  const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
+  // ... e assim por diante para as outras possiveis estruturas
+
+  jsonParaEstrutura(root, dados->lista, camposLista, tiposLista);
+  jsonParaEstrutura(root, dados->fila, camposFila, tiposFila);
+  jsonParaEstrutura(root, dados->abb, camposABB, tiposABB);
+  jsonParaEstrutura(root, dados->pilha, camposPilha, tiposPilha);
+  // ...
+
+  cJSON_Delete(root);
+  free(jsonString);
+}
 
 // Funções de print dos menus
 

@@ -1,0 +1,566 @@
+// // Montar um arquivo json a partir de cada uma das estruturas
+// cJSON *estruturaJson1(void *data, const char *campo[], const char *tipo[])
+// {
+//   // Cria um objeto JSON
+//   cJSON *obj = cJSON_CreateObject();
+
+//   // Adiciona os campos ao objeto JSON
+//   for (int i = 0; campo[i] != NULL; i++)
+//   {
+//     // Adiciona um campo do tipo inteiro
+//     if (strcmp(tipo[i], "int") == 0)
+//     {
+//       ADD_FIELD(obj, campo[i], Number, *((int *)data + i));
+//     }
+//     // Adiciona um campo do tipo string
+//     else if (strcmp(tipo[i], "char*") == 0)
+//     {
+//       ADD_FIELD(obj, campo[i], String, *((char **)data + i));
+//     }
+//     // Adiciona um campo do tipo Data
+//     else if (strcmp(tipo[i], "Data") == 0)
+//     {
+//       // Pega o ponteiro para a estrutura Data
+//       Data *data_ptr = (Data *)((char *)data + i * sizeof(char *));
+//       // Cria um objeto JSON para a estrutura Data
+//       cJSON *data_obj = cJSON_CreateObject();
+//       // Adiciona os campos da estrutura Data ao objeto JSON
+//       ADD_FIELD(data_obj, "dia", Number, data_ptr->dia);
+//       ADD_FIELD(data_obj, "mes", Number, data_ptr->mes);
+//       ADD_FIELD(data_obj, "ano", Number, data_ptr->ano);
+//       // Adiciona o objeto JSON da estrutura Data ao objeto JSON principal
+//       cJSON_AddItemToObject(obj, campo[i], data_obj);
+//     }
+//     else
+//     {
+//       // Tratar outros tipos de dados aqui
+//       printf("Tipo de dado não suportado: %s\n", tipo[i]);
+//     }
+//   }
+
+//   // Retorna o objeto JSON criado
+//   return obj;
+// }
+
+// // Do mesmo arquivo json, montar a estrutura 
+// void jsonEstrutura1(const char *arquivo, void *estrutura, const char *campo[], const char *tipo[])
+// {
+//   // Abre o arquivo JSON
+//   FILE *fp = fopen(arquivo, "r");
+//   if (!fp)
+//   {
+//     perror("Erro ao abrir o arquivo");
+//     return;
+//   }
+
+//   // Lê o conteúdo do arquivo
+//   fseek(fp, 0, SEEK_END);
+//   long fsize = ftell(fp);
+//   fseek(fp, 0, SEEK_SET);
+
+//   char *jsonString = (char *)malloc(fsize + 1);
+//   fread(jsonString, 1, fsize, fp);
+//   fclose(fp);
+//   jsonString[fsize] = 0;
+
+//   // Analisa o conteúdo do arquivo JSON
+//   cJSON *root = cJSON_Parse(jsonString);
+//   if (!root)
+//   {
+//     printf("Erro ao analisar o JSON\n");
+//     free(jsonString);
+//     return;
+//   }
+
+//   // Monta a estrutura de dados a partir do arquivo JSON
+//   for (int i = 0; campo[i] != NULL; i++)
+//   {
+//     cJSON *field = cJSON_GetObjectItem(root, campo[i]);
+//     if (!field)
+//     {
+//       printf("Campo %s não encontrado\n", campo[i]);
+//       continue;
+//     }
+
+//     // Adiciona o campo à estrutura de dados
+//     if (strcmp(tipo[i], "int") == 0)
+//     {
+//       *((int *)estrutura + i) = field->valueint;
+//     }
+//     else if (strcmp(tipo[i], "char*") == 0)
+//     {
+//       *((char **)estrutura + i) = strdup(field->valuestring);
+//     }
+//     else if (strcmp(tipo[i], "Data") == 0)
+//     {
+//       Data *data = (Data *)((char *)estrutura + i * sizeof(char *));
+//       cJSON *dia = cJSON_GetObjectItem(field, "dia");
+//       cJSON *mes = cJSON_GetObjectItem(field, "mes");
+//       cJSON *ano = cJSON_GetObjectItem(field, "ano");
+//       data->dia = dia->valueint;
+//       data->mes = mes->valueint;
+//       data->ano = ano->valueint;
+//     }
+//     else
+//     {
+//       // Tratar outros tipos de dados aqui
+//       printf("Tipo de dado não suportado: %s\n", tipo[i]);
+//     }
+//   }
+
+//   // Libera a memória alocada
+//   cJSON_Delete(root);
+//   free(jsonString);
+// }
+
+
+
+// // jsonEstrutura: Função para montar uma estrutura de dados a partir de um arquivo JSON
+// void jsonEstrutura(const char *arquivo, void *estrutura, const char *campo[], const char *tipo[])
+// {
+//   // Abre o arquivo JSON
+//   FILE *fp = fopen(arquivo, "r");
+//   if (!fp)
+//   {
+//     perror("Erro ao abrir o arquivo");
+//     return;
+//   }
+
+//   // Lê o conteúdo do arquivo
+//   fseek(fp, 0, SEEK_END);
+//   long fsize = ftell(fp);
+//   fseek(fp, 0, SEEK_SET);
+
+//   char *jsonString = (char *)malloc(fsize + 1);
+//   fread(jsonString, 1, fsize, fp);
+//   fclose(fp);
+//   jsonString[fsize] = 0;
+
+//   // Analisa o conteúdo do arquivo JSON
+//   cJSON *root = cJSON_Parse(jsonString);
+//   if (!root)
+//   {
+//     printf("Erro ao analisar o JSON\n");
+//     free(jsonString);
+//     return;
+//   }
+
+//   // // Cria a estrutura de dados a partir do arquivo JSON
+//   // estruturaJson(estrutura, campo, tipo);
+
+//   // Monta a estrutura de dados a partir do arquivo JSON
+//   for (int i = 0; campo[i] != NULL; i++)
+//   {
+//     cJSON *field = cJSON_GetObjectItem(root, campo[i]);
+//     if (!field)
+//     {
+//       printf("Campo %s não encontrado\n", campo[i]);
+//       continue;
+//     }
+
+//     // Adiciona o campo à estrutura de dados
+//     if (strcmp(tipo[i], "int") == 0)
+//     {
+//       *((int *)estrutura + i) = field->valueint;
+//     }
+//     else if (strcmp(tipo[i], "char*") == 0)
+//     {
+//       *((char **)estrutura + i) = strdup(field->valuestring);
+//     }
+//     else if (strcmp(tipo[i], "Data") == 0)
+//     {
+//       Data *data = (Data *)((char *)estrutura + i * sizeof(char *));
+//       cJSON *dia = cJSON_GetObjectItem(field, "dia");
+//       cJSON *mes = cJSON_GetObjectItem(field, "mes");
+//       cJSON *ano = cJSON_GetObjectItem(field, "ano");
+//       data->dia = dia->valueint;
+//       data->mes = mes->valueint;
+//       data->ano = ano->valueint;
+//     }
+//     else
+//     {
+//       // Tratar outros tipos de dados aqui
+//       printf("Tipo de dado não suportado: %s\n", tipo[i]);
+//     }
+//   }
+
+//   // Libera a memória alocada
+//   cJSON_Delete(root);
+//   free(jsonString);
+// }
+
+// // estruturaJson: Função para montar um objeto cJSON a partir de uma estrutura de dados genérica
+// cJSON *estruturaJson(void *data, const char *campo[], const char *tipo[])
+// {
+//   // Cria um objeto JSON
+//   cJSON *obj = cJSON_CreateObject();
+
+//   // Adiciona os campos ao objeto JSON
+//   for (int i = 0; campo[i] != NULL; i++)
+//   {
+//     // Adiciona um campo do tipo inteiro
+//     if (strcmp(tipo[i], "int") == 0)
+//     {
+//       ADD_FIELD(obj, campo[i], Number, *((int *)data + i));
+//     }
+//     // Adiciona um campo do tipo string
+//     else if (strcmp(tipo[i], "char*") == 0)
+//     {
+//       ADD_FIELD(obj, campo[i], String, *((char **)data + i));
+//     }
+//     // Adiciona um campo do tipo Data
+//     else if (strcmp(tipo[i], "Data") == 0)
+//     {
+//       // Pega o ponteiro para a estrutura Data
+//       Data *data_ptr = (Data *)((char *)data + i * sizeof(char *));
+//       // Cria um objeto JSON para a estrutura Data
+//       cJSON *data_obj = cJSON_CreateObject();
+//       // Adiciona os campos da estrutura Data ao objeto JSON
+//       ADD_FIELD(data_obj, "dia", Number, data_ptr->dia);
+//       ADD_FIELD(data_obj, "mes", Number, data_ptr->mes);
+//       ADD_FIELD(data_obj, "ano", Number, data_ptr->ano);
+//       // Adiciona o objeto JSON da estrutura Data ao objeto JSON principal
+//       cJSON_AddItemToObject(obj, campo[i], data_obj);
+//     }
+//     else
+//     {
+//       // Tratar outros tipos de dados aqui
+//       printf("Tipo de dado não suportado: %s\n", tipo[i]);
+//     }
+//   }
+
+//   // Retorna o objeto JSON criado
+//   return obj;
+// }
+
+// void inicializarLista(Lista *lista, const char *arquivo){
+//   // Inicializa a lista
+//   lista->inicio = NULL;
+//   lista->qtde = 0;
+
+//   // Carrega os dados do arquivo JSON
+//   jsonEstrutura(arquivo, lista, campos_lista, tipos_lista);
+// }
+
+// Funções do menu de cadastro
+
+// // Função para cadastrar um novo paciente
+// void cadastrarPaciente(Lista *lista)
+// {
+//   Registro *novo = (Registro *)malloc(sizeof(Registro));
+//   if (!novo)
+//   {
+//     printf("Erro ao alocar memoria\n");
+//     return;
+//   }
+
+//   printf("Nome: ");
+//   clearBuffer();
+//   scanf("%c", &novo->nome);
+
+//   printf("Idade: ");
+//   scanf("%d", &novo->idade);
+
+//   printf("RG: ");
+//   clearBuffer();
+//   scanf("%c", &novo->rg);
+
+//   novo->entrada = (Data *)malloc(sizeof(Data));
+//   if (!novo->entrada)
+//   {
+//     printf("Erro ao alocar memoria\n");
+//     return;
+//   }
+
+//   printf("Data de entrada (dd/mm/aaaa): ");
+//   scanf("%d/%d/%d", &novo->entrada->dia, &novo->entrada->mes, &novo->entrada->ano);
+
+//   ELista *novoNo = (ELista *)malloc(sizeof(ELista));
+//   if (!novoNo)
+//   {
+//     printf("Erro ao alocar memoria\n");
+//     return;
+//   }
+
+//   novoNo->dados = novo;
+//   novoNo->proximo = lista->inicio;
+//   lista->inicio = novoNo;
+//   lista->qtde++;
+// }
+
+// // Função para consultar um paciente cadastrado
+// // void consultarPaciente(Lista *lista)
+// // {
+// //   char nome;
+// //   printf("Nome: ");
+// //   clearBuffer();
+// //   scanf("%c", &nome);
+
+// //   ELista *atual = lista->inicio;
+// //   while (atual)
+// //   {
+// //     if (atual->dados->nome == nome)
+// //     {
+// //       printf("Nome: %c\n", atual->dados->nome);
+// //       printf("Idade: %d\n", atual->dados->idade);
+// //       printf("RG: %c\n", atual->dados->rg);
+// //       printf("Data de entrada: %02d/%02d/%04d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+// //       return;
+// //     }
+// //     atual = atual->proximo;
+// //   }
+// //   printf("Paciente nao encontrado\n");
+// // }
+
+// // Função consultar paciente cadastrado pelo rg
+// void consultarPaciente(Lista *lista)
+// {
+//   char rg;
+//   printf("RG: ");
+//   clearBuffer();
+//   scanf("%c", &rg);
+
+//   ELista *atual = lista->inicio;
+//   while (atual)
+//   {
+//     if (atual->dados->rg == rg)
+//     {
+//       printf("Nome: %c\n", atual->dados->nome);
+//       printf("Idade: %d\n", atual->dados->idade);
+//       printf("RG: %c\n", atual->dados->rg);
+//       printf("Data de entrada: %02d/%02d/%04d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+//       return;
+//     }
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// Função para cadastrar um novo paciente
+// void cadastrarPaciente(Lista *lista)
+// {
+//   Registro *novo = (Registro *)malloc(sizeof(Registro));
+//   if (!novo)
+//   {
+//     printf("Erro ao alocar memoria\n");
+//     return;
+//   }
+
+//   printf("Nome: ");
+//   clearBuffer();
+//   fgets(novo->nome, 50, stdin);
+//   novo->nome[strcspn(novo->nome, "\n")] = 0;
+
+//   printf("Idade: ");
+//   scanf("%d", &novo->idade);
+
+//   printf("RG: ");
+//   clearBuffer();
+//   fgets(novo->rg, 10, stdin);
+//   novo->rg[strcspn(novo->rg, "\n")] = 0;
+
+//   novo->entrada = (Data *)malloc(sizeof(Data));
+//   if (!novo->entrada)
+//   {
+//     printf("Erro ao alocar memoria\n");
+//     return;
+//   }
+
+//   printf("Data de entrada (dd/mm/aaaa): ");
+//   scanf("%d/%d/%d", &novo->entrada->dia, &novo->entrada->mes, &novo->entrada->ano);
+
+//   ELista *novoNo = (ELista *)malloc(sizeof(ELista));
+//   if (!novoNo)
+//   {
+//     printf("Erro ao alocar memoria\n");
+//     return;
+//   }
+
+//   novoNo->dados = novo;
+//   novoNo->proximo = lista->inicio;
+//   lista->inicio = novoNo;
+//   lista->qtde++;
+// }
+
+// Função para consultar um paciente cadastrado
+// void consultarPaciente(Lista *lista)
+// {
+//   char nome[50];
+//   printf("Nome: ");
+//   clearBuffer();
+//   fgets(nome, 50, stdin);
+//   nome[strcspn(nome, "\n")] = 0;
+
+//   ELista *atual = lista->inicio;
+//   while (atual)
+//   {
+//     if (strcmp(atual->dados->nome, nome) == 0)
+//     {
+//       printf("Nome: %s\n", atual->dados->nome);
+//       printf("Idade: %d\n", atual->dados->idade);
+//       printf("RG: %s\n", atual->dados->rg);
+//       printf("Data de entrada: %02d/%02d/%04d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+//       return;
+//     }
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// Função consultar paciente cadastrado pelo rg
+// void consultarPaciente(Lista *lista)
+// {
+//   char rg[10];
+//   printf("RG: ");
+//   clearBuffer();
+//   fgets(rg, 10, stdin);
+//   rg[strcspn(rg, "\n")] = 0;
+
+//   ELista *atual = lista->inicio;
+//   while (atual)
+//   {
+//     if (strcmp(atual->dados->rg, rg) == 0)
+//     {
+//       printf("Nome: %s\n", atual->dados->nome);
+//       printf("Idade: %d\n", atual->dados->idade);
+//       printf("RG: %s\n", atual->dados->rg);
+//       printf("Data de entrada: %02d/%02d/%04d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+//       return;
+//     }
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// Função para procurar paciente cadastrado pelo rg
+// void
+
+
+// TESTANDO
+
+// // Função para criar um objeto cJSON a partir de uma estrutura de dados genérica
+// cJSON* estruturaJson(void* data, const char* campo[], const char* tipo[]) {
+//   // Função auxiliar para adicionar um campo ao objeto JSON
+//     cJSON* obj = cJSON_CreateObject();
+
+//     // Macro para adicionar um campo ao objeto JSON
+//     for (int i = 0; campo[i] != NULL; i++) {
+//       // Adiciona o campo ao objeto JSON
+//         if (strcmp(tipo[i], "int") == 0) {
+//             // Adiciona um campo do tipo inteiro
+//             ADD_FIELD(obj, campo[i], Number, *((int*)data + i));
+//         } else if (strcmp(tipo[i], "char*") == 0) {
+//           // Adiciona um campo do tipo string
+//             ADD_FIELD(obj, campo[i], String, *((char**)data + i));
+//         // Adiciona um campo do tipo Data
+//         } else if (strcmp(tipo[i], "Data") == 0) {
+//             // Pega o ponteiro para a estrutura Data
+//             Data* data_ptr = (Data*)((char*)data + i * sizeof(char*));
+//             // Cria um objeto JSON para a estrutura Data
+//             cJSON* data_obj = cJSON_CreateObject();
+//             // Adiciona os campos da estrutura Data ao objeto JSON
+//             ADD_FIELD(data_obj, "dia", Number, data_ptr->dia);
+//             ADD_FIELD(data_obj, "mes", Number, data_ptr->mes);
+//             ADD_FIELD(data_obj, "ano", Number, data_ptr->ano);
+//             // Adiciona o objeto JSON da estrutura Data ao objeto JSON principal
+//             cJSON_AddItemToObject(obj, campo[i], data_obj);
+//         } else {
+//             // Tratar outros tipos de dados aqui
+//             printf("Tipo de dado não suportado: %s\n", tipo[i]);
+//         }
+//     }
+//     // Retorna o objeto JSON criado
+//     return obj;
+// }
+
+// // Função para ler um arquivo JSON e popular uma estrutura
+// void jsonEstrutura(const char* arquivo, void* estrutura, const char* campo[], const char* tipo[]) {
+//     FILE* fp = fopen(arquivo, "r");
+//     if (!fp) {
+//         perror("Erro ao abrir o arquivo");
+//         return;
+//     }
+
+//     fseek(fp, 0, SEEK_END);
+//     long fsize = ftell(fp);
+//     fseek(fp, 0, SEEK_SET);
+
+//     char* jsonString = (char*)malloc(fsize + 1);
+//     fread(jsonString, 1, fsize, fp);
+//     fclose(fp);
+//     jsonString[fsize] = 0;
+
+//     cJSON* root = cJSON_Parse(jsonString);
+//     if (!root) {
+//         printf("Erro ao analisar o JSON\n");
+//         free(jsonString);
+//         return;
+//     }
+
+//     // Assumindo que o JSON raiz contém um único objeto representando a estrutura
+//     estruturaJson(estrutura, campo, tipo);
+
+//     cJSON_Delete(root);
+//     free(jsonString);
+// }
+
+
+// COMPLEMENTAR A PILHA E A FILA
+
+// void enfileirar(Fila *fila, int valor) {
+//     // ... código para enfileirar
+//     empilhar(&pilha_operacoes, ENFILEIRAR);
+// }
+
+// void desenfileirar(Fila *fila) {
+//     // ... código para desenfileirar
+//     empilhar(&pilha_operacoes, DESENFILEIRAR);
+// }
+
+// void desfazer() {
+//     if (pilha_operacoes != NULL) {
+//         Operacao operacao = topo(&pilha_operacoes);
+//         desempilhar(&pilha_operacoes);
+
+//         if (operacao == ENFILEIRAR) {
+//             // Desfazer enfileiramento (desenfileirar)
+//             desenfileirar(&fila);
+//         } else {
+//             // Desfazer desenfileiramento (enfileirar o último elemento removido)
+//             // ... implemtar
+//         }
+//     } else {
+//         printf("Não há operações para desfazer.\n");
+//     }
+// }
+
+// void empilhar(SPilha **topo, Operacao operacao) {
+//     SPilha *novo = (SPilha*) malloc(sizeof(SPilha));
+//     novo->operacao = operacao;
+//     novo->proximo = *topo;
+//     *topo = novo;
+// }
+
+// void desempilhar(SPilha **topo) {
+//     if (*topo != NULL) {
+//         SPilha *temp = *topo;
+//         *topo = (*topo)->proximo;
+//         free(temp);
+//     }
+// }
+
+// Operacao topo(SPilha *topo) {
+//     if (topo == NULL) {
+//         // Pilha vazia, retornar um valor inválido ou gerar uma exceção
+//         return -1; // Por exemplo
+//     }
+//     return topo->operacao;
+// }
+
+
+// Lista encadeada para armazenar os registros de pacientes, porém deve ser feito com pilha.
+// typedef struct Pilha
+// {
+//      Operacao operacao;
+//      struct Pilha *proximo;
+// } Pilha;

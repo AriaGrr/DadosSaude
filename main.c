@@ -6,6 +6,70 @@
 // Alterar main pro projeto atual
 void main()
 {
+    // IDEIA DE COMO USAR O JSON
+    // // ... (criar instâncias das estruturas e popular os dados)
+
+    // // Serializar para JSON
+    // Dados dados;
+    // // ... (popular a estrutura dados)
+    // cJSON *root = serializarTudo(&dados);
+    // // ... (escrever em um arquivo)
+
+    // // Desserializar de um arquivo
+    // Dados novosDados;
+    // desserializarTudo("dados.json", &novosDados);
+    // // ... (usar os dados desserializados)
+
+    // TESTANDO JSON
+
+    // Criar instâncias das estruturas e popular os dados
+    // Dados dados;
+    // dados.lista = criarLista(); // Função para criar e popular a lista
+    // dados.fila = criarFila();   // Função para criar e popular a fila
+    // dados.abb = criarABB();     // Função para criar e popular a ABB
+    // dados.pilha = criarPilha(); // Função para criar e popular a pilha
+
+    // // Serializar para JSON
+    // cJSON *root = serializarTudo(&dados);
+    // char *jsonString = cJSON_Print(root);
+
+    // // Escrever em um arquivo
+    // FILE *fp = fopen("dados.json", "w");
+    // if (fp) {
+    //     fprintf(fp, "%s", jsonString);
+    //     fclose(fp);
+    //     printf("Dados serializados com sucesso para dados.json\n");
+    // } else {
+    //     perror("Erro ao abrir o arquivo");
+    // }
+
+    // cJSON_Delete(root);
+    // free(jsonString);
+
+    // // Limpar as estruturas existentes (opcional)
+    // destruirLista(dados.lista);
+    // destruirFila(dados.fila);
+    // destruirABB(dados.abb);
+    // destruirPilha(dados.pilha);
+
+    // // Ler o JSON e desserializar
+    // Dados novosDados;
+    // desserializarTudo("dados.json", &novosDados);
+
+    // // Imprimir os dados desserializados para verificar
+    // imprimirLista(novosDados.lista);
+    // imprimirFila(novosDados.fila);
+    // imprimirABB(novosDados.abb);
+    // imprimirPilha(novosDados.pilha);
+
+    // // Liberar a memória das estruturas desserializadas
+    // destruirLista(novosDados.lista);
+    // destruirFila(novosDados.fila);
+    // destruirABB(novosDados.abb);
+    // destruirPilha(novosDados.pilha);
+
+
+
     //   int cod;
     // Ia ser usado para salvar os arquivos em txt, mas irei tentar fazer em json
     //   char arquivo[] = "arquivo,";
@@ -38,6 +102,7 @@ void main()
             if (opcao2 == 1)
             {
                 // Cadastrar novo paciente
+                
             }
             else if (opcao2 == 2)
             {
