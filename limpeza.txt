@@ -1234,3 +1234,301 @@ limpeza do menu
 // Celula *inicializa_celula();
 // // Inicializar dados
 // Dados *inicializa_dados();
+
+
+ITENS PARA CONCERTAR DA PESQUISA
+
+// void inserir(ABB *arvore, Registro *dados)
+// {
+//   EABB *novo = cria_vertice(dados);
+//   EABB *atual = arvore->raiz;
+//   EABB *anterior = NULL;
+//   // Se a arvore estiver vazia
+//   if (arvore->raiz == NULL)
+//   {
+//     arvore->raiz = novo;
+//     arvore->qtde++;
+//   }
+//   else
+//   {
+//     // Enquanto não chegar em uma folha
+//     while (atual != NULL)
+//     {
+//       // Atualiza o anterior
+//       anterior = atual;
+//       // Se o ano do novo registro for menor que o ano do registro atual
+//       if (dados->entrada->ano < atual->dados->entrada->ano)
+//       {
+//         // Atualiza o atual
+//         atual = atual->esq;
+//       }
+//       // Se o ano do novo registro for maior que o ano do registro atual
+//       else
+//       {
+//         // Atualiza o atual
+//         atual = atual->dir;
+//       }
+//     }
+//     // Se o ano do novo registro for menor que o ano do registro anterior
+//     if (dados->entrada->ano < anterior->dados->entrada->ano)
+//     {
+//       // Insere a esquerda
+//       anterior->esq = novo;
+//     }
+//     // Se o ano do novo registro for maior que o ano do registro anterior
+//     else
+//     {
+//       // Insere a direita
+//       anterior->dir = novo;
+//     }
+//     arvore->qtde++;
+//   }
+// }
+
+// void mostrar_ano(ABB *arvore)
+// {
+//   EABB *raiz = arvore->raiz;
+//   if (raiz != NULL)
+//   {
+//     mostrar_ano(raiz->esq);
+//     printf("--------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrar_ano(raiz->dir);
+//   }
+//   else
+//   {
+//     printf("Arvore vazia\n");
+//   }
+// }
+
+// void mostrar_mes(ABB *arvore)
+// {
+//   EABB *raiz = arvore->raiz;
+//   if (raiz != NULL)
+//   {
+//     mostrar_mes(raiz->esq);
+//     printf("--------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrar_mes(raiz->dir);
+//   }
+//   else
+//   {
+//     printf("Arvore vazia\n");
+//   }
+// }
+
+// void mostrar_dia(ABB *arvore)
+// {
+//   EABB *raiz = arvore->raiz;
+//   if (raiz != NULL)
+//   {
+//     mostrar_dia(raiz->esq);
+//     printf("--------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrar_dia(raiz->dir);
+//   }
+//   else
+//   {
+//     printf("Arvore vazia\n");
+//   }
+// }
+
+// void mostrar_idade(ABB *arvore)
+// {
+//   EABB *raiz = arvore->raiz;
+//   if (raiz != NULL)
+//   {
+//     mostrar_idade(raiz->esq);
+//     printf("--------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrar_idade(raiz->dir);
+//   }
+//   else
+//   {
+//     printf("Arvore vazia\n");
+//   }
+// }
+
+// void mostrar_ano_ordenado(ABB *arvore)
+// {
+//   mostrar_ano(arvore->raiz);
+// }
+
+// void mostrar_mes_ordenado(ABB *arvore)
+// {
+//   mostrar_mes(arvore->raiz);
+// }
+
+// void mostrar_dia_ordenado(ABB *arvore)
+// {
+//   mostrar_dia(arvore->raiz);
+// }
+
+// void mostrar_idade_ordenado(ABB *arvore)
+// {
+//   mostrar_idade(arvore->raiz);
+// }
+
+
+
+
+void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
+{
+  printf("Desfazer\n");
+  printf("--------------------\n");
+  if (pilha->qtd == 0)
+  {
+    printf("Nao ha operacoes para desfazer\n");
+    return;
+  }
+  int operacao;
+  char rg[maxRG];
+  // O & é necessário para passar o endereço da variável
+  pop(pilha, &operacao, rg);
+  if (operacao == 1)
+  {
+    printf("Desenfileirar\n");
+  }
+  else if (operacao == 2)
+  {
+    printf("Enfileirar\n");
+  }
+  printf("--------------------\n");
+  printf("Deseja desfazer a operacao?\n");
+  printf("--------------------\n");
+  printf("1 - Sim\n");
+  printf("2 - Nao\n");
+  printf("--------------------\n");
+  printf("Digite a opcao desejada: ");
+  int opcao;
+  scanf("%d", &opcao);
+  if (opcao == 1)
+  {
+    if (operacao == 1)
+    {
+      // Se a operação for desenfileirar, coloque o paciente de volta na fila na primeira posição (que é a que ele estava antes de ser desenfileirado)
+
+      // Cria uma nova célula
+      EFila *nova = criarCelula(pilha->topo->dados);
+      // Se a fila estiver vazia
+      if (fila->head == NULL)
+      {
+        fila->head = nova;
+        fila->tail = nova;
+      }
+      else
+      {
+        // Se a fila não estiver vazia, coloque o paciente na primeira posição
+        nova->proximo = fila->head;
+        fila->head = nova;
+      }
+      // printf("Paciente %s", pilha->topo->dados->nome);
+      // printf(" adicionado(a) a fila de espera.\n");
+      
+      // Desenfileira o paciente da pilha
+      free(pilha->topo->dados);
+      free(pilha->topo);
+      pilha->qtd--;
+    }
+    else if (operacao == 2)
+    {
+      // Se a operação for enfileirar, retire o ultimo paciente da fila, desenfileirar retira o primeiro paciente
+      // EFila *atual = fila->head;
+      // EFila *anterior = NULL;
+      // while (atual != NULL)
+      // {
+      //   if (strcmp(atual->dados->rg, rg) == 0)
+      //   {
+      //     if (anterior == NULL)
+      //     {
+      //       fila->head = atual->proximo;
+      //       free(atual);
+      //       fila->qtde--;
+      //       break;
+      //     }
+      //     else
+      //     {
+      //       anterior->proximo = atual->proximo;
+      //       free(atual);
+      //       fila->qtde--;
+      //       break;
+      //     }
+      //   }
+      //   anterior = atual;
+      //   atual = atual->proximo;
+      // }
+      // printf("Paciente %s", rg);
+      // printf(" removido(a) da fila de espera.\n");
+
+      // // Cria uma nova célula
+      // Celula *nova = cria_celula(1, pilha->topo->dados);
+      // // Se a pilha estiver vazia
+      // if (pilha->qtd == 0)
+      // {
+      //   pilha->topo = nova;
+      // }
+      // else
+      // {
+      //   // Se a pilha não estiver vazia, coloque o paciente na primeira posição
+      //   nova->proximo = pilha->topo;
+      //   pilha->topo = nova;
+      // }
+
+      // free(pilha->topo->dados);
+      // free(pilha->topo);
+      // pilha->qtd--;
+
+      if (fila->tail == NULL)
+      {
+        printf("Fila já está vazia.\n");
+        return;
+      }
+
+      EFila *temp = fila->head;
+      while (temp->proximo != fila->tail)
+      {
+        temp = temp->proximo;
+      }
+      free(fila->tail);
+      fila->tail = temp;
+      temp->proximo = NULL;
+      fila->qtde--;
+
+      free(pilha->topo->dados);
+      free(pilha->topo);
+      pilha->qtd--;
+
+      printf("Operacao desfeita\n");
+
+      // Adiciona uma nova entrada na pilha com a operação de desenfileirar
+      //Celula *nova = cria_celula(1, pilha->topo->dados); // 1 indica a operação de desenfileirar
+      //nova->proximo = pilha->topo;
+      //pilha->topo = nova;
+      //pilha->qtd++;
+    }
+    else
+    {
+      printf("Operacao invalida\n");
+    }
+  }
+  else if (opcao == 2)
+  {
+    push(pilha, operacao, NULL);
+  }
+  else
+  {
+    printf("Opcao invalida\n");
+  }
+}
