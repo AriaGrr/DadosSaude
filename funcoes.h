@@ -80,8 +80,10 @@ typedef struct
 // Pilha dinamica usa anterior e próximo
 typedef struct Celula
 {
-     // 1 para enfileirar, 2 para desinfileirar
+     // 1 para desinfileirar, 2 para enfileirar
      int operacao;
+     // Deve também ser possível armazenar um registro
+     Registro *dados;
      //     Operacao operacao;
      struct Celula *proximo;
      struct Celula *anterior;
@@ -117,6 +119,12 @@ void sobre();
 
 // Inicializar lista
 Lista *inicializa_lista();
+// Inicializar fila
+Fila *inicializa_fila();
+// Inicializar árvore
+ABB *inicializa_arvore();
+// Inicializar pilha
+Pilha *inicializa_pilha();
 
 // Funções do menu de cadastro
 
@@ -130,5 +138,31 @@ void mostrarLista(Lista *lista);
 void atualizarPaciente(Lista *lista);
 // Remover paciente
 void removerPaciente(Lista *lista);
+
+// Funções do menu de atendimento
+
+// Enfileirar paciente
+void enfileirarPaciente(Fila *fila, Lista *lista, Pilha *pilha);
+// Desenfileirar paciente
+void desenfileirarPaciente(Fila *fila, Pilha *pilha);
+// Mostrar fila completa
+void mostrarFila(Fila *fila);
+
+// Funções do menu de pesquisa
+
+// Funções de mostrar ordenado po
+// // Ano
+// void mostrar_ano(ABB *arvore);
+// // Mês
+// void mostrar_mes(ABB *arvore);
+// // Dia
+// void mostrar_dia(ABB *arvore);
+// // Idade
+// void mostrar_idade(ABB *arvore);
+
+// Funções do menu de desfazer
+
+// Desfazer operação
+void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
 
 #endif //FUNCOES_H

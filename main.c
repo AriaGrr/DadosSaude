@@ -6,8 +6,16 @@
 // Alterar main pro projeto atual
 void main()
 {
-    // Inicialização 
+    // Inicializações
+    // Inicializa a lista
     Lista *lista = inicializa_lista();
+    // Inicializa a fila
+    Fila *fila = inicializa_fila();
+    // Inicializa a árvore
+    ABB *abb = inicializa_arvore();
+    // Inicializa a pilha
+    Pilha *pilha = inicializa_pilha();
+
     int opcao;
     do
     {
@@ -78,14 +86,17 @@ void main()
             if (opcao3 == 1)
             {
                 // Adicionar paciente à fila de espera
+                enfileirarPaciente(fila, lista, pilha);
             }
             else if (opcao3 == 2)
             {
                 // Atender paciente
+                desenfileirarPaciente(fila, pilha);
             }
             else if (opcao3 == 3)
             {
                 // Mostrar fila de espera
+                mostrarFila(fila); 
             }
             else if (opcao3 == 0)
             {
@@ -112,18 +123,22 @@ void main()
             if (opcao4 == 1)
             {
                 // Registros ordenados por ano
+                // mostrar_ano(abb);
             }
             else if (opcao4 == 2)
             {
                 // Registros ordenados por mês
+                // mostrar_mes(abb);
             }
             else if (opcao4 == 3)
             {
                 // Registros ordenados por dia
+                // mostrar_dia(abb);
             }
             else if (opcao4 == 4)
             {
                 // Registros ordenados por idade
+                // mostrar_idade(abb);
             }
             else if (opcao4 == 0)
             {
@@ -143,15 +158,30 @@ void main()
         {
             // Desfazer
             system("cls");
+            desfazer(pilha, fila, lista);
+            // Pausar o terminal
+            clearBuffer();
+            clearBuffer();
+            system("cls");
         }
         else if (opcao == 5)
         {
             // Carregar
             system("cls");
+
+            // Pausar o terminal
+            clearBuffer();
+            clearBuffer();
+            system("cls");
         }
         else if (opcao == 6)
         {
             // Salvar
+            system("cls");
+
+            // Pausar o terminal
+            clearBuffer();
+            clearBuffer();
             system("cls");
         }
         else if (opcao == 7)

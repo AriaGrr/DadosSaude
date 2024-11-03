@@ -1234,3 +1234,149 @@ limpeza do menu
 // Celula *inicializa_celula();
 // // Inicializar dados
 // Dados *inicializa_dados();
+
+
+ITENS PARA CONCERTAR DA PESQUISA
+
+// void inserir(ABB *arvore, Registro *dados)
+// {
+//   EABB *novo = cria_vertice(dados);
+//   EABB *atual = arvore->raiz;
+//   EABB *anterior = NULL;
+//   // Se a arvore estiver vazia
+//   if (arvore->raiz == NULL)
+//   {
+//     arvore->raiz = novo;
+//     arvore->qtde++;
+//   }
+//   else
+//   {
+//     // Enquanto não chegar em uma folha
+//     while (atual != NULL)
+//     {
+//       // Atualiza o anterior
+//       anterior = atual;
+//       // Se o ano do novo registro for menor que o ano do registro atual
+//       if (dados->entrada->ano < atual->dados->entrada->ano)
+//       {
+//         // Atualiza o atual
+//         atual = atual->esq;
+//       }
+//       // Se o ano do novo registro for maior que o ano do registro atual
+//       else
+//       {
+//         // Atualiza o atual
+//         atual = atual->dir;
+//       }
+//     }
+//     // Se o ano do novo registro for menor que o ano do registro anterior
+//     if (dados->entrada->ano < anterior->dados->entrada->ano)
+//     {
+//       // Insere a esquerda
+//       anterior->esq = novo;
+//     }
+//     // Se o ano do novo registro for maior que o ano do registro anterior
+//     else
+//     {
+//       // Insere a direita
+//       anterior->dir = novo;
+//     }
+//     arvore->qtde++;
+//   }
+// }
+
+// void mostrar_ano(ABB *arvore)
+// {
+//   EABB *raiz = arvore->raiz;
+//   if (raiz != NULL)
+//   {
+//     mostrar_ano(raiz->esq);
+//     printf("--------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrar_ano(raiz->dir);
+//   }
+//   else
+//   {
+//     printf("Arvore vazia\n");
+//   }
+// }
+
+// void mostrar_mes(ABB *arvore)
+// {
+//   EABB *raiz = arvore->raiz;
+//   if (raiz != NULL)
+//   {
+//     mostrar_mes(raiz->esq);
+//     printf("--------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrar_mes(raiz->dir);
+//   }
+//   else
+//   {
+//     printf("Arvore vazia\n");
+//   }
+// }
+
+// void mostrar_dia(ABB *arvore)
+// {
+//   EABB *raiz = arvore->raiz;
+//   if (raiz != NULL)
+//   {
+//     mostrar_dia(raiz->esq);
+//     printf("--------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrar_dia(raiz->dir);
+//   }
+//   else
+//   {
+//     printf("Arvore vazia\n");
+//   }
+// }
+
+// void mostrar_idade(ABB *arvore)
+// {
+//   EABB *raiz = arvore->raiz;
+//   if (raiz != NULL)
+//   {
+//     mostrar_idade(raiz->esq);
+//     printf("--------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrar_idade(raiz->dir);
+//   }
+//   else
+//   {
+//     printf("Arvore vazia\n");
+//   }
+// }
+
+// void mostrar_ano_ordenado(ABB *arvore)
+// {
+//   mostrar_ano(arvore->raiz);
+// }
+
+// void mostrar_mes_ordenado(ABB *arvore)
+// {
+//   mostrar_mes(arvore->raiz);
+// }
+
+// void mostrar_dia_ordenado(ABB *arvore)
+// {
+//   mostrar_dia(arvore->raiz);
+// }
+
+// void mostrar_idade_ordenado(ABB *arvore)
+// {
+//   mostrar_idade(arvore->raiz);
+// }
