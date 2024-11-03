@@ -8,7 +8,6 @@ void main()
 {
     // Inicialização 
     Lista *lista = inicializa_lista();
-
     int opcao;
     do
     {

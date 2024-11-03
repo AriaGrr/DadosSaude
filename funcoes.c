@@ -163,7 +163,7 @@ void inserir(Lista *lista, Registro *dados)
 }
 
 // Mostrar lista de pacientes completa?
-void mostrar(Lista *lista)
+void mostrarLista(Lista *lista)
 {
   ELista *atual = lista->inicio;
   while (atual != NULL)
@@ -179,21 +179,109 @@ void mostrar(Lista *lista)
   printf("\n");
 }
 
+// Melhorar o cadastro de paciente, não deixar o usuário sair sem preencher todos os campos
 // Cadastro de paciente
+// Registro *cadastrar()
+// {
+//   Registro *novo = malloc(sizeof(Registro));
+//   printf("Nome: ");
+//   scanf("%s", novo->nome);
+//   printf("Idade: ");
+//   scanf("%d", &novo->idade);
+//   printf("RG: ");
+//   scanf("%s", novo->rg);
+//   novo->entrada = malloc(sizeof(Data));
+//   printf("Data de entrada: ");
+//   scanf("%d/%d/%d", &novo->entrada->dia, &novo->entrada->mes, &novo->entrada->ano);
+//   return novo;
+// }
+
+int validarNome(char *nome)
+{
+  if (strlen(nome) > maxNOME)
+  {
+    return 0;
+  }
+  return 1;
+}
+
+int validarRg(char *rg)
+{
+  if (strlen(rg) > maxRG)
+  {
+    return 0;
+  }
+  return 1;
+}
+
+int validarIdade(int idade)
+{
+  if (idade < 0)
+  {
+    return 0;
+  }
+  return 1;
+}
+
+int validarData(Data *data)
+{
+  if (data->dia < 1 || data->dia > 31)
+  {
+    return 0;
+  }
+  if (data->mes < 1 || data->mes > 12)
+  {
+    return 0;
+  }
+  if (data->ano < 1900 || data->ano > 2024)
+  {
+    return 0;
+  }
+  return 1;
+}
+
 Registro *cadastrar()
 {
   Registro *novo = malloc(sizeof(Registro));
+  char nome[maxNOME];
+  int idade;
+  char rg[maxRG];
+  Data *entrada = malloc(sizeof(Data));
   printf("Nome: ");
-  scanf("%s", novo->nome);
+  scanf("%s", nome);
+  while (!validarNome(nome))
+  {
+    printf("Nome invalido, digite novamente: ");
+    scanf("%s", nome);
+  }
+  strcpy(novo->nome, nome);
   printf("Idade: ");
-  scanf("%d", &novo->idade);
+  scanf("%d", &idade);
+  while (!validarIdade(idade))
+  {
+    printf("Idade invalida, digite novamente: ");
+    scanf("%d", &idade);
+  }
+  novo->idade = idade;
   printf("RG: ");
-  scanf("%s", novo->rg);
-  novo->entrada = malloc(sizeof(Data));
+  scanf("%s", rg);
+  while (!validarRg(rg))
+  {
+    printf("RG invalido, digite novamente: ");
+    scanf("%s", rg);
+  }
+  strcpy(novo->rg, rg);
   printf("Data de entrada: ");
-  scanf("%d/%d/%d", &novo->entrada->dia, &novo->entrada->mes, &novo->entrada->ano);
+  scanf("%d/%d/%d", &entrada->dia, &entrada->mes, &entrada->ano);
+  while (!validarData(entrada))
+  {
+    printf("Data invalida, digite novamente: ");
+    scanf("%d/%d/%d", &entrada->dia, &entrada->mes, &entrada->ano);
+  }
+  novo->entrada = entrada;
   return novo;
 }
+
 
 // Chamada de funções de cadastro
 void cadastrarPaciente(Lista *lista)

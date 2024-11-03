@@ -9,6 +9,9 @@
 
 // Aqui devemos colocar os structs, tanto do arquivo a ser salvo quanto das estruturas que serão manipuladas
 
+#define maxNOME 50
+#define maxRG 10
+
 // Estruturas do slide
 
 // Registros de pacientes
@@ -21,10 +24,10 @@ typedef struct
 
 typedef struct
 {
-     char nome[50];
+     char nome[maxNOME];
      // char nome;
      int idade;
-     char rg[10];
+     char rg[maxRG];
      // char rg;
      Data *entrada;
 } Registro;
@@ -112,10 +115,30 @@ void menuAtendimento();
 void menuPesquisa();
 void sobre();
 
-// Funções do menu de cadastro
-
 // Inicializar lista
 Lista *inicializa_lista();
+// // Inicializar registro
+// Registro *inicializa_registro();
+// // Inicializar data
+// Data *inicializa_data();
+// // Inicializar elemento de lista
+// ELista *inicializa_elemento();
+// // Inicializar fila
+// Fila *inicializa_fila();
+// // Inicializar elemento de fila
+// EFila *inicializa_elemento_fila();
+// // Inicializar árvore
+// ABB *inicializa_abb();
+// // Inicializar elemento de árvore
+// EABB *inicializa_elemento_abb();
+// // Inicializar pilha
+// Pilha *inicializa_pilha();
+// // Inicializar célula
+// Celula *inicializa_celula();
+// // Inicializar dados
+// Dados *inicializa_dados();
+
+// Funções do menu de cadastro
 
 // Cadastrar paciente
 void cadastrarPaciente(Lista *lista);
