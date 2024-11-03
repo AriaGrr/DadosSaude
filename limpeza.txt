@@ -1380,3 +1380,155 @@ ITENS PARA CONCERTAR DA PESQUISA
 // {
 //   mostrar_idade(arvore->raiz);
 // }
+
+
+
+
+void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
+{
+  printf("Desfazer\n");
+  printf("--------------------\n");
+  if (pilha->qtd == 0)
+  {
+    printf("Nao ha operacoes para desfazer\n");
+    return;
+  }
+  int operacao;
+  char rg[maxRG];
+  // O & é necessário para passar o endereço da variável
+  pop(pilha, &operacao, rg);
+  if (operacao == 1)
+  {
+    printf("Desenfileirar\n");
+  }
+  else if (operacao == 2)
+  {
+    printf("Enfileirar\n");
+  }
+  printf("--------------------\n");
+  printf("Deseja desfazer a operacao?\n");
+  printf("--------------------\n");
+  printf("1 - Sim\n");
+  printf("2 - Nao\n");
+  printf("--------------------\n");
+  printf("Digite a opcao desejada: ");
+  int opcao;
+  scanf("%d", &opcao);
+  if (opcao == 1)
+  {
+    if (operacao == 1)
+    {
+      // Se a operação for desenfileirar, coloque o paciente de volta na fila na primeira posição (que é a que ele estava antes de ser desenfileirado)
+
+      // Cria uma nova célula
+      EFila *nova = criarCelula(pilha->topo->dados);
+      // Se a fila estiver vazia
+      if (fila->head == NULL)
+      {
+        fila->head = nova;
+        fila->tail = nova;
+      }
+      else
+      {
+        // Se a fila não estiver vazia, coloque o paciente na primeira posição
+        nova->proximo = fila->head;
+        fila->head = nova;
+      }
+      // printf("Paciente %s", pilha->topo->dados->nome);
+      // printf(" adicionado(a) a fila de espera.\n");
+      
+      // Desenfileira o paciente da pilha
+      free(pilha->topo->dados);
+      free(pilha->topo);
+      pilha->qtd--;
+    }
+    else if (operacao == 2)
+    {
+      // Se a operação for enfileirar, retire o ultimo paciente da fila, desenfileirar retira o primeiro paciente
+      // EFila *atual = fila->head;
+      // EFila *anterior = NULL;
+      // while (atual != NULL)
+      // {
+      //   if (strcmp(atual->dados->rg, rg) == 0)
+      //   {
+      //     if (anterior == NULL)
+      //     {
+      //       fila->head = atual->proximo;
+      //       free(atual);
+      //       fila->qtde--;
+      //       break;
+      //     }
+      //     else
+      //     {
+      //       anterior->proximo = atual->proximo;
+      //       free(atual);
+      //       fila->qtde--;
+      //       break;
+      //     }
+      //   }
+      //   anterior = atual;
+      //   atual = atual->proximo;
+      // }
+      // printf("Paciente %s", rg);
+      // printf(" removido(a) da fila de espera.\n");
+
+      // // Cria uma nova célula
+      // Celula *nova = cria_celula(1, pilha->topo->dados);
+      // // Se a pilha estiver vazia
+      // if (pilha->qtd == 0)
+      // {
+      //   pilha->topo = nova;
+      // }
+      // else
+      // {
+      //   // Se a pilha não estiver vazia, coloque o paciente na primeira posição
+      //   nova->proximo = pilha->topo;
+      //   pilha->topo = nova;
+      // }
+
+      // free(pilha->topo->dados);
+      // free(pilha->topo);
+      // pilha->qtd--;
+
+      if (fila->tail == NULL)
+      {
+        printf("Fila já está vazia.\n");
+        return;
+      }
+
+      EFila *temp = fila->head;
+      while (temp->proximo != fila->tail)
+      {
+        temp = temp->proximo;
+      }
+      free(fila->tail);
+      fila->tail = temp;
+      temp->proximo = NULL;
+      fila->qtde--;
+
+      free(pilha->topo->dados);
+      free(pilha->topo);
+      pilha->qtd--;
+
+      printf("Operacao desfeita\n");
+
+      // Adiciona uma nova entrada na pilha com a operação de desenfileirar
+      //Celula *nova = cria_celula(1, pilha->topo->dados); // 1 indica a operação de desenfileirar
+      //nova->proximo = pilha->topo;
+      //pilha->topo = nova;
+      //pilha->qtd++;
+    }
+    else
+    {
+      printf("Operacao invalida\n");
+    }
+  }
+  else if (opcao == 2)
+  {
+    push(pilha, operacao, NULL);
+  }
+  else
+  {
+    printf("Opcao invalida\n");
+  }
+}

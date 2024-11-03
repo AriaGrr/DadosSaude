@@ -721,31 +721,6 @@ void mostra(Pilha *pilha)
   printf("--------------------\n");
 }
 
-Registro* copiarRegistro(Registro *registro) {
-    Registro *novoRegistro = malloc(sizeof(Registro));
-    if (novoRegistro == NULL) {
-        // Tratar erro de alocação de memória
-        perror("Erro ao alocar memória para novo registro");
-        exit(1);
-    }
-    // Copiar os campos do registro
-    strcpy(novoRegistro->nome, registro->nome);
-    novoRegistro->idade = registro->idade;
-    strcpy(novoRegistro->rg, registro->rg);
-
-    // Copiar a data de entrada
-    novoRegistro->entrada = malloc(sizeof(Data));
-    if (novoRegistro->entrada == NULL) {
-        // Tratar erro de alocação de memória
-        perror("Erro ao alocar memória para nova data");
-        free(novoRegistro);
-        exit(1);
-    }
-    *novoRegistro->entrada = *registro->entrada;
-
-    return novoRegistro;
-}
-
 void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
 {
   printf("Desfazer\n");
@@ -753,7 +728,6 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
   if (pilha->qtd == 0)
   {
     printf("Nao ha operacoes para desfazer\n");
-    printf("--------------------\n");
     return;
   }
   int operacao;
@@ -781,62 +755,34 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
   {
     if (operacao == 1)
     {
-      // Se a operação for desenfileirar, coloque o paciente de volta na fila na primeira posição (que é a que ele estava antes de ser desenfileirado)
-
-      // Cria uma cópia dos dados do paciente
-      Registro *dados = copiarRegistro(pilha->topo->dados);
-
-      // Coloca o paciente de volta na fila na primeira posição
-      EFila *nova = criarCelula(dados);
-      nova->proximo = fila->head;
-      fila->head = nova;
-
-      // Verificar se está correto
-      if (fila->tail == NULL)
-      {
-        fila->tail = nova;
-      }
-
-      printf("Operacao desfeita\n");
+      // Se a operação for desenfileirar, enfileira o paciente e vice-versa
+      enfileirarRg(fila, lista, pilha, rg, 0);
     }
     else if (operacao == 2)
     {
-      // CORRETO?
-      // Se a operação for enfileirar, retire o ultimo paciente da fila, desenfileirar retira o primeiro paciente
-
-      if (fila->tail == NULL)
-      {
-        printf("Fila já está vazia.\n");
-        return;
-      }
-
-      EFila *temp = fila->head;
-      EFila *anterior = NULL; // Ponteiro para o nó anterior a temp
-
-      while (temp != fila->tail)
-      {
-        anterior = temp;
-        temp = temp->proximo;
-      }
-
-      // Criar uma cópia dos dados do paciente
-      Registro *dados = copiarRegistro(temp->dados);
-
-      // Remover o último elemento da fila
-      if (anterior == NULL)
-      { // Se o nó a ser removido é o primeiro
-        fila->head = NULL;
-        fila->tail = NULL;
-      }
-      else
-      {
-        anterior->proximo = NULL;
-        fila->tail = anterior;
-      }
-
-      free(temp);
-      printf("Operacao desfeita\n");
+      desenfileirarPaciente(fila, pilha, 0);
     }
+    //   // Se a operação for desenfileirar, enfileira o paciente
+    //   enfileirarRg(fila, lista, pilha, rg, 1);
+    // }
+    // else if (operacao == 2)
+    // {
+    //   // Se a operação for enfileirar, desenfileira o paciente
+    //   // desenfileirarPaciente(fila, pilha);
+    //   if (fila->head == NULL)
+    //   {
+    //     printf("Fila vazia\n");
+    //     return;
+    //   }
+    //   // Armazena o paciente que será removido
+    //   EFila *removido = fila->head;
+    //   fila->head = fila->head->proximo;
+    //   // printf("Paciente %s", removido->dados->nome);
+    //   // printf(" atendido(a).\n");
+    //   free(removido);
+    //   fila->qtde--;
+    //   printf("Operacao desfeita\n");
+    // }
     else
     {
       printf("Operacao invalida\n");
@@ -905,7 +851,7 @@ void enfileirar(Fila *fila, Registro *dados)
 
 // Conferir se está correto depois
 // Desenfileirar paciente
-void desenfileirarPaciente(Fila *fila, Pilha *pilha)
+void desenfileirarPaciente(Fila *fila, Pilha *pilha, int teste)
 {
   if (fila->head == NULL)
   {
@@ -914,10 +860,17 @@ void desenfileirarPaciente(Fila *fila, Pilha *pilha)
   }
   // Armazena o paciente que será removido
   EFila *removido = fila->head;
-  push(pilha, 1, removido->dados);
-  fila->head = fila->head->proximo;
-  printf("Paciente %s", removido->dados->nome);
-  printf(" atendido(a).\n");
+  if (teste == 1)
+  {
+    push(pilha, 1, removido->dados);
+    fila->head = fila->head->proximo;
+    printf("Paciente %s", removido->dados->nome);
+    printf(" atendido(a).\n");
+  }
+  else
+  {
+    printf("Operacao desfeita\n");
+  }
   free(removido);
   fila->qtde--;
 }
@@ -947,7 +900,7 @@ void enfileirarNome(Fila *fila, Lista *lista, Pilha *pilha, char *nome)
   printf("Paciente nao encontrado\n");
 }
 
-void enfileirarRg(Fila *fila, Lista *lista, Pilha *pilha, char *rg)
+void enfileirarRg(Fila *fila, Lista *lista, Pilha *pilha, char *rg, int teste)
 {
   ELista *atual = lista->inicio;
   while (atual != NULL)
@@ -964,7 +917,11 @@ void enfileirarRg(Fila *fila, Lista *lista, Pilha *pilha, char *rg)
         }
       }
       enfileirar(fila, atual->dados);
-      push(pilha, 2, atual->dados);
+      if (teste == 1)
+      {
+        push(pilha, 2, atual->dados);
+      }
+
       return;
     }
     atual = atual->proximo;
@@ -994,7 +951,7 @@ void enfileirarPaciente(Fila *fila, Lista *lista, Pilha *pilha)
     char rg[10];
     printf("RG: ");
     scanf("%s", rg);
-    enfileirarRg(fila, lista, pilha, rg);
+    enfileirarRg(fila, lista, pilha, rg, 1);
   }
   else
   {
@@ -1039,6 +996,7 @@ EABB *cria_vertice(Registro *dados)
   EABB *novo = malloc(sizeof(EABB));
   novo->dir = NULL;
   novo->esq = NULL;
+  // novo->pai = NULL;
   novo->dados = dados;
 
   return novo;

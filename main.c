@@ -160,6 +160,7 @@ void main()
             system("cls");
             desfazer(pilha, fila, lista);
             // Pausar o terminal
+            printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
             system("cls");
@@ -170,6 +171,7 @@ void main()
             system("cls");
 
             // Pausar o terminal
+            printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
             system("cls");
@@ -180,6 +182,7 @@ void main()
             system("cls");
 
             // Pausar o terminal
+            printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
             system("cls");
@@ -190,6 +193,7 @@ void main()
             system("cls");
             sobre();
             // Pausar o terminal
+            printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
             system("cls");

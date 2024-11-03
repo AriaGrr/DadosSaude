@@ -141,6 +141,10 @@ void removerPaciente(Lista *lista);
 
 // Funções do menu de atendimento
 
+// Criar celula
+EFila *criarCelula(Registro *dados);
+// Enfileirar paciente pelo rg
+void enfileirarRg(Fila *fila, Lista *lista, Pilha *pilha, char *rg);
 // Enfileirar paciente
 void enfileirarPaciente(Fila *fila, Lista *lista, Pilha *pilha);
 // Desenfileirar paciente
