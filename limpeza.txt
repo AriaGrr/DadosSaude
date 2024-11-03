@@ -1221,7 +1221,7 @@ limpeza do menu
 // // Inicializar elemento de lista
 // ELista *inicializa_elemento();
 // // Inicializar fila
-// Fila *inicializa_fila();
+// Fila *inicializaFila();
 // // Inicializar elemento de fila
 // EFila *inicializa_elemento_fila();
 // // Inicializar árvore
@@ -1229,7 +1229,7 @@ limpeza do menu
 // // Inicializar elemento de árvore
 // EABB *inicializa_elemento_abb();
 // // Inicializar pilha
-// Pilha *inicializa_pilha();
+// Pilha *inicializaPilha();
 // // Inicializar célula
 // Celula *inicializa_celula();
 // // Inicializar dados
@@ -1291,7 +1291,7 @@ ITENS PARA CONCERTAR DA PESQUISA
 //   if (raiz != NULL)
 //   {
 //     mostrar_ano(raiz->esq);
-//     printf("--------------------\n");
+//     printf("----------------------------------------\n");
 //     printf("Nome: %s\n", raiz->dados->nome);
 //     printf("Idade: %d\n", raiz->dados->idade);
 //     printf("RG: %s\n", raiz->dados->rg);
@@ -1310,7 +1310,7 @@ ITENS PARA CONCERTAR DA PESQUISA
 //   if (raiz != NULL)
 //   {
 //     mostrar_mes(raiz->esq);
-//     printf("--------------------\n");
+//     printf("----------------------------------------\n");
 //     printf("Nome: %s\n", raiz->dados->nome);
 //     printf("Idade: %d\n", raiz->dados->idade);
 //     printf("RG: %s\n", raiz->dados->rg);
@@ -1329,7 +1329,7 @@ ITENS PARA CONCERTAR DA PESQUISA
 //   if (raiz != NULL)
 //   {
 //     mostrar_dia(raiz->esq);
-//     printf("--------------------\n");
+//     printf("----------------------------------------\n");
 //     printf("Nome: %s\n", raiz->dados->nome);
 //     printf("Idade: %d\n", raiz->dados->idade);
 //     printf("RG: %s\n", raiz->dados->rg);
@@ -1348,7 +1348,7 @@ ITENS PARA CONCERTAR DA PESQUISA
 //   if (raiz != NULL)
 //   {
 //     mostrar_idade(raiz->esq);
-//     printf("--------------------\n");
+//     printf("----------------------------------------\n");
 //     printf("Nome: %s\n", raiz->dados->nome);
 //     printf("Idade: %d\n", raiz->dados->idade);
 //     printf("RG: %s\n", raiz->dados->rg);
@@ -1387,7 +1387,7 @@ ITENS PARA CONCERTAR DA PESQUISA
 void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
 {
   printf("Desfazer\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   if (pilha->qtd == 0)
   {
     printf("Nao ha operacoes para desfazer\n");
@@ -1405,12 +1405,12 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
   {
     printf("Enfileirar\n");
   }
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("Deseja desfazer a operacao?\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("1 - Sim\n");
   printf("2 - Nao\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("Digite a opcao desejada: ");
   int opcao;
   scanf("%d", &opcao);

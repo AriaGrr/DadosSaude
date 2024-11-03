@@ -8,13 +8,13 @@ void main()
 {
     // Inicializações
     // Inicializa a lista
-    Lista *lista = inicializa_lista();
+    Lista *lista = inicializaLista();
     // Inicializa a fila
-    Fila *fila = inicializa_fila();
+    Fila *fila = inicializaFila();
     // Inicializa a árvore
-    ABB *abb = inicializa_arvore();
+    ABB *abb = inicializaArvore();
     // Inicializa a pilha
-    Pilha *pilha = inicializa_pilha();
+    Pilha *pilha = inicializaPilha();
 
     int opcao;
     do

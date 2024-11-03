@@ -15,22 +15,41 @@ void clearBuffer()
     ;
 }
 
-// Item de menu: Cadastrar em uma LDE
+// Cria uma fila vazia
+// Ponteiro para fila
+Fila *inicializaFila()
+{
+  // Fila *fila = (Fila *)malloc(sizeof(Fila));
+  Fila *fila = malloc(sizeof(Fila));
+  fila->head = NULL;
+  fila->tail = NULL;
+  fila->qtde = 0;
+  // Retorna o ponteiro para a fila
+  return fila;
+}
 
+// Cria uma celula
+EFila *criarCelula(Registro *dados)
+{
+  EFila *celula = malloc(sizeof(EFila));
+  // celula->anterior = NULL;
+  celula->proximo = NULL;
+  celula->dados = dados;
+  return celula;
+}
+
+// Item de menu: Cadastrar em uma LDE
 // Operações:
 // ▶ Cadastrar novo paciente;
 // ▶ Consultar paciente cadastrado;
 // ▶ Mostrar lista completa;
 // ▶ Atualizar dados de paciente;
 // ▶ Remover paciente.
-
 // CONFERIR SE ESTÁ CORRETO
-
 // As funções estão repetitivas, buscar uma forma de otimizar.
-
 // Funções para manipulação de listas dinâmicas encadeadas
 
-Lista *inicializa_lista()
+Lista *inicializaLista()
 {
   Lista *lista = malloc(sizeof(Lista));
   lista->inicio = NULL;
@@ -99,14 +118,14 @@ void mostrarLista(Lista *lista)
   printf("Lista de pacientes\n");
   while (atual != NULL)
   {
-    printf("--------------------\n");
+    printf("----------------------------------------\n");
     printf("Nome: %s\n", atual->dados->nome);
     printf("Idade: %d\n", atual->dados->idade);
     printf("RG: %s\n", atual->dados->rg);
     printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
     atual = atual->proximo;
   }
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
 }
 
 int validarNome(char *nome)
@@ -190,7 +209,7 @@ Registro *cadastrar(Lista *lista)
   char rg[maxRG];
   Data *entrada = malloc(sizeof(Data));
   printf("Cadastro de paciente\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("Nome: ");
   clearBuffer();
   fgets(nome, maxNOME, stdin);
@@ -243,12 +262,12 @@ void cadastrarPaciente(Lista *lista)
   {
     system("cls");
     printf("Dados do novo paciente\n");
-    printf("--------------------\n");
+    printf("----------------------------------------\n");
     printf("Nome: %s\n", novo->nome);
     printf("Idade: %d\n", novo->idade);
     printf("RG: %s\n", novo->rg);
     printf("Data de entrada: %d/%d/%d\n", novo->entrada->dia, novo->entrada->mes, novo->entrada->ano);
-    printf("--------------------\n");
+    printf("----------------------------------------\n");
     printf("Deseja\n");
     printf("1 - Confirmar\n");
     printf("2 - Alterar\n");
@@ -361,12 +380,12 @@ void consultando(ELista *atual)
 {
   system("cls");
   printf("Dados do paciente\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("Nome: %s\n", atual->dados->nome);
   printf("Idade: %d\n", atual->dados->idade);
   printf("RG: %s\n", atual->dados->rg);
   printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
 }
 
 // Consultar paciente cadastrado por nome
@@ -645,7 +664,6 @@ void removerPaciente(Lista *lista)
 
 // Item de menu: Desfazer
 // Utilize uma pilha para armazenar as operações realizadas para a montagem da fila de atendimento;
-
 // Operações:
 // ▶ Desfaz a última operação realizada para a montagem da fila de
 // atendimento;
@@ -654,6 +672,7 @@ void removerPaciente(Lista *lista)
 Celula *cria_celula(int operacao, Registro *dados)
 {
   Celula *celula = malloc(sizeof(Celula));
+  celula->anterior = NULL;
   celula->proximo = NULL;
   celula->dados = dados;
   celula->operacao = operacao;
@@ -661,7 +680,7 @@ Celula *cria_celula(int operacao, Registro *dados)
   return celula;
 }
 
-Pilha *inicializa_pilha()
+Pilha *inicializaPilha()
 {
   Pilha *stack = malloc(sizeof(Pilha));
   stack->topo = NULL;
@@ -674,107 +693,129 @@ void push(Pilha *pilha, int valor, Registro *dados)
 {
   Celula *nova = cria_celula(valor, dados);
 
-  if (pilha->qtd > 0)
+  if (pilha->qtd == 0)
   {
-    nova->proximo = pilha->topo;
-    // Maneira que fiz antes:
-    // nova->anterior = pilha->topo;
-    // pilha->topo->proximo = nova;
+    // Pilha está vazia, nenhum elemento anterior
+    nova->anterior = NULL;
   }
+  else
+  {
+    nova->anterior = pilha->topo;
+    pilha->topo->proximo = nova;
+  }
+
   pilha->topo = nova;
   pilha->qtd++;
 }
 
-void pop(Pilha *pilha, int *operacao, char *rg)
+void pop(Pilha *pilha, int *operacao, char *rg, Registro *dados)
 {
-  if (pilha->qtd == 0)
-  {
-    *operacao = 0;
-    return;
-  }
-  // operacao = pilha->topo->operacao;
-  // rg = pilha->topo->dados->rg;
-  // Celula *temp = pilha->topo;
-  // pilha->topo = pilha->topo->proximo;
-  // free(temp);
-  // pilha->qtd--;
+  // if (pilha->qtd == 0)
+  // {
+  //   *operacao = 0;
+  //   return;
+  // }
+
   *operacao = pilha->topo->operacao;
   strcpy(rg, pilha->topo->dados->rg);
+  *dados = *pilha->topo->dados;
 
   Celula *temp = pilha->topo;
-  pilha->topo = pilha->topo->proximo;
-  free(temp);
+  pilha->topo = pilha->topo->anterior;
+  // Atualizar o ponteiro anterior do novo topo (se for duplamente encadeada)
+  if (pilha->topo != NULL)
+  {
+    pilha->topo->proximo = NULL;
+  }
   pilha->qtd--;
+  free(temp);
 }
 
 // Não está sendo usado no código, mas pode ser útil para debugar (se é que está correto)
 void mostra(Pilha *pilha)
 {
   Celula *celula = pilha->topo;
-  printf("Operacoes\n");
+  int qtd = pilha->qtd;
+  printf("Operacoes: %d\n", qtd);
+  // printf("----------------------------------------\n");
   while (celula != NULL)
   {
-    // printf("%c", celula->operacao);
-    printf("--------------------\n");
-    printf("%d", celula->operacao);
+    // printf("%d -> ", celula->operacao);
+    printf("%d -> ", qtd);
+    qtd--;
+    if (celula->operacao == 1)
+    {
+      printf("Desenfileirar %s\n", celula->dados->nome);
+    }
+    else if (celula->operacao == 2)
+    {
+      printf("Enfileirar %s\n", celula->dados->nome);
+    }
     celula = celula->anterior;
   }
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
 }
 
-Registro* copiarRegistro(Registro *registro) {
-    Registro *novoRegistro = malloc(sizeof(Registro));
-    if (novoRegistro == NULL) {
-        // Tratar erro de alocação de memória
-        perror("Erro ao alocar memória para novo registro");
-        exit(1);
-    }
-    // Copiar os campos do registro
-    strcpy(novoRegistro->nome, registro->nome);
-    novoRegistro->idade = registro->idade;
-    strcpy(novoRegistro->rg, registro->rg);
-
-    // Copiar a data de entrada
-    novoRegistro->entrada = malloc(sizeof(Data));
-    if (novoRegistro->entrada == NULL) {
-        // Tratar erro de alocação de memória
-        perror("Erro ao alocar memória para nova data");
-        free(novoRegistro);
-        exit(1);
-    }
-    *novoRegistro->entrada = *registro->entrada;
-
-    return novoRegistro;
-}
-
+// Erro intermitente: As vezes a variável operacao é alterada para 0 mesmo que a pilha não esteja vazia, o que faz com que o programa não funcione. Motivo desconhecido.
 void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
 {
   printf("Desfazer\n");
-  printf("--------------------\n");
-  if (pilha->qtd == 0)
+  printf("----------------------------------------\n");
+  if (pilha->qtd <= 0)
   {
     printf("Nao ha operacoes para desfazer\n");
-    printf("--------------------\n");
+    printf("----------------------------------------\n");
     return;
   }
+  printf("Deseja ver todas as operacoes?\n");
+  printf("1 - Sim\n");
+  printf("2 - Nao\n");
+  printf("----------------------------------------\n");
+  printf("Digite a opcao desejada: ");
+  int op;
+  scanf("%d", &op);
+  if (op == 1)
+  {
+    system("cls");
+    printf("Desfazer\n");
+    printf("----------------------------------------\n");
+    mostra(pilha);
+  }
+  else if (op == 2)
+  {
+    system("cls");
+    printf("Desfazer\n");
+    printf("----------------------------------------\n");
+  }
+  else
+  {
+    printf("Opcao invalida\n");
+    return;
+  }
+
   int operacao;
+  Registro *dados = malloc(sizeof(Registro));
   char rg[maxRG];
   // O & é necessário para passar o endereço da variável
-  pop(pilha, &operacao, rg);
+  pop(pilha, &operacao, rg, dados);
+
   if (operacao == 1)
   {
-    printf("Desenfileirar\n");
+    printf("Desenfileirar %s\n", dados->nome);
   }
   else if (operacao == 2)
   {
-    printf("Enfileirar\n");
+    printf("Enfileirar %s\n", dados->nome);
   }
-  printf("--------------------\n");
-  printf("Deseja desfazer a operacao?\n");
-  printf("--------------------\n");
-  printf("1 - Sim\n");
+  else
+  {
+    printf("Erro no carregamento\n");
+    return;
+  }
+  printf("|_ Deseja desfazer a operacao?\n");
+  printf("\n1 - Sim\n");
   printf("2 - Nao\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("Digite a opcao desejada: ");
   int opcao;
   scanf("%d", &opcao);
@@ -784,59 +825,54 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
     {
       // Se a operação for desenfileirar, coloque o paciente de volta na fila na primeira posição (que é a que ele estava antes de ser desenfileirado)
 
-      // Cria uma cópia dos dados do paciente
-      Registro *dados = copiarRegistro(pilha->topo->dados);
-
-      // Coloca o paciente de volta na fila na primeira posição
+      // Cria uma nova célula para o paciente
       EFila *nova = criarCelula(dados);
-      nova->proximo = fila->head;
-      fila->head = nova;
-
-      // Verificar se está correto
-      if (fila->tail == NULL)
+      // Se a fila estiver vazia
+      if (fila->head == NULL)
       {
+        fila->head = nova;
         fila->tail = nova;
       }
-
-      printf("Operacao desfeita\n");
+      else
+      {
+        // Se a fila não estiver vazia, coloque o paciente na primeira posição
+        nova->proximo = fila->head;
+        fila->head = nova;
+      }
+      printf("Paciente %s", dados->nome);
+      printf(" retornou a fila de espera.\n");
+      fila->qtde++;
     }
     else if (operacao == 2)
     {
       // CORRETO?
-      // Se a operação for enfileirar, retire o ultimo paciente da fila, desenfileirar retira o primeiro paciente
-
-      if (fila->tail == NULL)
+      // Se a operação for enfileirar, retire o ultimo paciente da fila (desenfileirar retira o primeiro paciente)
+      EFila *atual = fila->head;
+      EFila *anterior = NULL;
+      while (atual != NULL)
       {
-        printf("Fila já está vazia.\n");
-        return;
+        if (strcmp(atual->dados->rg, rg) == 0)
+        {
+          if (anterior == NULL)
+          {
+            fila->head = atual->proximo;
+            free(atual);
+            fila->qtde--;
+          }
+          else
+          {
+            anterior->proximo = atual->proximo;
+            free(atual);
+            fila->qtde--;
+          }
+          printf("Paciente %s", dados->nome);
+          printf(" removido(a) da fila de espera.\n");
+          return;
+        }
+        anterior = atual;
+        atual = atual->proximo;
       }
-
-      EFila *temp = fila->head;
-      EFila *anterior = NULL; // Ponteiro para o nó anterior a temp
-
-      while (temp != fila->tail)
-      {
-        anterior = temp;
-        temp = temp->proximo;
-      }
-
-      // Criar uma cópia dos dados do paciente
-      Registro *dados = copiarRegistro(temp->dados);
-
-      // Remover o último elemento da fila
-      if (anterior == NULL)
-      { // Se o nó a ser removido é o primeiro
-        fila->head = NULL;
-        fila->tail = NULL;
-      }
-      else
-      {
-        anterior->proximo = NULL;
-        fila->tail = anterior;
-      }
-
-      free(temp);
-      printf("Operacao desfeita\n");
+      printf("Paciente nao encontrado\n");
     }
     else
     {
@@ -845,7 +881,7 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
   }
   else if (opcao == 2)
   {
-    push(pilha, operacao, NULL);
+    push(pilha, operacao, dados);
   }
   else
   {
@@ -854,35 +890,11 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
 }
 
 // Item de menu: Atendimento em uma fila dinâmica (sem o anterior)
-// Inserir um paciente, que já possua cadastro, em uma fila para atendimento;
-
+// Inserir um paciente, que já possua cadastro, em uma fila para atendimento
 // Operações:
 // ▶ Enfileirar paciente;
 // ▶ Desenfileirar paciente;
 // ▶ Mostrar fila.
-
-// Cria uma fila vazia
-// Ponteiro para fila
-Fila *inicializa_fila()
-{
-  // Fila *fila = (Fila *)malloc(sizeof(Fila));
-  Fila *fila = malloc(sizeof(Fila));
-  fila->head = NULL;
-  fila->tail = NULL;
-  fila->qtde = 0;
-  // Retorna o ponteiro para a fila
-  return fila;
-}
-
-// Cria uma celula
-EFila *criarCelula(Registro *dados)
-{
-  EFila *celula = malloc(sizeof(EFila));
-  // celula->anterior = NULL;
-  celula->proximo = NULL;
-  celula->dados = dados;
-  return celula;
-}
 
 // Conferir se está correto depois
 // Enfileirar paciente
@@ -1016,19 +1028,18 @@ void mostrarFila(Fila *fila)
   int i = 0;
   while (atual != NULL)
   {
-    printf("--------------------\n");
+    printf("----------------------------------------\n");
     i++;
     printf("Posicao: %d\n", i);
     printf("Nome: %s\n", atual->dados->nome);
     printf("RG: %s\n", atual->dados->rg);
     atual = atual->proximo;
   }
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
 }
 
 // Item de menu: Pesquisa em uma árvore binária de busca
-// Inserir um paciente, que já possua cadastro, em uma árvore binária de busca;
-
+// Inserir um paciente, que já possua cadastro, em uma árvore binária de busca
 // Operações:
 // ▶ Mostrar registros ordenados por ano de registro;
 // ▶ Mostrar registros ordenados por mês de registro;
@@ -1045,7 +1056,7 @@ EABB *cria_vertice(Registro *dados)
   return novo;
 }
 
-ABB *inicializa_arvore()
+ABB *inicializaArvore()
 {
   ABB *arvore = malloc(sizeof(ABB));
   arvore->raiz = NULL;
@@ -1056,12 +1067,11 @@ ABB *inicializa_arvore()
 
 // CONCERTAR ITENS DA PESQUISA!!
 
-// Funções para print dos menus
-
+// Funções para print dos menus:
 void printMenu()
 {
   printf("Menu\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("1 - Cadastrar\n");
   printf("2 - Atendimento\n");
   printf("3 - Pesquisa\n");
@@ -1073,7 +1083,7 @@ void printMenu()
   //
   printf("7 - Sobre\n");
   printf("0 - Sair\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("Digite a opcao desejada: ");
 }
 
@@ -1081,7 +1091,7 @@ void printMenu()
 void menuCadastro()
 {
   printf("Menu Cadastro\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("1 - Cadastrar novo paciente\n");
   printf("2 - Consultar paciente cadastrado\n");
   printf("3 - Mostrar lista de pacientes\n");
@@ -1089,15 +1099,15 @@ void menuCadastro()
   printf("5 - Remover paciente\n");
   // Voltar ao menu
   printf("0 - Voltar ao menu\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("Digite a opcao desejada: ");
 }
 
-// Inserir um paciente, que já possua cadastro, em uma fila para atendimento;
+// Inserir um paciente, que já possua cadastro, em uma fila para atendimento
 void menuAtendimento()
 {
   printf("Menu Atendimento\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   // Enfileirar paciente
   printf("1 - Adicionar paciente a fila de espera\n");
   // Desenfileirar paciente
@@ -1106,7 +1116,7 @@ void menuAtendimento()
   printf("3 - Mostrar fila de espera\n");
   // Voltar ao menu
   printf("0 - Voltar ao menu\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("Digite a opcao desejada: ");
 }
 
@@ -1114,7 +1124,7 @@ void menuAtendimento()
 void menuPesquisa()
 {
   printf("Menu Pesquisa\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   // Mostrar registros ordenados por ano de registro;
   printf("1 - Registros ordenados por ano\n");
   // Mostrar registros ordenados por mês de registro;
@@ -1125,14 +1135,14 @@ void menuPesquisa()
   printf("4 - Registros ordenados por idade\n");
   // Voltar ao menu
   printf("0 - Voltar ao menu\n");
-  printf("--------------------\n");
+  printf("----------------------------------------\n");
   printf("Digite a opcao desejada: ");
 }
 
 void sobre()
 {
   printf("Sistema de atendimento hospitalar\n");
-  printf("\n--------------------\n");
+  printf("\n----------------------------------------\n");
   printf("\n");
   printf("Desenvolvido por:\n");
   printf("Marjorie Luize Martins Costa\n");
@@ -1142,5 +1152,5 @@ void sobre()
   printf("Curso: \nCiencia da Computacao\n\n");
   printf("Disciplina: \nEstrutura de Dados\n\n");
   printf("Data: \n20/10/2024\n");
-  printf("\n--------------------\n");
+  printf("\n----------------------------------------\n");
 }
