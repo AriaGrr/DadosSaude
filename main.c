@@ -11,6 +11,7 @@ void main()
     int opcao;
     do
     {
+        system("cls");
         printMenu();
         scanf("%d", &opcao);
         // printf("%d\n", opcao);
@@ -49,7 +50,7 @@ void main()
             else if (opcao2 == 5)
             {
                 // Remover paciente
-                // removerPaciente(lista);
+                removerPaciente(lista);
             }
             else if (opcao2 == 0)
             {
