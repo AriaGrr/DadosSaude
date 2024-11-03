@@ -1,3 +1,4 @@
+// COMENTAR O CÓDIGO
 
 #include "funcoes.h"
 
