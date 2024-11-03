@@ -654,6 +654,7 @@ void removerPaciente(Lista *lista)
 Celula *cria_celula(int operacao, Registro *dados)
 {
   Celula *celula = malloc(sizeof(Celula));
+  celula->anterior = NULL;
   celula->proximo = NULL;
   celula->dados = dados;
   celula->operacao = operacao;
@@ -670,42 +671,102 @@ Pilha *inicializa_pilha()
   return stack;
 }
 
+// void push(Pilha *pilha, int valor, Registro *dados)
+// {
+//   Celula *nova = cria_celula(valor, dados);
+
+//   if (pilha->qtd > 0)
+//   {
+//     // nova->proximo = pilha->topo;
+//     // Maneira que fiz antes:
+//     nova->anterior = pilha->topo;
+//     pilha->topo->proximo = nova;
+//   }
+//   pilha->topo = nova;
+//   pilha->qtd++;
+// }
+
 void push(Pilha *pilha, int valor, Registro *dados)
 {
   Celula *nova = cria_celula(valor, dados);
 
-  if (pilha->qtd > 0)
+  if (pilha->qtd == 0)
   {
-    nova->proximo = pilha->topo;
-    // Maneira que fiz antes:
-    // nova->anterior = pilha->topo;
-    // pilha->topo->proximo = nova;
+    // Pilha está vazia, nenhum elemento anterior
+    nova->anterior = NULL;
   }
+  else
+  {
+    nova->anterior = pilha->topo;
+    pilha->topo->proximo = nova;
+  }
+
   pilha->topo = nova;
   pilha->qtd++;
 }
 
-void pop(Pilha *pilha, int *operacao, char *rg)
+void pop(Pilha *pilha, int *operacao, char *rg, Registro *dados)
 {
-  if (pilha->qtd == 0)
-  {
-    *operacao = 0;
-    return;
-  }
-  // operacao = pilha->topo->operacao;
-  // rg = pilha->topo->dados->rg;
-  // Celula *temp = pilha->topo;
-  // pilha->topo = pilha->topo->proximo;
-  // free(temp);
-  // pilha->qtd--;
+  // if (pilha->qtd == 0)
+  // {
+  //   *operacao = 0;
+  //   return;
+  // }
+
   *operacao = pilha->topo->operacao;
   strcpy(rg, pilha->topo->dados->rg);
+  *dados = *pilha->topo->dados;
+  // printf("t5\n");
+  // // printar dados, operação e rg
+  // printf("Dados pilha\n");
+  // printf("Operacao: %d\n", pilha->topo->operacao);
+  // printf("RG: %s\n", pilha->topo->dados->rg);
+  // printf("Nome: %s\n", pilha->topo->dados->nome);
+  // printf("Idade: %d\n", pilha->topo->dados->idade);
+  // printf("Data de entrada: %d/%d/%d\n", pilha->topo->dados->entrada->dia, pilha->topo->dados->entrada->mes, pilha->topo->dados->entrada->ano);
+
+  // printf("Dados var\n");
+  // printf("Operacao: %d\n", *operacao);
+  // printf("RG: %s\n", rg);
+  // printf("Nome: %s\n", dados->nome);
+  // printf("Idade: %d\n", dados->idade);
+  // printf("Data de entrada: %d/%d/%d\n", dados->entrada->dia, dados->entrada->mes, dados->entrada->ano);
+  
 
   Celula *temp = pilha->topo;
-  pilha->topo = pilha->topo->proximo;
+  pilha->topo = pilha->topo->anterior;
+
+  // Atualizar o ponteiro anterior do novo topo (se for duplamente encadeada)
+  if (pilha->topo != NULL)
+  {
+    pilha->topo->proximo = NULL;
+  }
+
   free(temp);
   pilha->qtd--;
 }
+
+// void pop(Pilha *pilha, int *operacao, char *rg)
+// {
+//   if (pilha->qtd == 0)
+//   {
+//     *operacao = 0;
+//     return;
+//   }
+//   // operacao = pilha->topo->operacao;
+//   // rg = pilha->topo->dados->rg;
+//   // Celula *temp = pilha->topo;
+//   // pilha->topo = pilha->topo->proximo;
+//   // free(temp);
+//   // pilha->qtd--;
+//   *operacao = pilha->topo->operacao;
+//   strcpy(rg, pilha->topo->dados->rg);
+
+//   Celula *temp = pilha->topo;
+//   pilha->topo = pilha->topo->proximo;
+//   free(temp);
+//   pilha->qtd--;
+// }
 
 // Não está sendo usado no código, mas pode ser útil para debugar (se é que está correto)
 void mostra(Pilha *pilha)
@@ -722,30 +783,30 @@ void mostra(Pilha *pilha)
   printf("--------------------\n");
 }
 
-Registro* copiarRegistro(Registro *registro) {
-    Registro *novoRegistro = malloc(sizeof(Registro));
-    if (novoRegistro == NULL) {
-        // Tratar erro de alocação de memória
-        perror("Erro ao alocar memória para novo registro");
-        exit(1);
-    }
-    // Copiar os campos do registro
-    strcpy(novoRegistro->nome, registro->nome);
-    novoRegistro->idade = registro->idade;
-    strcpy(novoRegistro->rg, registro->rg);
+// Registro* copiarRegistro(Registro *registro) {
+//     Registro *novoRegistro = malloc(sizeof(Registro));
+//     if (novoRegistro == NULL) {
+//         // Tratar erro de alocação de memória
+//         perror("Erro ao alocar memória para novo registro");
+//         exit(1);
+//     }
+//     // Copiar os campos do registro
+//     strcpy(novoRegistro->nome, registro->nome);
+//     novoRegistro->idade = registro->idade;
+//     strcpy(novoRegistro->rg, registro->rg);
 
-    // Copiar a data de entrada
-    novoRegistro->entrada = malloc(sizeof(Data));
-    if (novoRegistro->entrada == NULL) {
-        // Tratar erro de alocação de memória
-        perror("Erro ao alocar memória para nova data");
-        free(novoRegistro);
-        exit(1);
-    }
-    *novoRegistro->entrada = *registro->entrada;
+//     // Copiar a data de entrada
+//     novoRegistro->entrada = malloc(sizeof(Data));
+//     if (novoRegistro->entrada == NULL) {
+//         // Tratar erro de alocação de memória
+//         perror("Erro ao alocar memória para nova data");
+//         free(novoRegistro);
+//         exit(1);
+//     }
+//     *novoRegistro->entrada = *registro->entrada;
 
-    return novoRegistro;
-}
+//     return novoRegistro;
+// }
 
 void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
 {
@@ -758,15 +819,20 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
     return;
   }
   int operacao;
+  Registro *dados = malloc(sizeof(Registro));
   char rg[maxRG];
   // O & é necessário para passar o endereço da variável
-  pop(pilha, &operacao, rg);
+  pop(pilha, &operacao, rg, dados);
+  // printf("t4\n");
+
   if (operacao == 1)
   {
+    // printf("t6\n");
     printf("Desenfileirar\n");
   }
   else if (operacao == 2)
   {
+    // printf("t7\n");
     printf("Enfileirar\n");
   }
   printf("--------------------\n");
@@ -784,59 +850,54 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
     {
       // Se a operação for desenfileirar, coloque o paciente de volta na fila na primeira posição (que é a que ele estava antes de ser desenfileirado)
 
-      // Cria uma cópia dos dados do paciente
-      Registro *dados = copiarRegistro(pilha->topo->dados);
-
-      // Coloca o paciente de volta na fila na primeira posição
+      // Cria uma nova célula para o paciente
       EFila *nova = criarCelula(dados);
-      nova->proximo = fila->head;
-      fila->head = nova;
-
-      // Verificar se está correto
-      if (fila->tail == NULL)
+      // Se a fila estiver vazia
+      if (fila->head == NULL)
       {
+        fila->head = nova;
         fila->tail = nova;
       }
-
-      printf("Operacao desfeita\n");
+      else
+      {
+        // Se a fila não estiver vazia, coloque o paciente na primeira posição
+        nova->proximo = fila->head;
+        fila->head = nova;
+      }
+      printf("Paciente %s", dados->nome);
+      printf(" adicionado(a) a fila de espera.\n");
+      fila->qtde++;
     }
     else if (operacao == 2)
     {
       // CORRETO?
-      // Se a operação for enfileirar, retire o ultimo paciente da fila, desenfileirar retira o primeiro paciente
-
-      if (fila->tail == NULL)
+      // Se a operação for enfileirar, retire o ultimo paciente da fila (desenfileirar retira o primeiro paciente)
+      EFila *atual = fila->head;
+      EFila *anterior = NULL;
+      while (atual != NULL)
       {
-        printf("Fila já está vazia.\n");
-        return;
+        if (strcmp(atual->dados->rg, rg) == 0)
+        {
+          if (anterior == NULL)
+          {
+            fila->head = atual->proximo;
+            free(atual);
+            fila->qtde--;
+          }
+          else
+          {
+            anterior->proximo = atual->proximo;
+            free(atual);
+            fila->qtde--;
+          }
+          printf("Paciente %s", dados->nome);
+          printf(" removido(a) da fila de espera.\n");
+          return;
+        }
+        anterior = atual;
+        atual = atual->proximo;
       }
-
-      EFila *temp = fila->head;
-      EFila *anterior = NULL; // Ponteiro para o nó anterior a temp
-
-      while (temp != fila->tail)
-      {
-        anterior = temp;
-        temp = temp->proximo;
-      }
-
-      // Criar uma cópia dos dados do paciente
-      Registro *dados = copiarRegistro(temp->dados);
-
-      // Remover o último elemento da fila
-      if (anterior == NULL)
-      { // Se o nó a ser removido é o primeiro
-        fila->head = NULL;
-        fila->tail = NULL;
-      }
-      else
-      {
-        anterior->proximo = NULL;
-        fila->tail = anterior;
-      }
-
-      free(temp);
-      printf("Operacao desfeita\n");
+      printf("Paciente nao encontrado\n");
     }
     else
     {
@@ -845,7 +906,7 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
   }
   else if (opcao == 2)
   {
-    push(pilha, operacao, NULL);
+    push(pilha, operacao, dados);
   }
   else
   {
