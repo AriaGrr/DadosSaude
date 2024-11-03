@@ -13,331 +13,6 @@ void clearBuffer()
     ;
 }
 
-// Estruturas pra ficar mais facil de ver
-// Registros de pacientes
-// typedef struct
-// {
-//      int dia;
-//      int mes;
-//      int ano;
-// } Data;
-
-// typedef struct
-// {
-//      // char nome[50];
-//      char nome;
-//      int idade;
-//      // char rg[10];
-//      char rg;
-//      Data *entrada;
-// } Registro;
-
-// // Item de menu: Cadastrar em uma LDE
-// typedef struct ELista
-// {
-//      Registro *dados;
-//      struct ELista *proximo;
-// } ELista;
-
-// typedef struct
-// {
-//      ELista *inicio;
-//      int qtde;
-// } Lista;
-
-// // Item de menu: Atendimento em uma Fila
-// typedef struct EFila
-// {
-//      Registro *dados;
-//      struct EFila *proximo;
-// } EFila;
-
-// typedef struct
-// {
-//      EFila *head;
-//      EFila *tail;
-//      int qtde;
-// } Fila;
-
-// // Item de menu: Pesquisa
-// typedef struct EABB
-// {
-//      Registro *dados;
-//      // Filhos esquerdo e direito
-//      struct EABB *esq;
-//      struct EABB *dir;
-// } EABB;
-
-// typedef struct
-// {
-//      EABB *raiz;
-//      int qtde;
-// } ABB;
-
-// Se der errado aqui mudo pra um 
-// typedef enum
-// {
-//      ENFILEIRAR,
-//      DESENFILEIRAR
-// } Operacao;
-
-// // Pilha dinamica usa anterior e próximo
-// typedef struct Celula
-// {
-//     Operacao operacao;
-//     struct Celula *proximo;
-//     struct Celula *anterior;
-// } Celula;
-
-// ou 
-
-
-// // Pilha dinamica usa anterior e próximo
-// typedef struct Celula
-// {
-//      // 1 para enfileirar, 2 para desinfileirar
-//      int operacao;
-// //     Operacao operacao;
-//     struct Celula *proximo;
-//     struct Celula *anterior;
-// } Celula;
-
-// // Pilha (Stack) para armazenar as operações de enfileirar e desenfileirar
-// typedef struct
-// {
-//     Celula *topo;
-//     int qtd;
-// } Pilha;
-
-// typedef struct
-// {
-//      Lista *lista;
-//      Fila *fila;
-//      ABB *abb;
-//      Pilha *pilha;
-// } Dados;
-
-// Funções para inicializar as estruturas de dados com base em arquivos JSON
-
-// Função genérica para serializar uma estrutura
-cJSON *estruturaToJson(void *data, const char *campos[], const char *tipos[])
-{
-  cJSON *obj = cJSON_CreateObject();
-  int i = 0;
-  while (campos[i] != NULL)
-  {
-    switch (tipos[i][0])
-    {
-    case 'i': // int
-      cJSON_AddNumberToObject(obj, campos[i], *((int *)data + i));
-      break;
-    case 'c': // char*
-      cJSON_AddStringToObject(obj, campos[i], *((char **)data + i));
-      break;
-    case 'D': // Data
-    {
-      Data *data_ptr = (Data *)((char *)data + i * sizeof(char *));
-      cJSON *data_obj = cJSON_CreateObject();
-      cJSON_AddNumberToObject(data_obj, "dia", data_ptr->dia);
-      cJSON_AddNumberToObject(data_obj, "mes", data_ptr->mes);
-      cJSON_AddNumberToObject(data_obj, "ano", data_ptr->ano);
-      cJSON_AddItemToObject(obj, campos[i], data_obj);
-    }
-    break;
-    case 'L': // ELista*
-      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((ELista **)data + i), campos, tipos));
-      break;
-    case 'F': // EFila*
-      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((EFila **)data + i), campos, tipos));
-      break;
-    case 'A': // EABB*
-      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((EABB **)data + i), campos, tipos));
-      break;
-    // case 'P': // Pilha*
-    //   cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((Pilha **)data + i), campos, tipos));
-    //   break;
-    // ... outros tipos
-    default:
-      printf("Tipo de dado não suportado: %s\n", tipos[i]);
-    }
-    i++;
-  }
-  return obj;
-}
-
-// Função genérica para desserializar uma estrutura
-void jsonParaEstrutura(const cJSON *obj, void *estrutura, const char *campos[], const char *tipos[])
-{
-  int i = 0;
-  while (campos[i] != NULL)
-  {
-    cJSON *item = cJSON_GetObjectItem(obj, campos[i]);
-    if (item)
-    {
-      switch (tipos[i][0])
-      {
-      case 'i': // int
-        *((int *)estrutura + i) = item->valueint;
-        break;
-      case 'c': // char*
-        *((char **)estrutura + i) = strdup(item->valuestring);
-        break;
-      case 'D': // Data
-      {
-        Data *data_ptr = (Data *)((char *)estrutura + i * sizeof(char *));
-        cJSON *dia = cJSON_GetObjectItem(item, "dia");
-        cJSON *mes = cJSON_GetObjectItem(item, "mes");
-        cJSON *ano = cJSON_GetObjectItem(item, "ano");
-        data_ptr->dia = dia->valueint;
-        data_ptr->mes = mes->valueint;
-        data_ptr->ano = ano->valueint;
-      }
-      break;
-      case 'L': // ELista*
-      {
-        ELista **lista = (ELista **)((char *)estrutura + i * sizeof(char *));
-        *lista = (ELista *)malloc(sizeof(ELista));
-        jsonParaEstrutura(item, (*lista)->dados, campos, tipos);
-        (*lista)->proximo = NULL;
-      }
-      break;
-      case 'F': // EFila*
-      {
-        EFila **fila = (EFila **)((char *)estrutura + i * sizeof(char *));
-        *fila = (EFila *)malloc(sizeof(EFila));
-        jsonParaEstrutura(item, (*fila)->dados, campos, tipos);
-        (*fila)->proximo = NULL;
-      }
-      break;
-      case 'A': // EABB*
-      {
-        EABB **abb = (EABB **)((char *)estrutura + i * sizeof(char *));
-        *abb = (EABB *)malloc(sizeof(EABB));
-        jsonParaEstrutura(item, (*abb)->dados, campos, tipos);
-        (*abb)->esq = NULL;
-        (*abb)->dir = NULL;
-      }
-      break;
-      case 'P': // Pilha*
-      {
-        // ARRUMAR A PILHA EM TUDO
-        // typedef struct Celula
-        // {
-        //   Operacao operacao;
-        //   struct Celula *proximo;
-        //   struct Celula *anterior;
-        // } Celula;
-
-        // // Pilha (Stack) para armazenar as operações de enfileirar e desenfileirar
-        // typedef struct
-        // {
-        //   Celula *topo;
-        //   int qtd;
-        // } Pilha;
-
-
-        // Pilha **pilha = (Pilha **)((char *)estrutura + i * sizeof(char *));
-        // *pilha = (Pilha *)malloc(sizeof(Pilha));
-        // (*pilha)->topo = NULL;
-        // (*pilha)->qtd = 0;
-        // cJSON *celula = item;
-        // while (celula)
-        // {
-        //   Celula *nova = (Celula *)malloc(sizeof(Celula));
-        //   nova->operacao = celula->valueint;
-        //   nova->proximo = (*pilha)->topo;
-        //   (*pilha)->topo = nova;
-        //   (*pilha)->qtd++;
-        //   celula = celula->next;
-        // }
-      }
-      break;
-        // ... outros tipos
-      }
-    }
-    else
-    {
-      printf("Campo '%s' não encontrado no JSON\n", campos[i]);
-    }
-    i++;
-  }
-}
-
-// Função para serializar toda a estrutura de dados
-cJSON *serializarTudo(Dados *dados)
-{
-  cJSON *root = cJSON_CreateObject();
-
-  // Definir os campos e tipos de cada estrutura
-  const char *camposLista[] = {"inicio", "qtde", NULL};
-  const char *tiposLista[] = {"ELista*", "int", NULL};
-  const char *camposFila[] = {"head", "tail", "qtde", NULL};
-  const char *tiposFila[] = {"EFila*", "EFila*", "int", NULL};
-  const char *camposABB[] = {"raiz", "qtde", NULL};
-  const char *tiposABB[] = {"EABB*", "int", NULL};
-  // const char *camposPilha[] = {"operacao", "proximo", NULL};
-  // const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
-
-  // ... e assim por diante para as outras possiveis estruturas
-
-  cJSON_AddItemToObject(root, "lista", estruturaToJson(dados->lista, camposLista, tiposLista));
-  cJSON_AddItemToObject(root, "fila", estruturaToJson(dados->fila, camposFila, tiposFila));
-  cJSON_AddItemToObject(root, "abb", estruturaToJson(dados->abb, camposABB, tiposABB));
-  // cJSON_AddItemToObject(root, "pilha", estruturaToJson(dados->pilha, camposPilha, tiposPilha));
-  // ...
-
-  return root;
-}
-
-// Função para desserializar toda a estrutura de dados
-void desserializarTudo(const char *arquivo, Dados *dados)
-{
-  // ... (lógica similar à função serializarTudo, mas no sentido inverso)
-  FILE *fp = fopen(arquivo, "r");
-  if (!fp)
-  {
-    perror("Erro ao abrir o arquivo");
-    return;
-  }
-
-  fseek(fp, 0, SEEK_END);
-  long fsize = ftell(fp);
-  fseek(fp, 0, SEEK_SET);
-
-  char *jsonString = (char *)malloc(fsize + 1);
-  fread(jsonString, 1, fsize, fp);
-  fclose(fp);
-  jsonString[fsize] = 0;
-
-  cJSON *root = cJSON_Parse(jsonString);
-  if (!root)
-  {
-    printf("Erro ao analisar o JSON\n");
-    free(jsonString);
-    return;
-  }
-
-  // Definir os campos e tipos de cada estrutura
-  const char *camposLista[] = {"inicio", "qtde", NULL};
-  const char *tiposLista[] = {"ELista*", "int", NULL};
-  const char *camposFila[] = {"head", "tail", "qtde", NULL};
-  const char *tiposFila[] = {"EFila*", "EFila*", "int", NULL};
-  const char *camposABB[] = {"raiz", "qtde", NULL};
-  const char *tiposABB[] = {"EABB*", "int", NULL};
-  // const char *camposPilha[] = {"operacao", "proximo", NULL};
-  // const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
-  // ... e assim por diante para as outras possiveis estruturas
-
-  jsonParaEstrutura(root, dados->lista, camposLista, tiposLista);
-  jsonParaEstrutura(root, dados->fila, camposFila, tiposFila);
-  jsonParaEstrutura(root, dados->abb, camposABB, tiposABB);
-  // jsonParaEstrutura(root, dados->pilha, camposPilha, tiposPilha);
-  // ...
-
-  cJSON_Delete(root);
-  free(jsonString);
-}
-
 // Funções de print dos menus
 
 void printMenu()
@@ -411,4 +86,600 @@ void sobre()
   printf("Curso: \nCiencia da Computacao\n\n");
   printf("Disciplina: \nEstrutura de Dados\n\n");
   printf("Data: \n20/10/2024\n");
+}
+
+// Item de menu: Cadastrar em uma LDE
+
+// Operações:
+// ▶ Cadastrar novo paciente;
+// ▶ Consultar paciente cadastrado;
+// ▶ Mostrar lista completa;
+// ▶ Atualizar dados de paciente;
+// ▶ Remover paciente.
+
+// CONFERIR SE ESTÁ CORRETO
+
+// As funções estão repetitivas, buscar uma forma de otimizar.
+
+// LIMPANDO AS FUNÇÕES
+
+// Funções para manipulação de listas dinâmicas encadeadas
+
+Lista *inicializa_lista()
+{
+  Lista *lista = malloc(sizeof(Lista));
+  lista->inicio = NULL;
+  lista->qtde = 0;
+  return lista;
+}
+
+// Verificar se é Registro *dados mesmo
+ELista *inicializa_celula(Registro *dados)
+{
+  ELista *celula = malloc(sizeof(ELista));
+  celula->proximo = NULL;
+  celula->dados = dados;
+  return celula;
+}
+
+void inserir(Lista *lista, Registro *dados)
+{
+  ELista *nova = inicializa_celula(dados);
+  ELista *atual = lista->inicio;
+  ELista *anterior = NULL;
+  if (lista->qtde == 0)
+  {
+    lista->inicio = nova;
+    lista->qtde++;
+  }
+  else
+  {
+    while (atual != NULL && nova->dados >= atual->dados)
+    {
+      anterior = atual;
+      atual = atual->proximo;
+    }
+    if (anterior == NULL)
+    {
+      nova->proximo = lista->inicio;
+      lista->inicio = nova;
+      lista->qtde++;
+    }
+    else
+    {
+      if (atual == NULL)
+      {
+        anterior->proximo = nova;
+        lista->qtde++;
+      }
+      else
+      {
+        anterior->proximo = nova;
+        nova->proximo = atual;
+        lista->qtde++;
+      }
+    }
+  }
+}
+
+// Mostrar lista de pacientes completa?
+void mostrar(Lista *lista)
+{
+  ELista *atual = lista->inicio;
+  while (atual != NULL)
+  {
+    // printf("%d ", atual->dados);
+    // atual = atual->proximo;
+    printf("Nome: %s\n", atual->dados->nome);
+    printf("Idade: %d\n", atual->dados->idade);
+    printf("RG: %s\n", atual->dados->rg);
+    printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+    atual = atual->proximo;
+  }
+  printf("\n");
+}
+
+// Cadastro de paciente
+Registro *cadastrar()
+{
+  Registro *novo = malloc(sizeof(Registro));
+  printf("Nome: ");
+  scanf("%s", novo->nome);
+  printf("Idade: ");
+  scanf("%d", &novo->idade);
+  printf("RG: ");
+  scanf("%s", novo->rg);
+  novo->entrada = malloc(sizeof(Data));
+  printf("Data de entrada: ");
+  scanf("%d/%d/%d", &novo->entrada->dia, &novo->entrada->mes, &novo->entrada->ano);
+  return novo;
+}
+
+// Chamada de funções de cadastro
+void cadastrarPaciente(Lista *lista)
+{
+  Registro *novo = cadastrar();
+  inserir(lista, novo);
+}
+
+// // Consultar paciente cadastrado por nome
+// void consultarNome(Lista *lista, char *nome)
+// {
+//   ELista *atual = lista->inicio;
+//   while (atual != NULL)
+//   {
+//     if (strcmp(atual->dados->nome, nome) == 0)
+//     {
+//       printf("Nome: %s\n", atual->dados->nome);
+//       printf("Idade: %d\n", atual->dados->idade);
+//       printf("RG: %s\n", atual->dados->rg);
+//       printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+//       return;
+//     }
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// // Consultar paciente cadastrado por RG
+// void consultarRg(Lista *lista, char *rg)
+// {
+//   ELista *atual = lista->inicio;
+//   while (atual != NULL)
+//   {
+//     if (strcmp(atual->dados->rg, rg) == 0)
+//     {
+//       printf("Nome: %s\n", atual->dados->nome);
+//       printf("Idade: %d\n", atual->dados->idade);
+//       printf("RG: %s\n", atual->dados->rg);
+//       printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+//       return;
+//     }
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+      // printf("Nome: %s\n", atual->dados->nome);
+      // printf("Idade: %d\n", atual->dados->idade);
+      // printf("RG: %s\n", atual->dados->rg);
+      // printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+
+void consultando(ELista *atual)
+{
+  printf("Nome: %s\n", atual->dados->nome);
+  printf("Idade: %d\n", atual->dados->idade);
+  printf("RG: %s\n", atual->dados->rg);
+  printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+}
+// Consultar paciente cadastrado por nome
+void consultarNome(Lista *lista, char *nome)
+{
+  ELista *atual = lista->inicio;
+  while (atual != NULL)
+  {
+    if (strcmp(atual->dados->nome, nome) == 0)
+    {
+      consultando(atual);
+      return;
+    }
+    atual = atual->proximo;
+  }
+  printf("Paciente nao encontrado\n");
+}
+
+// Consultar paciente cadastrado por RG
+void consultarRg(Lista *lista, char *rg)
+{
+  ELista *atual = lista->inicio;
+  while (atual != NULL)
+  {
+    if (strcmp(atual->dados->rg, rg) == 0)
+    {
+      consultando(atual);
+      return;
+    }
+    atual = atual->proximo;
+  }
+  printf("Paciente nao encontrado\n");
+}
+
+// Consultar paciente cadastrado por nome ou rg
+void consultarPaciente(Lista *lista)
+{
+  int opcao;
+  printf("Consultar por:\n");
+  printf("1 - Nome\n");
+  printf("2 - RG\n");
+  printf("Digite a opcao desejada: ");
+  scanf("%d", &opcao);
+  if (opcao == 1)
+  {
+    char nome[50];
+    printf("Nome: ");
+    scanf("%s", nome);
+    consultarNome(lista, nome);
+  }
+  else if (opcao == 2)
+  {
+    char rg[10];
+    printf("RG: ");
+    scanf("%s", rg);
+    consultarRg(lista, rg);
+  }
+  else
+  {
+    printf("Opcao invalida\n");
+  }
+}
+
+// // Atualizar dados de paciente (por nome ou rg), printar dados do usuario e escolher o que deseja atualizar três funções.
+// void atualizarNome(Lista *lista, char *nome){
+//   ELista *atual = lista->inicio;
+//   while(atual != NULL){
+//     if(strcmp(atual->dados->nome, nome) == 0){
+//       printf("Nome: %s\n", atual->dados->nome);
+//       printf("Idade: %d\n", atual->dados->idade);
+//       printf("RG: %s\n", atual->dados->rg);
+//       printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+//       int opcao;
+//       printf("Atualizar:\n");
+//       printf("1 - Nome\n");
+//       printf("2 - Idade\n");
+//       printf("3 - RG\n");
+//       printf("4 - Data de entrada\n");
+//       printf("Digite a opcao desejada: ");
+//       scanf("%d", &opcao);
+//       if(opcao == 1){
+//         printf("Nome: ");
+//         scanf("%s", atual->dados->nome);
+//       }else if(opcao == 2){
+//         printf("Idade: ");
+//         scanf("%d", &atual->dados->idade);
+//       }else if(opcao == 3){
+//         printf("RG: ");
+//         scanf("%s", atual->dados->rg);
+//       }else if(opcao == 4){
+//         atual->dados->entrada = malloc(sizeof(Data));
+//         printf("Data de entrada: ");
+//         scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
+//       }else{
+//         printf("Opcao invalida\n");
+//       }
+//       return;
+//     }
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// void atualizarRg(Lista *lista, char *rg){
+//   ELista *atual = lista->inicio;
+//   while(atual != NULL){
+//     if(strcmp(atual->dados->rg, rg) == 0){
+//       printf("Nome: %s\n", atual->dados->nome);
+//       printf("Idade: %d\n", atual->dados->idade);
+//       printf("RG: %s\n", atual->dados->rg);
+//       printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+//       int opcao;
+//       printf("Atualizar:\n");
+//       printf("1 - Nome\n");
+//       printf("2 - Idade\n");
+//       printf("3 - RG\n");
+//       printf("4 - Data de entrada\n");
+//       printf("Digite a opcao desejada: ");
+//       scanf("%d", &opcao);
+//       if(opcao == 1){
+//         printf("Nome: ");
+//         scanf("%s", atual->dados->nome);
+//       }else if(opcao == 2){
+//         printf("Idade: ");
+//         scanf("%d", &atual->dados->idade);
+//       }else if(opcao == 3){
+//         printf("RG: ");
+//         scanf("%s", atual->dados->rg);
+//       }else if(opcao == 4){
+//         atual->dados->entrada = malloc(sizeof(Data));
+//         printf("Data de entrada: ");
+//         scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
+//       }else{
+//         printf("Opcao invalida\n");
+//       }
+//       return;
+//     }
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// printf("Nome: %s\n", atual->dados->nome);
+// printf("Idade: %d\n", atual->dados->idade);
+// printf("RG: %s\n", atual->dados->rg);
+// printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+// int opcao;
+// printf("Atualizar:\n");
+// printf("1 - Nome\n");
+// printf("2 - Idade\n");
+// printf("3 - RG\n");
+// printf("4 - Data de entrada\n");
+// printf("Digite a opcao desejada: ");
+// scanf("%d", &opcao);
+// if(opcao == 1){
+//   printf("Nome: ");
+//   scanf("%s", atual->dados->nome);
+// }else if(opcao == 2){
+//   printf("Idade: ");
+//   scanf("%d", &atual->dados->idade);
+// }else if(opcao == 3){
+//   printf("RG: ");
+//   scanf("%s", atual->dados->rg);
+// }else if(opcao == 4){
+//   atual->dados->entrada = malloc(sizeof(Data));
+//   printf("Data de entrada: ");
+//   scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
+// }else{
+//   printf("Opcao invalida\n");
+// }
+void atualizando(Lista *lista, ELista *atual)
+{
+  // int opcao;
+  // printf("Atualizar:\n");
+  // printf("1 - Nome\n");
+  // printf("2 - Idade\n");
+  // printf("3 - RG\n");
+  // printf("4 - Data de entrada\n");
+  // printf("Digite a opcao desejada: ");
+  // scanf("%d", &opcao);
+  // if(opcao == 1){
+  //   printf("Nome: ");
+  //   scanf("%s", atual->dados->nome);
+  // }else if(opcao == 2){
+  //   printf("Idade: ");
+  //   scanf("%d", &atual->dados->idade);
+  // }else if(opcao == 3){
+  //   printf("RG: ");
+  //   scanf("%s", atual->dados->rg);
+  // }else if(opcao == 4){
+  //   atual->dados->entrada = malloc(sizeof(Data));
+  //   printf("Data de entrada: ");
+  //   scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
+  // }else{
+  //   printf("Opcao invalida\n");
+  // }
+  printf("Nome: %s\n", atual->dados->nome);
+  printf("Idade: %d\n", atual->dados->idade);
+  printf("RG: %s\n", atual->dados->rg);
+  printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+  int opcao;
+  printf("Atualizar:\n");
+  printf("1 - Nome\n");
+  printf("2 - Idade\n");
+  printf("3 - RG\n");
+  printf("4 - Data de entrada\n");
+  printf("Digite a opcao desejada: ");
+  scanf("%d", &opcao);
+  if (opcao == 1)
+  {
+    printf("Nome: ");
+    scanf("%s", atual->dados->nome);
+  }
+  else if (opcao == 2)
+  {
+    printf("Idade: ");
+    scanf("%d", &atual->dados->idade);
+  }
+  else if (opcao == 3)
+  {
+    printf("RG: ");
+    scanf("%s", atual->dados->rg);
+  }
+  else if (opcao == 4)
+  {
+    atual->dados->entrada = malloc(sizeof(Data));
+    printf("Data de entrada: ");
+    scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
+  }
+  else
+  {
+    printf("Opcao invalida\n");
+  }
+}
+
+// Atualizar dados de paciente (por nome ou rg), printar dados do usuario e escolher o que deseja atualizar três funções.
+void atualizarNome(Lista *lista, char *nome)
+{
+  ELista *atual = lista->inicio;
+  while (atual != NULL)
+  {
+    if (strcmp(atual->dados->nome, nome) == 0)
+    {
+      atualizando(lista, atual);
+      return;
+    }
+    atual = atual->proximo;
+  }
+  printf("Paciente nao encontrado\n");
+}
+
+void atualizarRg(Lista *lista, char *rg)
+{
+  ELista *atual = lista->inicio;
+  while (atual != NULL)
+  {
+    if (strcmp(atual->dados->rg, rg) == 0)
+    {
+      atualizando(lista, atual);
+      return;
+    }
+    atual = atual->proximo;
+  }
+  printf("Paciente nao encontrado\n");
+}
+
+void atualizarPaciente(Lista *lista)
+{
+  int opcao;
+  printf("Atualizar por:\n");
+  printf("1 - Nome\n");
+  printf("2 - RG\n");
+  printf("Digite a opcao desejada: ");
+  scanf("%d", &opcao);
+  if (opcao == 1)
+  {
+    char nome[50];
+    printf("Nome: ");
+    scanf("%s", nome);
+    atualizarNome(lista, nome);
+  }
+  else if (opcao == 2)
+  {
+    char rg[10];
+    printf("RG: ");
+    scanf("%s", rg);
+    atualizarRg(lista, rg);
+  }
+  else
+  {
+    printf("Opcao invalida\n");
+  }
+}
+
+// // Remover paciente por nome ou rg
+// void removerNome(Lista *lista, char *nome){
+//   ELista *atual = lista->inicio;
+//   ELista *anterior = NULL;
+//   while(atual != NULL){
+//     if(strcmp(atual->dados->nome, nome) == 0){
+//         if(anterior == NULL){
+//         lista->inicio = atual->proximo;
+//         free(atual);
+//         lista->qtde--;
+//         return;
+//       }else{
+//         anterior->proximo = atual->proximo;
+//         free(atual);
+//         lista->qtde--;
+//         return;
+//       }
+//     }
+//     anterior = atual;
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// Remover paciente por rg
+// void removerRg(Lista *lista, char *rg){
+//   ELista *atual = lista->inicio;
+//   ELista *anterior = NULL;
+//   while(atual != NULL){
+//     if(strcmp(atual->dados->rg, rg) == 0){
+//       if(anterior == NULL){
+//         lista->inicio = atual->proximo;
+//         free(atual);
+//         lista->qtde--;
+//         return;
+//       }else{
+//         anterior->proximo = atual->proximo;
+//         free(atual);
+//         lista->qtde--;
+//         return;
+//       }
+//     }
+//     anterior = atual;
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// if(anterior == NULL){
+//   lista->inicio = atual->proximo;
+//   free(atual);
+//   lista->qtde--;
+//   return;
+// }else{
+//   anterior->proximo = atual->proximo;
+//   free(atual);
+//   lista->qtde--;
+//   return;
+// }
+
+void removendo(Lista *lista, ELista *atual, ELista *anterior)
+{
+  if (anterior == NULL)
+  {
+    lista->inicio = atual->proximo;
+    free(atual);
+    lista->qtde--;
+  }
+  else
+  {
+    anterior->proximo = atual->proximo;
+    free(atual);
+    lista->qtde--;
+  }
+}
+
+// Remover paciente por nome ou rg
+void removerNome(Lista *lista, char *nome)
+{
+  ELista *atual = lista->inicio;
+  ELista *anterior = NULL;
+  while (atual != NULL)
+  {
+    if (strcmp(atual->dados->nome, nome) == 0)
+    {
+      removendo(lista, atual, anterior);
+      return;
+    }
+    anterior = atual;
+    atual = atual->proximo;
+  }
+  printf("Paciente nao encontrado\n");
+}
+
+void removerRg(Lista *lista, char *rg)
+{
+  ELista *atual = lista->inicio;
+  ELista *anterior = NULL;
+  while (atual != NULL)
+  {
+    if (strcmp(atual->dados->rg, rg) == 0)
+    {
+      removendo(lista, atual, anterior);
+      return;
+    }
+    anterior = atual;
+    atual = atual->proximo;
+  }
+  printf("Paciente nao encontrado\n");
+}
+
+// Remover paciente por nome ou rg
+void removerPaciente(Lista *lista)
+{
+  int opcao;
+  printf("Remover por:\n");
+  printf("1 - Nome\n");
+  printf("2 - RG\n");
+  printf("Digite a opcao desejada: ");
+  scanf("%d", &opcao);
+  if (opcao == 1)
+  {
+    char nome[50];
+    printf("Nome: ");
+    scanf("%s", nome);
+    removerNome(lista, nome);
+  }
+  else if (opcao == 2)
+  {
+    char rg[10];
+    printf("RG: ");
+    scanf("%s", rg);
+    removerRg(lista, rg);
+  }
+  else
+  {
+    printf("Opcao invalida\n");
+  }
 }

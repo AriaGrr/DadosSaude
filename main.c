@@ -6,81 +6,9 @@
 // Alterar main pro projeto atual
 void main()
 {
-    // IDEIA DE COMO USAR O JSON
-    // // ... (criar instâncias das estruturas e popular os dados)
+    // Inicialização 
+    Lista *lista = inicializa_lista();
 
-    // // Serializar para JSON
-    // Dados dados;
-    // // ... (popular a estrutura dados)
-    // cJSON *root = serializarTudo(&dados);
-    // // ... (escrever em um arquivo)
-
-    // // Desserializar de um arquivo
-    // Dados novosDados;
-    // desserializarTudo("dados.json", &novosDados);
-    // // ... (usar os dados desserializados)
-
-    // TESTANDO JSON
-
-    // Criar instâncias das estruturas e popular os dados
-    // Dados dados;
-    // dados.lista = criarLista(); // Função para criar e popular a lista
-    // dados.fila = criarFila();   // Função para criar e popular a fila
-    // dados.abb = criarABB();     // Função para criar e popular a ABB
-    // dados.pilha = criarPilha(); // Função para criar e popular a pilha
-
-    // // Serializar para JSON
-    // cJSON *root = serializarTudo(&dados);
-    // char *jsonString = cJSON_Print(root);
-
-    // // Escrever em um arquivo
-    // FILE *fp = fopen("dados.json", "w");
-    // if (fp) {
-    //     fprintf(fp, "%s", jsonString);
-    //     fclose(fp);
-    //     printf("Dados serializados com sucesso para dados.json\n");
-    // } else {
-    //     perror("Erro ao abrir o arquivo");
-    // }
-
-    // cJSON_Delete(root);
-    // free(jsonString);
-
-    // // Limpar as estruturas existentes (opcional)
-    // destruirLista(dados.lista);
-    // destruirFila(dados.fila);
-    // destruirABB(dados.abb);
-    // destruirPilha(dados.pilha);
-
-    // // Ler o JSON e desserializar
-    // Dados novosDados;
-    // desserializarTudo("dados.json", &novosDados);
-
-    // // Imprimir os dados desserializados para verificar
-    // imprimirLista(novosDados.lista);
-    // imprimirFila(novosDados.fila);
-    // imprimirABB(novosDados.abb);
-    // imprimirPilha(novosDados.pilha);
-
-    // // Liberar a memória das estruturas desserializadas
-    // destruirLista(novosDados.lista);
-    // destruirFila(novosDados.fila);
-    // destruirABB(novosDados.abb);
-    // destruirPilha(novosDados.pilha);
-
-
-
-    //   int cod;
-    // Ia ser usado para salvar os arquivos em txt, mas irei tentar fazer em json
-    //   char arquivo[] = "arquivo,";
-    //   char exportado[] = "-";
-    //   ArquivosPacientes lt;
-
-    //   cod = carregarLista(&lt, arquivo);
-    //   if (cod == 1)
-    //   {
-    //     lt.qtd = 0;
-    //   }
     int opcao;
     do
     {
@@ -102,28 +30,32 @@ void main()
             if (opcao2 == 1)
             {
                 // Cadastrar novo paciente
-                
+                cadastrarPaciente(lista);
             }
             else if (opcao2 == 2)
             {
                 // Consultar paciente cadastrado
+                consultarPaciente(lista);
             }
             else if (opcao2 == 3)
             {
                 // Mostrar lista completa
+                mostrarLista(lista);
             }
             else if (opcao2 == 4)
             {
                 // Atualizar dados de paciente
+                atualizarPaciente(lista);
             }
             else if (opcao2 == 5)
             {
                 // Remover paciente
+                // removerPaciente(lista);
             }
             else if (opcao2 == 0)
             {
                 // Voltar ao menu
-                // Só de deixar o comentário já volta ao menu
+                // Só deixar vázio
             }
             else
             {
@@ -239,56 +171,4 @@ void main()
         //     cod = salvarLista(lt, arquivo);
     } while (opcao != 0);
 
-    //   if (cod != 0)
-    //   {
-    //     printf("Erro ao salvar arquivo!\n");
-    //   }
-
-    // TESTE DE JSON
-
-    //     printf("Testando \n");
-    //     Registro registro = {"João da Silva", 30, "123456789", 0};
-    //     registro.entrada = (Data*)malloc(sizeof(Data));
-    //     registro.entrada->dia = 15;
-    //     registro.entrada->mes = 3;
-    //     registro.entrada->ano = 2023;
-    //     printf("Testando 1\n");
-    //     const char *campos_registro[] = {"nome", "idade", "rg", "entrada.dia", "entrada.mes", "entrada.ano", NULL};
-    //     const char *tipos_registro[] = {"char*", "int", "char*", "Data", "Data", "Data", NULL};
-    //     printf("Testando 2\n");
-    //     cJSON *json = estruturaJson(&registro, campos_registro, tipos_registro);
-    //     printf("Testando 3\n");
-    //     char *string_json = cJSON_Print(json);
-    //     printf("Testando 4\n");
-    //     FILE *fp = fopen("dados.json", "w");
-    //     printf("Testando 5\n");
-    //     fwrite(string_json, strlen(string_json), 1, fp);
-    //     printf("Testando 6\n");
-    //     fclose(fp);
-    //     printf("Testando 7\n");
-    //     cJSON_Delete(json);
-    //     free(string_json);
-    //     printf("Testando 8\n");
-
-    // Registro nova_registro;
-    // jsonEstrutura("dados.json", &nova_registro, campos_registro, tipos_registro);
-    // printf("Testando\n");
-    // for (int i = 0; campos_registro[i] != NULL; i++)
-    // {
-    //     printf("%s: ", campos_registro[i]);
-    //     if (tipos_registro[i][0] == 'c')
-    //     {
-    //         printf("%s\n", *((char **)&nova_registro + i));
-    //     }
-    //     else if (tipos_registro[i][0] == 'i')
-    //     {
-    //         printf("%d\n", *((int *)&nova_registro + i));
-    //     }
-    //     else if (tipos_registro[i][0] == 'D')
-    //     {
-    //         Data *data = (Data *)((char *)&nova_registro + i);
-    //         printf("%d/%d/%d\n", data->dia, data->mes, data->ano);
-    //     }
-    // }
-    // printf("Testando\n");
 }

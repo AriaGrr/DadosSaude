@@ -7,13 +7,6 @@
 
 #include "lib/cJSON.h"
 
-// Para adicionar um campo ao JSON, basta adicionar uma linha no formato ADD_FIELD(obj, name, type, value)
-// #define ADD_FIELD(obj, name, type, value) \
-//     cJSON_Add##type##ToObject(obj, name, value)
-
-// #define GET_FIELD(obj, name, type) \
-//     cJSON_GetObjectItem(obj, name)->value##type
-
 // Aqui devemos colocar os structs, tanto do arquivo a ser salvo quanto das estruturas que serão manipuladas
 
 // Estruturas do slide
@@ -40,6 +33,7 @@ typedef struct
 typedef struct ELista
 {
      Registro *dados;
+     // Por qual motivo eu coloquei struct ELista *proximo e não ELista *proximo?
      struct ELista *proximo;
 } ELista;
 
@@ -69,6 +63,7 @@ typedef struct EABB
      Registro *dados;
      // Filhos esquerdo e direito
      struct EABB *esq, *dir;
+     // Não tem pai pois ele é usado para operações de exclusão, que não são necessárias nesse projeto.
 } EABB;
 
 typedef struct
@@ -78,13 +73,6 @@ typedef struct
 } ABB;
 
 // A partir daqui são estruturas com fonte: vozes da minha cabeça
-
-// Pilha para armazenar operações (enfileirar e desenfileirar), para desfazer
-// typedef enum
-// {
-//      ENFILEIRAR,
-//      DESENFILEIRAR
-// } Operacao;
 
 // Pilha dinamica usa anterior e próximo
 typedef struct Celula
@@ -126,12 +114,18 @@ void sobre();
 
 // Funções do menu de cadastro
 
+// Inicializar lista
+Lista *inicializa_lista();
+
+// Cadastrar paciente
 void cadastrarPaciente(Lista *lista);
+// Consultar paciente
 void consultarPaciente(Lista *lista);
-
-// void imprimirRegistro(Registro *r);
-
-// cJSON* estruturaJson(void* data, const char* campo[], const char* tipo[]);
-// void jsonEstrutura(const char* arquivo, void* estrutura, const char* campo[], const char* tipo[]);
+// Mostrar lista completa
+void mostrarLista(Lista *lista);
+// Atualizar dados de paciente
+void atualizarPaciente(Lista *lista);
+// Remover paciente
+void removerPaciente(Lista *lista);
 
 #endif //FUNCOES_H

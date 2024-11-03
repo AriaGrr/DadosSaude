@@ -564,3 +564,651 @@
 //      Operacao operacao;
 //      struct Pilha *proximo;
 // } Pilha;
+
+
+LIMPEZA GERAL, MUDANDO O FOCO
+
+// Estruturas pra ficar mais facil de ver
+// Registros de pacientes
+// typedef struct
+// {
+//      int dia;
+//      int mes;
+//      int ano;
+// } Data;
+
+// typedef struct
+// {
+//      // char nome[50];
+//      char nome;
+//      int idade;
+//      // char rg[10];
+//      char rg;
+//      Data *entrada;
+// } Registro;
+
+// // Item de menu: Cadastrar em uma LDE
+// typedef struct ELista
+// {
+//      Registro *dados;
+//      struct ELista *proximo;
+// } ELista;
+
+// typedef struct
+// {
+//      ELista *inicio;
+//      int qtde;
+// } Lista;
+
+// // Item de menu: Atendimento em uma Fila
+// typedef struct EFila
+// {
+//      Registro *dados;
+//      struct EFila *proximo;
+// } EFila;
+
+// typedef struct
+// {
+//      EFila *head;
+//      EFila *tail;
+//      int qtde;
+// } Fila;
+
+// // Item de menu: Pesquisa
+// typedef struct EABB
+// {
+//      Registro *dados;
+//      // Filhos esquerdo e direito
+//      struct EABB *esq;
+//      struct EABB *dir;
+// } EABB;
+
+// typedef struct
+// {
+//      EABB *raiz;
+//      int qtde;
+// } ABB;
+
+// Se der errado aqui mudo pra um 
+// typedef enum
+// {
+//      ENFILEIRAR,
+//      DESENFILEIRAR
+// } Operacao;
+
+// // Pilha dinamica usa anterior e próximo
+// typedef struct Celula
+// {
+//     Operacao operacao;
+//     struct Celula *proximo;
+//     struct Celula *anterior;
+// } Celula;
+
+// ou 
+
+
+// // Pilha dinamica usa anterior e próximo
+// typedef struct Celula
+// {
+//      // 1 para enfileirar, 2 para desinfileirar
+//      int operacao;
+// //     Operacao operacao;
+//     struct Celula *proximo;
+//     struct Celula *anterior;
+// } Celula;
+
+// // Pilha (Stack) para armazenar as operações de enfileirar e desenfileirar
+// typedef struct
+// {
+//     Celula *topo;
+//     int qtd;
+// } Pilha;
+
+// typedef struct
+// {
+//      Lista *lista;
+//      Fila *fila;
+//      ABB *abb;
+//      Pilha *pilha;
+// } Dados;
+
+// Funções para inicializar as estruturas de dados com base em arquivos JSON
+
+// Função genérica para serializar uma estrutura
+cJSON *estruturaToJson(void *data, const char *campos[], const char *tipos[])
+{
+  cJSON *obj = cJSON_CreateObject();
+  int i = 0;
+  while (campos[i] != NULL)
+  {
+    switch (tipos[i][0])
+    {
+    case 'i': // int
+      cJSON_AddNumberToObject(obj, campos[i], *((int *)data + i));
+      break;
+    case 'c': // char*
+      cJSON_AddStringToObject(obj, campos[i], *((char **)data + i));
+      break;
+    case 'D': // Data
+    {
+      Data *data_ptr = (Data *)((char *)data + i * sizeof(char *));
+      cJSON *data_obj = cJSON_CreateObject();
+      cJSON_AddNumberToObject(data_obj, "dia", data_ptr->dia);
+      cJSON_AddNumberToObject(data_obj, "mes", data_ptr->mes);
+      cJSON_AddNumberToObject(data_obj, "ano", data_ptr->ano);
+      cJSON_AddItemToObject(obj, campos[i], data_obj);
+    }
+    break;
+    case 'L': // ELista*
+      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((ELista **)data + i), campos, tipos));
+      break;
+    case 'F': // EFila*
+      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((EFila **)data + i), campos, tipos));
+      break;
+    case 'A': // EABB*
+      cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((EABB **)data + i), campos, tipos));
+      break;
+    // case 'P': // Pilha*
+    //   cJSON_AddItemToObject(obj, campos[i], estruturaToJson(*((Pilha **)data + i), campos, tipos));
+    //   break;
+    // ... outros tipos
+    default:
+      printf("Tipo de dado não suportado: %s\n", tipos[i]);
+    }
+    i++;
+  }
+  return obj;
+}
+
+// Função genérica para desserializar uma estrutura
+void jsonParaEstrutura(const cJSON *obj, void *estrutura, const char *campos[], const char *tipos[])
+{
+  int i = 0;
+  while (campos[i] != NULL)
+  {
+    cJSON *item = cJSON_GetObjectItem(obj, campos[i]);
+    if (item)
+    {
+      switch (tipos[i][0])
+      {
+      case 'i': // int
+        *((int *)estrutura + i) = item->valueint;
+        break;
+      case 'c': // char*
+        *((char **)estrutura + i) = strdup(item->valuestring);
+        break;
+      case 'D': // Data
+      {
+        Data *data_ptr = (Data *)((char *)estrutura + i * sizeof(char *));
+        cJSON *dia = cJSON_GetObjectItem(item, "dia");
+        cJSON *mes = cJSON_GetObjectItem(item, "mes");
+        cJSON *ano = cJSON_GetObjectItem(item, "ano");
+        data_ptr->dia = dia->valueint;
+        data_ptr->mes = mes->valueint;
+        data_ptr->ano = ano->valueint;
+      }
+      break;
+      case 'L': // ELista*
+      {
+        ELista **lista = (ELista **)((char *)estrutura + i * sizeof(char *));
+        *lista = (ELista *)malloc(sizeof(ELista));
+        jsonParaEstrutura(item, (*lista)->dados, campos, tipos);
+        (*lista)->proximo = NULL;
+      }
+      break;
+      case 'F': // EFila*
+      {
+        EFila **fila = (EFila **)((char *)estrutura + i * sizeof(char *));
+        *fila = (EFila *)malloc(sizeof(EFila));
+        jsonParaEstrutura(item, (*fila)->dados, campos, tipos);
+        (*fila)->proximo = NULL;
+      }
+      break;
+      case 'A': // EABB*
+      {
+        EABB **abb = (EABB **)((char *)estrutura + i * sizeof(char *));
+        *abb = (EABB *)malloc(sizeof(EABB));
+        jsonParaEstrutura(item, (*abb)->dados, campos, tipos);
+        (*abb)->esq = NULL;
+        (*abb)->dir = NULL;
+      }
+      break;
+      case 'P': // Pilha*
+      {
+        // ARRUMAR A PILHA EM TUDO
+        // typedef struct Celula
+        // {
+        //   Operacao operacao;
+        //   struct Celula *proximo;
+        //   struct Celula *anterior;
+        // } Celula;
+
+        // // Pilha (Stack) para armazenar as operações de enfileirar e desenfileirar
+        // typedef struct
+        // {
+        //   Celula *topo;
+        //   int qtd;
+        // } Pilha;
+
+
+        // Pilha **pilha = (Pilha **)((char *)estrutura + i * sizeof(char *));
+        // *pilha = (Pilha *)malloc(sizeof(Pilha));
+        // (*pilha)->topo = NULL;
+        // (*pilha)->qtd = 0;
+        // cJSON *celula = item;
+        // while (celula)
+        // {
+        //   Celula *nova = (Celula *)malloc(sizeof(Celula));
+        //   nova->operacao = celula->valueint;
+        //   nova->proximo = (*pilha)->topo;
+        //   (*pilha)->topo = nova;
+        //   (*pilha)->qtd++;
+        //   celula = celula->next;
+        // }
+      }
+      break;
+        // ... outros tipos
+      }
+    }
+    else
+    {
+      printf("Campo '%s' não encontrado no JSON\n", campos[i]);
+    }
+    i++;
+  }
+}
+
+// Função para serializar toda a estrutura de dados
+cJSON *serializarTudo(Dados *dados)
+{
+  cJSON *root = cJSON_CreateObject();
+
+  // Definir os campos e tipos de cada estrutura
+  const char *camposLista[] = {"inicio", "qtde", NULL};
+  const char *tiposLista[] = {"ELista*", "int", NULL};
+  const char *camposFila[] = {"head", "tail", "qtde", NULL};
+  const char *tiposFila[] = {"EFila*", "EFila*", "int", NULL};
+  const char *camposABB[] = {"raiz", "qtde", NULL};
+  const char *tiposABB[] = {"EABB*", "int", NULL};
+  // const char *camposPilha[] = {"operacao", "proximo", NULL};
+  // const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
+
+  // ... e assim por diante para as outras possiveis estruturas
+
+  cJSON_AddItemToObject(root, "lista", estruturaToJson(dados->lista, camposLista, tiposLista));
+  cJSON_AddItemToObject(root, "fila", estruturaToJson(dados->fila, camposFila, tiposFila));
+  cJSON_AddItemToObject(root, "abb", estruturaToJson(dados->abb, camposABB, tiposABB));
+  // cJSON_AddItemToObject(root, "pilha", estruturaToJson(dados->pilha, camposPilha, tiposPilha));
+  // ...
+
+  return root;
+}
+
+// Função para desserializar toda a estrutura de dados
+void desserializarTudo(const char *arquivo, Dados *dados)
+{
+  // ... (lógica similar à função serializarTudo, mas no sentido inverso)
+  FILE *fp = fopen(arquivo, "r");
+  if (!fp)
+  {
+    perror("Erro ao abrir o arquivo");
+    return;
+  }
+
+  fseek(fp, 0, SEEK_END);
+  long fsize = ftell(fp);
+  fseek(fp, 0, SEEK_SET);
+
+  char *jsonString = (char *)malloc(fsize + 1);
+  fread(jsonString, 1, fsize, fp);
+  fclose(fp);
+  jsonString[fsize] = 0;
+
+  cJSON *root = cJSON_Parse(jsonString);
+  if (!root)
+  {
+    printf("Erro ao analisar o JSON\n");
+    free(jsonString);
+    return;
+  }
+
+  // Definir os campos e tipos de cada estrutura
+  const char *camposLista[] = {"inicio", "qtde", NULL};
+  const char *tiposLista[] = {"ELista*", "int", NULL};
+  const char *camposFila[] = {"head", "tail", "qtde", NULL};
+  const char *tiposFila[] = {"EFila*", "EFila*", "int", NULL};
+  const char *camposABB[] = {"raiz", "qtde", NULL};
+  const char *tiposABB[] = {"EABB*", "int", NULL};
+  // const char *camposPilha[] = {"operacao", "proximo", NULL};
+  // const char *tiposPilha[] = {"Operacao", "Pilha*", NULL};
+  // ... e assim por diante para as outras possiveis estruturas
+
+  jsonParaEstrutura(root, dados->lista, camposLista, tiposLista);
+  jsonParaEstrutura(root, dados->fila, camposFila, tiposFila);
+  jsonParaEstrutura(root, dados->abb, camposABB, tiposABB);
+  // jsonParaEstrutura(root, dados->pilha, camposPilha, tiposPilha);
+  // ...
+
+  cJSON_Delete(root);
+  free(jsonString);
+}
+
+Funcoes h limpeza também
+// Para adicionar um campo ao JSON, basta adicionar uma linha no formato ADD_FIELD(obj, name, type, value)
+// #define ADD_FIELD(obj, name, type, value) \
+//     cJSON_Add##type##ToObject(obj, name, value)
+
+// #define GET_FIELD(obj, name, type) \
+//     cJSON_GetObjectItem(obj, name)->value##type
+
+
+void cadastrarPaciente(Lista *lista);
+void consultarPaciente(Lista *lista);
+
+// void imprimirRegistro(Registro *r);
+
+// cJSON* estruturaJson(void* data, const char* campo[], const char* tipo[]);
+// void jsonEstrutura(const char* arquivo, void* estrutura, const char* campo[], const char* tipo[]);
+
+
+// Pilha para armazenar operações (enfileirar e desenfileirar), para desfazer
+// typedef enum
+// {
+//      ENFILEIRAR,
+//      DESENFILEIRAR
+// } Operacao;
+
+limpeza do menu
+
+
+    //   if (cod != 0)
+    //   {
+    //     printf("Erro ao salvar arquivo!\n");
+    //   }
+
+    // TESTE DE JSON
+
+    //     printf("Testando \n");
+    //     Registro registro = {"João da Silva", 30, "123456789", 0};
+    //     registro.entrada = (Data*)malloc(sizeof(Data));
+    //     registro.entrada->dia = 15;
+    //     registro.entrada->mes = 3;
+    //     registro.entrada->ano = 2023;
+    //     printf("Testando 1\n");
+    //     const char *campos_registro[] = {"nome", "idade", "rg", "entrada.dia", "entrada.mes", "entrada.ano", NULL};
+    //     const char *tipos_registro[] = {"char*", "int", "char*", "Data", "Data", "Data", NULL};
+    //     printf("Testando 2\n");
+    //     cJSON *json = estruturaJson(&registro, campos_registro, tipos_registro);
+    //     printf("Testando 3\n");
+    //     char *string_json = cJSON_Print(json);
+    //     printf("Testando 4\n");
+    //     FILE *fp = fopen("dados.json", "w");
+    //     printf("Testando 5\n");
+    //     fwrite(string_json, strlen(string_json), 1, fp);
+    //     printf("Testando 6\n");
+    //     fclose(fp);
+    //     printf("Testando 7\n");
+    //     cJSON_Delete(json);
+    //     free(string_json);
+    //     printf("Testando 8\n");
+
+    // Registro nova_registro;
+    // jsonEstrutura("dados.json", &nova_registro, campos_registro, tipos_registro);
+    // printf("Testando\n");
+    // for (int i = 0; campos_registro[i] != NULL; i++)
+    // {
+    //     printf("%s: ", campos_registro[i]);
+    //     if (tipos_registro[i][0] == 'c')
+    //     {
+    //         printf("%s\n", *((char **)&nova_registro + i));
+    //     }
+    //     else if (tipos_registro[i][0] == 'i')
+    //     {
+    //         printf("%d\n", *((int *)&nova_registro + i));
+    //     }
+    //     else if (tipos_registro[i][0] == 'D')
+    //     {
+    //         Data *data = (Data *)((char *)&nova_registro + i);
+    //         printf("%d/%d/%d\n", data->dia, data->mes, data->ano);
+    //     }
+    // }
+    // printf("Testando\n");
+
+
+        // IDEIA DE COMO USAR O JSON
+    // // ... (criar instâncias das estruturas e popular os dados)
+
+    // // Serializar para JSON
+    // Dados dados;
+    // // ... (popular a estrutura dados)
+    // cJSON *root = serializarTudo(&dados);
+    // // ... (escrever em um arquivo)
+
+    // // Desserializar de um arquivo
+    // Dados novosDados;
+    // desserializarTudo("dados.json", &novosDados);
+    // // ... (usar os dados desserializados)
+
+    // TESTANDO JSON
+
+    // Criar instâncias das estruturas e popular os dados
+    // Dados dados;
+    // dados.lista = criarLista(); // Função para criar e popular a lista
+    // dados.fila = criarFila();   // Função para criar e popular a fila
+    // dados.abb = criarABB();     // Função para criar e popular a ABB
+    // dados.pilha = criarPilha(); // Função para criar e popular a pilha
+
+    // // Serializar para JSON
+    // cJSON *root = serializarTudo(&dados);
+    // char *jsonString = cJSON_Print(root);
+
+    // // Escrever em um arquivo
+    // FILE *fp = fopen("dados.json", "w");
+    // if (fp) {
+    //     fprintf(fp, "%s", jsonString);
+    //     fclose(fp);
+    //     printf("Dados serializados com sucesso para dados.json\n");
+    // } else {
+    //     perror("Erro ao abrir o arquivo");
+    // }
+
+    // cJSON_Delete(root);
+    // free(jsonString);
+
+    // // Limpar as estruturas existentes (opcional)
+    // destruirLista(dados.lista);
+    // destruirFila(dados.fila);
+    // destruirABB(dados.abb);
+    // destruirPilha(dados.pilha);
+
+    // // Ler o JSON e desserializar
+    // Dados novosDados;
+    // desserializarTudo("dados.json", &novosDados);
+
+    // // Imprimir os dados desserializados para verificar
+    // imprimirLista(novosDados.lista);
+    // imprimirFila(novosDados.fila);
+    // imprimirABB(novosDados.abb);
+    // imprimirPilha(novosDados.pilha);
+
+    // // Liberar a memória das estruturas desserializadas
+    // destruirLista(novosDados.lista);
+    // destruirFila(novosDados.fila);
+    // destruirABB(novosDados.abb);
+    // destruirPilha(novosDados.pilha);
+
+
+
+    //   int cod;
+    // Ia ser usado para salvar os arquivos em txt, mas irei tentar fazer em json
+    //   char arquivo[] = "arquivo,";
+    //   char exportado[] = "-";
+    //   ArquivosPacientes lt;
+
+    //   cod = carregarLista(&lt, arquivo);
+    //   if (cod == 1)
+    //   {
+    //     lt.qtd = 0;
+    //   }
+
+
+
+    
+// // Atualizar dados de paciente
+// void atualizar(Lista *lista, char *nome){
+//   ELista *atual = lista->inicio;
+//   while(atual != NULL){
+//     if(strcmp(atual->dados->nome, nome) == 0){
+//       printf("Nome: ");
+//       scanf("%s", atual->dados->nome);
+//       printf("Idade: ");
+//       scanf("%d", &atual->dados->idade);
+//       printf("RG: ");
+//       scanf("%s", atual->dados->rg);
+//       atual->dados->entrada = malloc(sizeof(Data));
+//       printf("Data de entrada: ");
+//       scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
+//       return;
+//     }
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// // Atualizar dados de paciente por RG
+// void atualizarRG(Lista *lista, char *rg){
+//   ELista *atual = lista->inicio;
+//   while(atual != NULL){
+//     if(strcmp(atual->dados->rg, rg) == 0){
+//       printf("Nome: ");
+//       scanf("%s", atual->dados->nome);
+//       printf("Idade: ");
+//       scanf("%d", &atual->dados->idade);
+//       printf("RG: ");
+//       scanf("%s", atual->dados->rg);
+//       atual->dados->entrada = malloc(sizeof(Data));
+//       printf("Data de entrada: ");
+//       scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
+//       return;
+//     }
+//     atual = atual->proximo;
+//   }
+//   printf("Paciente nao encontrado\n");
+// }
+
+// // Atualizar dados de paciente escolhendo por nome ou RG e chamando a função correspondente
+// void atualizarPaciente(Lista *lista){
+//   int opcao;
+//   printf("Atualizar por:\n");
+//   printf("1 - Nome\n");
+//   printf("2 - RG\n");
+//   printf("Digite a opcao desejada: ");
+//   scanf("%d", &opcao);
+//   if(opcao == 1){
+//     char nome[50];
+//     printf("Nome: ");
+//     scanf("%s", nome);
+//     atualizar(lista, nome);
+//   }else if(opcao == 2){
+//     char rg[10];
+//     printf("RG: ");
+//     scanf("%s", rg);
+//     atualizarRG(lista, rg);
+//   }else{
+//     printf("Opcao invalida\n");
+//   }
+// }
+
+// Atualizar dados de paciente (por nome ou rg), printar dados do usuario e escolher o que deseja atualizar.
+// void atualizarPaciente(Lista *lista){
+//   printf("Opções:\n");
+//   printf("1 - Atualizar por nome\n");
+//   printf("2 - Atualizar por RG\n");
+//   printf("Digite a opcao desejada: ");
+//   int opcao;
+//   scanf("%d", &opcao);
+
+//   if(opcao == 1){
+//     char nome[50];
+//     printf("Nome: ");
+//     scanf("%s", nome);
+//     ELista *atual = lista->inicio;
+//     while(atual != NULL){
+//       if(strcmp(atual->dados->nome, nome) == 0){
+//         printf("Nome: %s\n", atual->dados->nome);
+//         printf("Idade: %d\n", atual->dados->idade);
+//         printf("RG: %s\n", atual->dados->rg);
+//         printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+//         int opcao;
+//         printf("Atualizar:\n");
+//         printf("1 - Nome\n");
+//         printf("2 - Idade\n");
+//         printf("3 - RG\n");
+//         printf("4 - Data de entrada\n");
+//         printf("Digite a opcao desejada: ");
+//         scanf("%d", &opcao);
+//         if(opcao == 1){
+//           printf("Nome: ");
+//           scanf("%s", atual->dados->nome);
+//         }else if(opcao == 2){
+//           printf("Idade: ");
+//           scanf("%d", &atual->dados->idade);
+//         }else if(opcao == 3){
+//           printf("RG: ");
+//           scanf("%s", atual->dados->rg);
+//         }else if(opcao == 4){
+//           atual->dados->entrada = malloc(sizeof(Data));
+//           printf("Data de entrada: ");
+//           scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
+//         }else{
+//           printf("Opcao invalida\n");
+//         }
+//         return;
+//       }
+//       atual = atual->proximo;
+//     }
+//     printf("Paciente nao encontrado\n");
+//   }else if(opcao == 2){
+//     char rg[10];
+//     printf("RG: ");
+//     scanf("%s", rg);
+//     ELista *atual = lista->inicio;
+//     while(atual != NULL){
+//       if(strcmp(atual->dados->rg, rg) == 0){
+//         printf("Nome: %s\n", atual->dados->nome);
+//         printf("Idade: %d\n", atual->dados->idade);
+//         printf("RG: %s\n", atual->dados->rg);
+//         printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
+//         int opcao;
+//         printf("Atualizar:\n");
+//         printf("1 - Nome\n");
+//         printf("2 - Idade\n");
+//         printf("3 - RG\n");
+//         printf("4 - Data de entrada\n");
+//         printf("Digite a opcao desejada: ");
+//         scanf("%d", &opcao);
+//         if(opcao == 1){
+//           printf("Nome: ");
+//           scanf("%s", atual->dados->nome);
+//         }else if(opcao == 2){
+//           printf("Idade: ");
+//           scanf("%d", &atual->dados->idade);
+//         }else if(opcao == 3){
+//           printf("RG: ");
+//           scanf("%s", atual->dados->rg);
+//         }else if(opcao == 4){
+//           atual->dados->entrada = malloc(sizeof(Data));
+//           printf("Data de entrada: ");
+//           scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
+//         }else{
+//           printf("Opcao invalida\n");
+//         }
+//         return;
+//       }
+//       atual = atual->proximo;
+//     }
+//     printf("Paciente nao encontrado\n");
+//   }else{
+//     printf("Opcao invalida\n");
+//   }
+// }
