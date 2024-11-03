@@ -117,26 +117,6 @@ void sobre();
 
 // Inicializar lista
 Lista *inicializa_lista();
-// // Inicializar registro
-// Registro *inicializa_registro();
-// // Inicializar data
-// Data *inicializa_data();
-// // Inicializar elemento de lista
-// ELista *inicializa_elemento();
-// // Inicializar fila
-// Fila *inicializa_fila();
-// // Inicializar elemento de fila
-// EFila *inicializa_elemento_fila();
-// // Inicializar árvore
-// ABB *inicializa_abb();
-// // Inicializar elemento de árvore
-// EABB *inicializa_elemento_abb();
-// // Inicializar pilha
-// Pilha *inicializa_pilha();
-// // Inicializar célula
-// Celula *inicializa_celula();
-// // Inicializar dados
-// Dados *inicializa_dados();
 
 // Funções do menu de cadastro
 

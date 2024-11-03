@@ -14,81 +14,6 @@ void clearBuffer()
     ;
 }
 
-// Funções de print dos menus
-
-void printMenu()
-{
-  printf("Menu\n");
-  printf("1 - Cadastrar\n");
-  printf("2 - Atendimento\n");
-  printf("3 - Pesquisa\n");
-  printf("4 - Desfazer\n");
-  // Pode retirar essas opções para serem automáticas?
-  // Carrega ao iniciar o programa e salva ao sair
-  printf("5 - Carregar\n");
-  printf("6 - Salvar\n");
-  //
-  printf("7 - Sobre\n");
-  printf("0 - Sair\n");
-  printf("Digite a opcao desejada: ");
-}
-
-// Cadastrar novo paciente em uma lista dinâmica encadeada, mantendo a ordem de registro (inserção no início);
-void menuCadastro()
-{
-  printf("Menu Cadastro\n");
-  printf("1 - Cadastrar novo paciente\n");
-  printf("2 - Consultar paciente cadastrado\n");
-  printf("3 - Mostrar lista de pacientes\n");
-  printf("4 - Atualizar dados de paciente\n");
-  printf("5 - Remover paciente\n");
-  // Voltar ao menu
-  printf("0 - Voltar ao menu\n");
-}
-
-// Inserir um paciente, que já possua cadastro, em uma fila para atendimento;
-void menuAtendimento()
-{
-  printf("Menu Atendimento\n");
-  // Enfileirar paciente
-  printf("1 - Adicionar paciente a fila de espera\n");
-  // Desenfileirar paciente
-  printf("2 - Atender paciente\n");
-  // Mostrar fila
-  printf("3 - Mostrar fila de espera\n");
-  // Voltar ao menu
-  printf("0 - Voltar ao menu\n");
-}
-
-// Inserir um paciente, que já possua cadastro, em uma árvore binária de busca;
-void menuPesquisa()
-{
-  printf("Menu Pesquisa\n");
-  // Mostrar registros ordenados por ano de registro;
-  printf("1 - Registros ordenados por ano\n");
-  // Mostrar registros ordenados por mês de registro;
-  printf("2 - Registros ordenados por mes\n");
-  // Mostrar registros ordenados por dia de registro;
-  printf("3 - Registros ordenados por dia\n");
-  // Mostrar registros ordenados por idade do paciente.
-  printf("4 - Registros ordenados por idade\n");
-  // Voltar ao menu
-  printf("0 - Voltar ao menu\n");
-}
-
-void sobre()
-{
-  printf("Sistema de atendimento hospitalar\n\n");
-  printf("Desenvolvido por:\n");
-  printf("Marjorie Luize Martins Costa\n");
-  printf("& \n");
-  printf("Nuno Martins Guilhermino da Silva\n\n");
-  printf("Ciclo: \nQuarto\n\n");
-  printf("Curso: \nCiencia da Computacao\n\n");
-  printf("Disciplina: \nEstrutura de Dados\n\n");
-  printf("Data: \n20/10/2024\n");
-}
-
 // Item de menu: Cadastrar em uma LDE
 
 // Operações:
@@ -101,8 +26,6 @@ void sobre()
 // CONFERIR SE ESTÁ CORRETO
 
 // As funções estão repetitivas, buscar uma forma de otimizar.
-
-// LIMPANDO AS FUNÇÕES
 
 // Funções para manipulação de listas dinâmicas encadeadas
 
@@ -268,21 +191,18 @@ Registro *cadastrar(Lista *lista)
   printf("Cadastro de paciente\n");
   printf("--------------------\n");
   printf("Nome: ");
-  // scanf("%s", nome);
   clearBuffer();
   fgets(nome, maxNOME, stdin);
   nome[strcspn(nome, "\n")] = '\0';
-  // clearBuffer();
   while (!validarNome(nome))
   {
     clearBuffer();
     printf("Nome invalido, digite novamente. Exemplo: Joao\n");
     printf("Nome: ");
-    // scanf("%s", nome);
     fgets(nome, maxNOME, stdin);
     nome[strcspn(nome, "\n")] = '\0';
   }
-  // SE VOCÊ COLOCAR LETRAS NA IDADE, DATA OU RG O PROGRAMA VAI BUGAR
+  // SE VOCÊ COLOCAR LETRAS NA IDADE OU DATA O PROGRAMA VAI BUGAR
   strcpy(novo->nome, nome);
   printf("Idade: ");
   scanf("%d", &idade);
@@ -314,12 +234,9 @@ Registro *cadastrar(Lista *lista)
   return novo;
 }
 
-// Chamada de funções de cadastro
 void cadastrarPaciente(Lista *lista)
 {
   Registro *novo = cadastrar(lista);
-  // printar os dados do paciente novo
-  // perguntar se deseja confirmar, alterar ou cancelar.
   int opcao;
   do{
   system("cls");
@@ -342,13 +259,9 @@ void cadastrarPaciente(Lista *lista)
   }
   else if (opcao == 2)
   {
-    // free(novo->entrada);
-    // free(novo);
-    // cadastrarPaciente(lista);
     printf("Alterar\n");
     printf("1 - Tudo\n");
     printf("2 - Campo\n");
-    // printf("0 - Voltar\n");
     int opcao2;
     printf("Digite a opcao desejada: ");
     scanf("%d", &opcao2);
@@ -358,10 +271,6 @@ void cadastrarPaciente(Lista *lista)
       free(novo);
       cadastrarPaciente(lista);
     }
-    // else if (opcao2 == 0)
-    // {
-    //   return;
-    // }
     else if (opcao2 == 2)
     {
       printf("Alterar:\n");
@@ -444,51 +353,7 @@ void cadastrarPaciente(Lista *lista)
     printf("Opcao invalida\n");
   }
   }while(opcao != 1 && opcao != 3);
-  // inserir(lista, novo);
 }
-
-// // Consultar paciente cadastrado por nome
-// void consultarNome(Lista *lista, char *nome)
-// {
-//   ELista *atual = lista->inicio;
-//   while (atual != NULL)
-//   {
-//     if (strcmp(atual->dados->nome, nome) == 0)
-//     {
-//       printf("Nome: %s\n", atual->dados->nome);
-//       printf("Idade: %d\n", atual->dados->idade);
-//       printf("RG: %s\n", atual->dados->rg);
-//       printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
-//       return;
-//     }
-//     atual = atual->proximo;
-//   }
-//   printf("Paciente nao encontrado\n");
-// }
-
-// // Consultar paciente cadastrado por RG
-// void consultarRg(Lista *lista, char *rg)
-// {
-//   ELista *atual = lista->inicio;
-//   while (atual != NULL)
-//   {
-//     if (strcmp(atual->dados->rg, rg) == 0)
-//     {
-//       printf("Nome: %s\n", atual->dados->nome);
-//       printf("Idade: %d\n", atual->dados->idade);
-//       printf("RG: %s\n", atual->dados->rg);
-//       printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
-//       return;
-//     }
-//     atual = atual->proximo;
-//   }
-//   printf("Paciente nao encontrado\n");
-// }
-
-// printf("Nome: %s\n", atual->dados->nome);
-// printf("Idade: %d\n", atual->dados->idade);
-// printf("RG: %s\n", atual->dados->rg);
-// printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
 
 void consultando(ELista *atual)
 {
@@ -501,6 +366,7 @@ void consultando(ELista *atual)
   printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
   printf("--------------------\n");
 }
+
 // Consultar paciente cadastrado por nome
 void consultarNome(Lista *lista, char *nome)
 {
@@ -546,7 +412,6 @@ void consultarPaciente(Lista *lista)
   {
     char nome[50];
     printf("Nome: ");
-    // scanf("%s", nome);
     clearBuffer();
     fgets(nome, maxNOME, stdin);
     nome[strcspn(nome, "\n")] = '\0';
@@ -565,139 +430,8 @@ void consultarPaciente(Lista *lista)
   }
 }
 
-// // Atualizar dados de paciente (por nome ou rg), printar dados do usuario e escolher o que deseja atualizar três funções.
-// void atualizarNome(Lista *lista, char *nome){
-//   ELista *atual = lista->inicio;
-//   while(atual != NULL){
-//     if(strcmp(atual->dados->nome, nome) == 0){
-//       printf("Nome: %s\n", atual->dados->nome);
-//       printf("Idade: %d\n", atual->dados->idade);
-//       printf("RG: %s\n", atual->dados->rg);
-//       printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
-//       int opcao;
-//       printf("Atualizar:\n");
-//       printf("1 - Nome\n");
-//       printf("2 - Idade\n");
-//       printf("3 - RG\n");
-//       printf("4 - Data de entrada\n");
-//       printf("Digite a opcao desejada: ");
-//       scanf("%d", &opcao);
-//       if(opcao == 1){
-//         printf("Nome: ");
-//         scanf("%s", atual->dados->nome);
-//       }else if(opcao == 2){
-//         printf("Idade: ");
-//         scanf("%d", &atual->dados->idade);
-//       }else if(opcao == 3){
-//         printf("RG: ");
-//         scanf("%s", atual->dados->rg);
-//       }else if(opcao == 4){
-//         atual->dados->entrada = malloc(sizeof(Data));
-//         printf("Data de entrada: ");
-//         scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
-//       }else{
-//         printf("Opcao invalida\n");
-//       }
-//       return;
-//     }
-//     atual = atual->proximo;
-//   }
-//   printf("Paciente nao encontrado\n");
-// }
-
-// void atualizarRg(Lista *lista, char *rg){
-//   ELista *atual = lista->inicio;
-//   while(atual != NULL){
-//     if(strcmp(atual->dados->rg, rg) == 0){
-//       printf("Nome: %s\n", atual->dados->nome);
-//       printf("Idade: %d\n", atual->dados->idade);
-//       printf("RG: %s\n", atual->dados->rg);
-//       printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
-//       int opcao;
-//       printf("Atualizar:\n");
-//       printf("1 - Nome\n");
-//       printf("2 - Idade\n");
-//       printf("3 - RG\n");
-//       printf("4 - Data de entrada\n");
-//       printf("Digite a opcao desejada: ");
-//       scanf("%d", &opcao);
-//       if(opcao == 1){
-//         printf("Nome: ");
-//         scanf("%s", atual->dados->nome);
-//       }else if(opcao == 2){
-//         printf("Idade: ");
-//         scanf("%d", &atual->dados->idade);
-//       }else if(opcao == 3){
-//         printf("RG: ");
-//         scanf("%s", atual->dados->rg);
-//       }else if(opcao == 4){
-//         atual->dados->entrada = malloc(sizeof(Data));
-//         printf("Data de entrada: ");
-//         scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
-//       }else{
-//         printf("Opcao invalida\n");
-//       }
-//       return;
-//     }
-//     atual = atual->proximo;
-//   }
-//   printf("Paciente nao encontrado\n");
-// }
-
-// printf("Nome: %s\n", atual->dados->nome);
-// printf("Idade: %d\n", atual->dados->idade);
-// printf("RG: %s\n", atual->dados->rg);
-// printf("Data de entrada: %d/%d/%d\n", atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
-// int opcao;
-// printf("Atualizar:\n");
-// printf("1 - Nome\n");
-// printf("2 - Idade\n");
-// printf("3 - RG\n");
-// printf("4 - Data de entrada\n");
-// printf("Digite a opcao desejada: ");
-// scanf("%d", &opcao);
-// if(opcao == 1){
-//   printf("Nome: ");
-//   scanf("%s", atual->dados->nome);
-// }else if(opcao == 2){
-//   printf("Idade: ");
-//   scanf("%d", &atual->dados->idade);
-// }else if(opcao == 3){
-//   printf("RG: ");
-//   scanf("%s", atual->dados->rg);
-// }else if(opcao == 4){
-//   atual->dados->entrada = malloc(sizeof(Data));
-//   printf("Data de entrada: ");
-//   scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
-// }else{
-//   printf("Opcao invalida\n");
-// }
 void atualizando(Lista *lista, ELista *atual)
 {
-  // int opcao;
-  // printf("Atualizar:\n");
-  // printf("1 - Nome\n");
-  // printf("2 - Idade\n");
-  // printf("3 - RG\n");
-  // printf("4 - Data de entrada\n");
-  // printf("Digite a opcao desejada: ");
-  // scanf("%d", &opcao);
-  // if(opcao == 1){
-  //   printf("Nome: ");
-  //   scanf("%s", atual->dados->nome);
-  // }else if(opcao == 2){
-  //   printf("Idade: ");
-  //   scanf("%d", &atual->dados->idade);
-  // }else if(opcao == 3){
-  //   printf("RG: ");
-  //   scanf("%s", atual->dados->rg);
-  // }else if(opcao == 4){
-  //   atual->dados->entrada = malloc(sizeof(Data));
-  //   printf("Data de entrada: ");
-  //   scanf("%d/%d/%d", &atual->dados->entrada->dia, &atual->dados->entrada->mes, &atual->dados->entrada->ano);
-  // }else{
-  //   printf("Opcao invalida\n");
-  // }
   consultando(atual);
   int opcao;
   printf("Atualizar:\n");
@@ -710,7 +444,6 @@ void atualizando(Lista *lista, ELista *atual)
   if (opcao == 1)
   {
     printf("Nome: ");
-    // scanf("%s", atual->dados->nome);
     clearBuffer();
     fgets(atual->dados->nome, maxNOME, stdin);
     atual->dados->nome[strcspn(atual->dados->nome, "\n")] = '\0';
@@ -719,7 +452,6 @@ void atualizando(Lista *lista, ELista *atual)
       clearBuffer();
       printf("Nome invalido, digite novamente. Exemplo: Joao\n");
       printf("Nome: ");
-      // scanf("%s", atual->dados->nome);
       fgets(atual->dados->nome, maxNOME, stdin);
       atual->dados->nome[strcspn(atual->dados->nome, "\n")] = '\0';
     }
@@ -807,7 +539,7 @@ void atualizarPaciente(Lista *lista)
   {
     char nome[50];
     printf("Nome: ");
-    // scanf("%s", nome);
+    // Substituir scanf por fgets no nome para evitar bugs de nomes com espaço.
     clearBuffer();
     fgets(nome, maxNOME, stdin);
     nome[strcspn(nome, "\n")] = '\0';
@@ -825,66 +557,6 @@ void atualizarPaciente(Lista *lista)
     printf("Opcao invalida\n");
   }
 }
-
-// // Remover paciente por nome ou rg
-// void removerNome(Lista *lista, char *nome){
-//   ELista *atual = lista->inicio;
-//   ELista *anterior = NULL;
-//   while(atual != NULL){
-//     if(strcmp(atual->dados->nome, nome) == 0){
-//         if(anterior == NULL){
-//         lista->inicio = atual->proximo;
-//         free(atual);
-//         lista->qtde--;
-//         return;
-//       }else{
-//         anterior->proximo = atual->proximo;
-//         free(atual);
-//         lista->qtde--;
-//         return;
-//       }
-//     }
-//     anterior = atual;
-//     atual = atual->proximo;
-//   }
-//   printf("Paciente nao encontrado\n");
-// }
-
-// Remover paciente por rg
-// void removerRg(Lista *lista, char *rg){
-//   ELista *atual = lista->inicio;
-//   ELista *anterior = NULL;
-//   while(atual != NULL){
-//     if(strcmp(atual->dados->rg, rg) == 0){
-//       if(anterior == NULL){
-//         lista->inicio = atual->proximo;
-//         free(atual);
-//         lista->qtde--;
-//         return;
-//       }else{
-//         anterior->proximo = atual->proximo;
-//         free(atual);
-//         lista->qtde--;
-//         return;
-//       }
-//     }
-//     anterior = atual;
-//     atual = atual->proximo;
-//   }
-//   printf("Paciente nao encontrado\n");
-// }
-
-// if(anterior == NULL){
-//   lista->inicio = atual->proximo;
-//   free(atual);
-//   lista->qtde--;
-//   return;
-// }else{
-//   anterior->proximo = atual->proximo;
-//   free(atual);
-//   lista->qtde--;
-//   return;
-// }
 
 void removendo(Lista *lista, ELista *atual, ELista *anterior)
 {
@@ -951,7 +623,6 @@ void removerPaciente(Lista *lista)
   {
     char nome[50];
     printf("Nome: ");
-    // scanf("%s", nome);
     clearBuffer();
     fgets(nome, maxNOME, stdin);
     nome[strcspn(nome, "\n")] = '\0';
@@ -968,4 +639,79 @@ void removerPaciente(Lista *lista)
   {
     printf("Opcao invalida\n");
   }
+}
+
+// Funções para print dos menus
+
+void printMenu()
+{
+  printf("Menu\n");
+  printf("1 - Cadastrar\n");
+  printf("2 - Atendimento\n");
+  printf("3 - Pesquisa\n");
+  printf("4 - Desfazer\n");
+  // Pode retirar essas opções para serem automáticas?
+  // Carrega ao iniciar o programa e salva ao sair
+  printf("5 - Carregar\n");
+  printf("6 - Salvar\n");
+  //
+  printf("7 - Sobre\n");
+  printf("0 - Sair\n");
+  printf("Digite a opcao desejada: ");
+}
+
+// Cadastrar novo paciente em uma lista dinâmica encadeada, mantendo a ordem de registro (inserção no início);
+void menuCadastro()
+{
+  printf("Menu Cadastro\n");
+  printf("1 - Cadastrar novo paciente\n");
+  printf("2 - Consultar paciente cadastrado\n");
+  printf("3 - Mostrar lista de pacientes\n");
+  printf("4 - Atualizar dados de paciente\n");
+  printf("5 - Remover paciente\n");
+  // Voltar ao menu
+  printf("0 - Voltar ao menu\n");
+}
+
+// Inserir um paciente, que já possua cadastro, em uma fila para atendimento;
+void menuAtendimento()
+{
+  printf("Menu Atendimento\n");
+  // Enfileirar paciente
+  printf("1 - Adicionar paciente a fila de espera\n");
+  // Desenfileirar paciente
+  printf("2 - Atender paciente\n");
+  // Mostrar fila
+  printf("3 - Mostrar fila de espera\n");
+  // Voltar ao menu
+  printf("0 - Voltar ao menu\n");
+}
+
+// Inserir um paciente, que já possua cadastro, em uma árvore binária de busca;
+void menuPesquisa()
+{
+  printf("Menu Pesquisa\n");
+  // Mostrar registros ordenados por ano de registro;
+  printf("1 - Registros ordenados por ano\n");
+  // Mostrar registros ordenados por mês de registro;
+  printf("2 - Registros ordenados por mes\n");
+  // Mostrar registros ordenados por dia de registro;
+  printf("3 - Registros ordenados por dia\n");
+  // Mostrar registros ordenados por idade do paciente.
+  printf("4 - Registros ordenados por idade\n");
+  // Voltar ao menu
+  printf("0 - Voltar ao menu\n");
+}
+
+void sobre()
+{
+  printf("Sistema de atendimento hospitalar\n\n");
+  printf("Desenvolvido por:\n");
+  printf("Marjorie Luize Martins Costa\n");
+  printf("& \n");
+  printf("Nuno Martins Guilhermino da Silva\n\n");
+  printf("Ciclo: \nQuarto\n\n");
+  printf("Curso: \nCiencia da Computacao\n\n");
+  printf("Disciplina: \nEstrutura de Dados\n\n");
+  printf("Data: \n20/10/2024\n");
 }
