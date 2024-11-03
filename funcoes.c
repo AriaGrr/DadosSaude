@@ -707,6 +707,7 @@ void pop(Pilha *pilha, int *operacao, char *rg)
   pilha->qtd--;
 }
 
+// Não está sendo usado no código, mas pode ser útil para debugar (se é que está correto)
 void mostra(Pilha *pilha)
 {
   Celula *celula = pilha->topo;

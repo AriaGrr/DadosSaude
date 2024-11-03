@@ -106,6 +106,7 @@ typedef struct
 } Dados;
 
 // Aqui devemos colocar as funções que serão utilizadas do arquivo funcoes.c
+// DEVO CHAMAR TODAS QUE NÃO ESTÃO NO MAIN?
 
 void clearBuffer();
 
