@@ -671,21 +671,6 @@ Pilha *inicializa_pilha()
   return stack;
 }
 
-// void push(Pilha *pilha, int valor, Registro *dados)
-// {
-//   Celula *nova = cria_celula(valor, dados);
-
-//   if (pilha->qtd > 0)
-//   {
-//     // nova->proximo = pilha->topo;
-//     // Maneira que fiz antes:
-//     nova->anterior = pilha->topo;
-//     pilha->topo->proximo = nova;
-//   }
-//   pilha->topo = nova;
-//   pilha->qtd++;
-// }
-
 void push(Pilha *pilha, int valor, Registro *dados)
 {
   Celula *nova = cria_celula(valor, dados);
@@ -716,129 +701,82 @@ void pop(Pilha *pilha, int *operacao, char *rg, Registro *dados)
   *operacao = pilha->topo->operacao;
   strcpy(rg, pilha->topo->dados->rg);
   *dados = *pilha->topo->dados;
-  // printf("t5\n");
-  // // printar dados, operação e rg
-  // printf("Dados pilha\n");
-  // printf("Operacao: %d\n", pilha->topo->operacao);
-  // printf("RG: %s\n", pilha->topo->dados->rg);
-  // printf("Nome: %s\n", pilha->topo->dados->nome);
-  // printf("Idade: %d\n", pilha->topo->dados->idade);
-  // printf("Data de entrada: %d/%d/%d\n", pilha->topo->dados->entrada->dia, pilha->topo->dados->entrada->mes, pilha->topo->dados->entrada->ano);
-
-  // printf("Dados var\n");
-  // printf("Operacao: %d\n", *operacao);
-  // printf("RG: %s\n", rg);
-  // printf("Nome: %s\n", dados->nome);
-  // printf("Idade: %d\n", dados->idade);
-  // printf("Data de entrada: %d/%d/%d\n", dados->entrada->dia, dados->entrada->mes, dados->entrada->ano);
-  
 
   Celula *temp = pilha->topo;
+  // printf("t1\n");
   pilha->topo = pilha->topo->anterior;
-
+  // printf("t2\n");
   // Atualizar o ponteiro anterior do novo topo (se for duplamente encadeada)
   if (pilha->topo != NULL)
   {
+    // printf("t3\n");
     pilha->topo->proximo = NULL;
   }
-
-  free(temp);
+  // printf("t4\n");
+  // printf("t5\n");
   pilha->qtd--;
+  free(temp);
 }
-
-// void pop(Pilha *pilha, int *operacao, char *rg)
-// {
-//   if (pilha->qtd == 0)
-//   {
-//     *operacao = 0;
-//     return;
-//   }
-//   // operacao = pilha->topo->operacao;
-//   // rg = pilha->topo->dados->rg;
-//   // Celula *temp = pilha->topo;
-//   // pilha->topo = pilha->topo->proximo;
-//   // free(temp);
-//   // pilha->qtd--;
-//   *operacao = pilha->topo->operacao;
-//   strcpy(rg, pilha->topo->dados->rg);
-
-//   Celula *temp = pilha->topo;
-//   pilha->topo = pilha->topo->proximo;
-//   free(temp);
-//   pilha->qtd--;
-// }
 
 // Não está sendo usado no código, mas pode ser útil para debugar (se é que está correto)
 void mostra(Pilha *pilha)
 {
   Celula *celula = pilha->topo;
-  printf("Operacoes\n");
+  int qtd = pilha->qtd;
+  printf("Operacoes: %d\n", qtd);
+  printf("--------------------\n");
   while (celula != NULL)
   {
-    // printf("%c", celula->operacao);
-    printf("--------------------\n");
-    printf("%d", celula->operacao);
+    // printf("%d -> ", celula->operacao);
+    printf("%d -> ", qtd);
+    qtd--;
+    if (celula->operacao == 1)
+    {
+      printf("Desenfileirar %s\n", celula->dados->nome);
+    }
+    else if (celula->operacao == 2)
+    {
+      printf("Enfileirar %s\n", celula->dados->nome);
+    }
     celula = celula->anterior;
   }
   printf("--------------------\n");
 }
 
-// Registro* copiarRegistro(Registro *registro) {
-//     Registro *novoRegistro = malloc(sizeof(Registro));
-//     if (novoRegistro == NULL) {
-//         // Tratar erro de alocação de memória
-//         perror("Erro ao alocar memória para novo registro");
-//         exit(1);
-//     }
-//     // Copiar os campos do registro
-//     strcpy(novoRegistro->nome, registro->nome);
-//     novoRegistro->idade = registro->idade;
-//     strcpy(novoRegistro->rg, registro->rg);
-
-//     // Copiar a data de entrada
-//     novoRegistro->entrada = malloc(sizeof(Data));
-//     if (novoRegistro->entrada == NULL) {
-//         // Tratar erro de alocação de memória
-//         perror("Erro ao alocar memória para nova data");
-//         free(novoRegistro);
-//         exit(1);
-//     }
-//     *novoRegistro->entrada = *registro->entrada;
-
-//     return novoRegistro;
-// }
-
+// Erro intermitente: As vezes a a variável operacao é alterada para 0 mesmo que a pilha não esteja vazia, o que faz com que o programa não funcione. Motivo desconhecido.
 void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
 {
   printf("Desfazer\n");
   printf("--------------------\n");
-  if (pilha->qtd == 0)
+  if (pilha->qtd <= 0)
   {
     printf("Nao ha operacoes para desfazer\n");
     printf("--------------------\n");
     return;
   }
+  mostra(pilha);
   int operacao;
   Registro *dados = malloc(sizeof(Registro));
   char rg[maxRG];
   // O & é necessário para passar o endereço da variável
   pop(pilha, &operacao, rg, dados);
-  // printf("t4\n");
 
+  // printf("Operacao: %d\n", operacao);
   if (operacao == 1)
   {
-    // printf("t6\n");
-    printf("Desenfileirar\n");
+    printf("Desenfileirar %s\n", dados->nome);
   }
   else if (operacao == 2)
   {
-    // printf("t7\n");
-    printf("Enfileirar\n");
+    printf("Enfileirar %s\n", dados->nome);
+  } else {
+    printf("Erro no carregamento\n");
+    return;
   }
-  printf("--------------------\n");
-  printf("Deseja desfazer a operacao?\n");
-  printf("--------------------\n");
-  printf("1 - Sim\n");
+  // printf("|\n");
+  printf("|_ Deseja desfazer a operacao?\n");
+  // printf("--------------------\n");
+  printf("\n1 - Sim\n");
   printf("2 - Nao\n");
   printf("--------------------\n");
   printf("Digite a opcao desejada: ");
@@ -865,7 +803,7 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
         fila->head = nova;
       }
       printf("Paciente %s", dados->nome);
-      printf(" adicionado(a) a fila de espera.\n");
+      printf(" retornou a fila de espera.\n");
       fila->qtde++;
     }
     else if (operacao == 2)
