@@ -15,6 +15,29 @@ void clearBuffer()
     ;
 }
 
+// Cria uma fila vazia
+// Ponteiro para fila
+Fila *inicializaFila()
+{
+  // Fila *fila = (Fila *)malloc(sizeof(Fila));
+  Fila *fila = malloc(sizeof(Fila));
+  fila->head = NULL;
+  fila->tail = NULL;
+  fila->qtde = 0;
+  // Retorna o ponteiro para a fila
+  return fila;
+}
+
+// Cria uma celula
+EFila *criarCelula(Registro *dados)
+{
+  EFila *celula = malloc(sizeof(EFila));
+  // celula->anterior = NULL;
+  celula->proximo = NULL;
+  celula->dados = dados;
+  return celula;
+}
+
 // Item de menu: Cadastrar em uma LDE
 // Operações:
 // ▶ Cadastrar novo paciente;
@@ -26,7 +49,7 @@ void clearBuffer()
 // As funções estão repetitivas, buscar uma forma de otimizar.
 // Funções para manipulação de listas dinâmicas encadeadas
 
-Lista *inicializa_lista()
+Lista *inicializaLista()
 {
   Lista *lista = malloc(sizeof(Lista));
   lista->inicio = NULL;
@@ -657,7 +680,7 @@ Celula *cria_celula(int operacao, Registro *dados)
   return celula;
 }
 
-Pilha *inicializa_pilha()
+Pilha *inicializaPilha()
 {
   Pilha *stack = malloc(sizeof(Pilha));
   stack->topo = NULL;
@@ -769,7 +792,7 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
     printf("Opcao invalida\n");
     return;
   }
-  
+
   int operacao;
   Registro *dados = malloc(sizeof(Registro));
   char rg[maxRG];
@@ -872,29 +895,6 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
 // ▶ Enfileirar paciente;
 // ▶ Desenfileirar paciente;
 // ▶ Mostrar fila.
-
-// Cria uma fila vazia
-// Ponteiro para fila
-Fila *inicializa_fila()
-{
-  // Fila *fila = (Fila *)malloc(sizeof(Fila));
-  Fila *fila = malloc(sizeof(Fila));
-  fila->head = NULL;
-  fila->tail = NULL;
-  fila->qtde = 0;
-  // Retorna o ponteiro para a fila
-  return fila;
-}
-
-// Cria uma celula
-EFila *criarCelula(Registro *dados)
-{
-  EFila *celula = malloc(sizeof(EFila));
-  // celula->anterior = NULL;
-  celula->proximo = NULL;
-  celula->dados = dados;
-  return celula;
-}
 
 // Conferir se está correto depois
 // Enfileirar paciente
@@ -1056,7 +1056,7 @@ EABB *cria_vertice(Registro *dados)
   return novo;
 }
 
-ABB *inicializa_arvore()
+ABB *inicializaArvore()
 {
   ABB *arvore = malloc(sizeof(ABB));
   arvore->raiz = NULL;

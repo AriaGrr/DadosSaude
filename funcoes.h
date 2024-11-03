@@ -84,7 +84,6 @@ typedef struct Celula
      int operacao;
      // Deve também ser possível armazenar um registro
      Registro *dados;
-     //     Operacao operacao;
      struct Celula *proximo;
      struct Celula *anterior;
 } Celula;
@@ -108,24 +107,21 @@ typedef struct
 // Aqui devemos colocar as funções que serão utilizadas do arquivo funcoes.c
 // DEVO CHAMAR TODAS QUE NÃO ESTÃO NO MAIN?
 
+// Limpa o buffer do teclado
 void clearBuffer();
 
 // Prints de menu
-
 void printMenu();
 void menuCadastro();
 void menuAtendimento();
 void menuPesquisa();
 void sobre();
 
-// Inicializar lista
-Lista *inicializa_lista();
-// Inicializar fila
-Fila *inicializa_fila();
-// Inicializar árvore
-ABB *inicializa_arvore();
-// Inicializar pilha
-Pilha *inicializa_pilha();
+// Inicializadores
+Lista *inicializaLista();
+Fila *inicializaFila();
+ABB *inicializaArvore();
+Pilha *inicializaPilha();
 
 // Funções do menu de cadastro
 
@@ -142,16 +138,17 @@ void removerPaciente(Lista *lista);
 
 // Funções do menu de atendimento
 
-// Criar celula
-EFila *criarCelula(Registro *dados);
-// Enfileirar paciente pelo rg
-void enfileirarRg(Fila *fila, Lista *lista, Pilha *pilha, char *rg);
 // Enfileirar paciente
 void enfileirarPaciente(Fila *fila, Lista *lista, Pilha *pilha);
 // Desenfileirar paciente
 void desenfileirarPaciente(Fila *fila, Pilha *pilha);
 // Mostrar fila completa
 void mostrarFila(Fila *fila);
+
+// Funções do menu de desfazer
+
+// Desfazer operação
+void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
 
 // Funções do menu de pesquisa
 
@@ -165,9 +162,5 @@ void mostrarFila(Fila *fila);
 // // Idade
 // void mostrar_idade(ABB *arvore);
 
-// Funções do menu de desfazer
-
-// Desfazer operação
-void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
 
 #endif //FUNCOES_H

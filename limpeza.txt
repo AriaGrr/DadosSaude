@@ -1221,7 +1221,7 @@ limpeza do menu
 // // Inicializar elemento de lista
 // ELista *inicializa_elemento();
 // // Inicializar fila
-// Fila *inicializa_fila();
+// Fila *inicializaFila();
 // // Inicializar elemento de fila
 // EFila *inicializa_elemento_fila();
 // // Inicializar árvore
@@ -1229,7 +1229,7 @@ limpeza do menu
 // // Inicializar elemento de árvore
 // EABB *inicializa_elemento_abb();
 // // Inicializar pilha
-// Pilha *inicializa_pilha();
+// Pilha *inicializaPilha();
 // // Inicializar célula
 // Celula *inicializa_celula();
 // // Inicializar dados
