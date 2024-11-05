@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib/cJSON.h"
+//#include "lib/cJSON.h"
 
 // Aqui devemos colocar os structs, tanto do arquivo a ser salvo quanto das estruturas que serão manipuladas
 
@@ -153,8 +153,10 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
 // Funções do menu de pesquisa
 
 // Funções de mostrar ordenado po
+void inserirAno(ABB *arvore, Dados *dados);
+ABB *cria_arvore();
 // // Ano
-// void mostrar_ano(ABB *arvore);
+ void mostrar_ano(EABB *raiz);
 // // Mês
 // void mostrar_mes(ABB *arvore);
 // // Dia
