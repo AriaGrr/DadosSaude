@@ -122,8 +122,14 @@ void main()
 
             if (opcao4 == 1)
             {
+                ABB *arvore_ano = cria_arvore();
+                Registro *atual = lista->inicio->dados;
+                for(int i = 0; i < lista->qtde; i++){
+                    inserirAno(arvore_ano,atual);
+                    atual = atual->proximo;
+                }
                 // Registros ordenados por ano
-                // mostrar_ano(abb);
+                 mostrar_ano(arvore_ano->raiz);
             }
             else if (opcao4 == 2)
             {
