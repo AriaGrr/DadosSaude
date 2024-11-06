@@ -1,3 +1,213 @@
+// void inserirArvore(ABB *arvore, Registro *dados)
+// {
+//   EABB *novo = criaVertice(dados);
+//   if (arvore->raiz == NULL)
+//   {
+//     arvore->raiz = novo;
+//   }
+//   else
+//   {
+//     inserirABB(novo, arvore->raiz);
+//   }
+//   arvore->qtde++;
+// }
+
+// void inserirABB(EABB *novo, EABB *raiz)
+// {
+//   if (novo->dados->entrada->ano < raiz->dados->entrada->ano)
+//   {
+//     if (raiz->esq == NULL)
+//     {
+//       raiz->esq = novo;
+//     }
+//     else
+//     {
+//       inserirABB(novo, raiz->esq);
+//     }
+//   }
+//   else if (novo->dados->entrada->ano > raiz->dados->entrada->ano)
+//   {
+//     if (raiz->dir == NULL)
+//     {
+//       raiz->dir = novo;
+//     }
+//     else
+//     {
+//       inserirABB(novo, raiz->dir);
+//     }
+//   }
+//   else
+//   {
+//     if (novo->dados->entrada->mes < raiz->dados->entrada->mes)
+//     {
+//       if (raiz->esq == NULL)
+//       {
+//         raiz->esq = novo;
+//       }
+//       else
+//       {
+//         inserirABB(novo, raiz->esq);
+//       }
+//     }
+//     else if (novo->dados->entrada->mes > raiz->dados->entrada->mes)
+//     {
+//       if (raiz->dir == NULL)
+//       {
+//         raiz->dir = novo;
+//       }
+//       else
+//       {
+//         inserirABB(novo, raiz->dir);
+//       }
+//     }
+//     else
+//     {
+//       if (novo->dados->entrada->dia < raiz->dados->entrada->dia)
+//       {
+//         if (raiz->esq == NULL)
+//         {
+//           raiz->esq = novo;
+//         }
+//         else
+//         {
+//           inserirABB(novo, raiz->esq);
+//         }
+//       }
+//       else if (novo->dados->entrada->dia > raiz->dados->entrada->dia)
+//       {
+//         if (raiz->dir == NULL)
+//         {
+//           raiz->dir = novo;
+//         }
+//         else
+//         {
+//           inserirABB(novo, raiz->dir);
+//         }
+//       }
+//       else
+//       {
+//         if (novo->dados->idade < raiz->dados->idade)
+//         {
+//           if (raiz->esq == NULL)
+//           {
+//             raiz->esq = novo;
+//           }
+//           else
+//           {
+//             inserirABB(novo, raiz->esq);
+//           }
+//         }
+//         else if (novo->dados->idade > raiz->dados->idade)
+//         {
+//           if (raiz->dir == NULL)
+//           {
+//             raiz->dir = novo;
+//           }
+//           else
+//           {
+//             inserirABB(novo, raiz->dir);
+//           }
+//         }
+//         else
+//         {
+//           printf("Paciente ja cadastrado\n");
+//         }
+//       }
+//     }
+//   }
+// }
+
+
+// void mostrarAno(EABB *raiz)
+// {
+//   if (raiz != NULL)
+//   {
+//     mostrarAno(raiz->esq);
+//     printf("----------------------------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrarAno(raiz->dir);
+//   }
+// }
+
+// void mostrarMes(EABB *raiz)
+// {
+//   if (raiz != NULL)
+//   {
+//     mostrarMes(raiz->esq);
+//     printf("----------------------------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrarMes(raiz->dir);
+//   }
+// }
+
+// void mostrarDia(EABB *raiz)
+// {
+//   if (raiz != NULL)
+//   {
+//     mostrarDia(raiz->esq);
+//     printf("----------------------------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrarDia(raiz->dir);
+//   }
+// }
+
+// void mostrarIdade(EABB *raiz)
+// {
+//   if (raiz != NULL)
+//   {
+//     mostrarIdade(raiz->esq);
+//     printf("----------------------------------------\n");
+//     printf("Nome: %s\n", raiz->dados->nome);
+//     printf("Idade: %d\n", raiz->dados->idade);
+//     printf("RG: %s\n", raiz->dados->rg);
+//     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     mostrarIdade(raiz->dir);
+//   }
+// }
+
+// void mostrarArvore(ABB *arvore, int opcao)
+// {
+//   if (arvore->raiz == NULL)
+//   {
+//     printf("Arvore vazia\n");
+//     return;
+//   }
+//   if (opcao == 1)
+//   {
+//     mostrarAno(arvore->raiz);
+//   }
+//   else if (opcao == 2)
+//   {
+//     mostrarMes(arvore->raiz);
+//   }
+//   else if (opcao == 3)
+//   {
+//     mostrarDia(arvore->raiz);
+//   }
+//   else if (opcao == 4)
+//   {
+//     mostrarIdade(arvore->raiz);
+//   }
+//   else
+//   {
+//     printf("Opcao invalida\n");
+//   }
+// }
+
+
+
+
+
+
 // // Montar um arquivo json a partir de cada uma das estruturas
 // cJSON *estruturaJson1(void *data, const char *campo[], const char *tipo[])
 // {
@@ -1240,7 +1450,7 @@ ITENS PARA CONCERTAR DA PESQUISA
 
 // void inserir(ABB *arvore, Registro *dados)
 // {
-//   EABB *novo = cria_vertice(dados);
+//   EABB *novo = criaVertice(dados);
 //   EABB *atual = arvore->raiz;
 //   EABB *anterior = NULL;
 //   // Se a arvore estiver vazia

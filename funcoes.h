@@ -152,15 +152,15 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
 
 // Funções do menu de pesquisa
 
-// Funções de mostrar ordenado po
-// // Ano
-// void mostrar_ano(ABB *arvore);
-// // Mês
-// void mostrar_mes(ABB *arvore);
-// // Dia
-// void mostrar_dia(ABB *arvore);
-// // Idade
-// void mostrar_idade(ABB *arvore);
+// Funções de mostrar ordenado 
+
+// Ano
+
+// Mês
+
+// Dia
+
+// Idade
 
 
 #endif //FUNCOES_H

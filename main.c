@@ -123,22 +123,22 @@ void main()
             if (opcao4 == 1)
             {
                 // Registros ordenados por ano
-                // mostrar_ano(abb);
+                
             }
             else if (opcao4 == 2)
             {
                 // Registros ordenados por mês
-                // mostrar_mes(abb);
+                
             }
             else if (opcao4 == 3)
             {
                 // Registros ordenados por dia
-                // mostrar_dia(abb);
+                
             }
             else if (opcao4 == 4)
             {
                 // Registros ordenados por idade
-                // mostrar_idade(abb);
+                
             }
             else if (opcao4 == 0)
             {
