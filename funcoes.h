@@ -96,13 +96,13 @@ typedef struct
 } Pilha;
 
 // Estrutura contêiner para armazenar as estruturas de dados do programa no JSON
-typedef struct
-{
-     Lista *lista;
-     Fila *fila;
-     ABB *abb;
-     Pilha *pilha;
-} Dados;
+// typedef struct
+// {
+//      Lista *lista;
+//      Fila *fila;
+//      ABB *abb;
+//      Pilha *pilha;
+// } Dados;
 
 // Aqui devemos colocar as funções que serão utilizadas do arquivo funcoes.c
 // DEVO CHAMAR TODAS QUE NÃO ESTÃO NO MAIN?
