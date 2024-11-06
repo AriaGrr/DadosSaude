@@ -896,7 +896,6 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
 // ▶ Desenfileirar paciente;
 // ▶ Mostrar fila.
 
-// Conferir se está correto depois
 // Enfileirar paciente
 void enfileirar(Fila *fila, Registro *dados)
 {
@@ -916,7 +915,6 @@ void enfileirar(Fila *fila, Registro *dados)
   fila->qtde++;
 }
 
-// Conferir se está correto depois
 // Desenfileirar paciente
 void desenfileirarPaciente(Fila *fila, Pilha *pilha)
 {
@@ -1046,7 +1044,7 @@ void mostrarFila(Fila *fila)
 // ▶ Mostrar registros ordenados por dia de registro;
 // ▶ Mostrar registros ordenados por idade do paciente.
 
-EABB *cria_vertice(Registro *dados)
+EABB *criaVertice(Registro *dados)
 {
   EABB *novo = malloc(sizeof(EABB));
   novo->dir = NULL;
@@ -1064,6 +1062,9 @@ ABB *inicializaArvore()
 
   return arvore;
 }
+
+// O que vou precisar: função de inserir, função pesquisar por um paciente, função de ordenar por ano, mês, dia e idade.
+// Funções básicas como criar nó, inserir, buscar e percorrer (mostrar, inordem, preordem, posordem)
 
 // CONCERTAR ITENS DA PESQUISA!!
 
