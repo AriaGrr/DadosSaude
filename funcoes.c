@@ -1064,6 +1064,7 @@ ABB *inicializaArvore()
 
   return arvore;
 }
+
 void inserirAno(ABB *arvore, Registro *dados)
 {
     EABB *novo = cria_vertice(dados);
@@ -1078,16 +1079,13 @@ void inserirAno(ABB *arvore, Registro *dados)
         while (atual != NULL)
         {
             anterior = atual;
-
             if (novo->dados->entrada->ano > atual->dados->entrada->ano)
             {
-                
                 atual = atual->dir;
 
             }
             else if (novo->dados->entrada->ano < atual->dados->entrada->ano)
-            {
-                
+            { 
                 atual = atual->esq;
             }
             if (atual == NULL)
@@ -1095,13 +1093,10 @@ void inserirAno(ABB *arvore, Registro *dados)
                 if (novo->dados->entrada->ano < anterior->dados->entrada->ano)
                 {
                     anterior->esq = novo;
-                    
                 }
                 else
                 {
                     anterior->dir = novo;
-                    
-                    
                 }
                 arvore->qtde++;
 
@@ -1122,7 +1117,6 @@ void inserirAno(ABB *arvore, Registro *dados)
      printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
      mostrar_ano(raiz->dir);
    }
-   if()
  }
 // CONCERTAR ITENS DA PESQUISA!!
 
