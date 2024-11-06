@@ -154,9 +154,9 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
 
 // Funções de mostrar ordenado po
 void inserirAno(ABB *arvore, Registro *dados);
-ABB *cria_arvore();
+
 // // Ano
- void mostrar_ano(EABB *raiz);
+ void mostrar_ano(EABB *arvore);
 // // Mês
 // void mostrar_mes(ABB *arvore);
 // // Dia

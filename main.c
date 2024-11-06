@@ -19,7 +19,7 @@ void main()
     int opcao;
     do
     {
-        system("cls");
+        system("clear");
         printMenu();
         scanf("%d", &opcao);
         // printf("%d\n", opcao);
@@ -30,11 +30,11 @@ void main()
         else if (opcao == 1)
         {
             // Menu de cadastro
-            system("cls");
+            system("clear");
             menuCadastro();
             int opcao2;
             scanf("%d", &opcao2);
-            system("cls");
+            system("clear");
             if (opcao2 == 1)
             {
                 // Cadastrar novo paciente
@@ -73,15 +73,15 @@ void main()
             // Pausar o terminal
             clearBuffer();
             clearBuffer();
-            system("cls");
+            system("clear");
         }
         else if (opcao == 2)
         {
-            system("cls");
+            system("clear");
             menuAtendimento();
             int opcao3;
             scanf("%d", &opcao3);
-            system("cls");
+            system("clear");
 
             if (opcao3 == 1)
             {
@@ -110,25 +110,27 @@ void main()
             // Pausar o terminal
             clearBuffer();
             clearBuffer();
-            system("cls");
+            system("clear");
         }
         else if (opcao == 3)
         {
-            system("cls");
+            system("clear");
             menuPesquisa();
             int opcao4;
             scanf("%d", &opcao4);
-            system("cls");
+            system("clear");
 
             if (opcao4 == 1)
             {
                ABB *arvore_ano = inicializaArvore();
-                Registro *atual = lista->inicio->dados;
+                
                 ELista *lugar_atual = lista->inicio;
+                
                 while(lugar_atual != NULL){
+                    Registro *atual = lugar_atual->dados;
                     inserirAno(arvore_ano,atual);
                     lugar_atual = lugar_atual->proximo;
-                    atual = lugar_atual->dados;
+                    
                 }
                 // Registros ordenados por ano
                  mostrar_ano(arvore_ano->raiz);
@@ -160,51 +162,51 @@ void main()
             // Pausar o terminal
             clearBuffer();
             clearBuffer();
-            system("cls");
+            system("clear");
         }
         else if (opcao == 4)
         {
             // Desfazer
-            system("cls");
+            system("clear");
             desfazer(pilha, fila, lista);
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("cls");
+            system("clear");
         }
         else if (opcao == 5)
         {
             // Carregar
-            system("cls");
+            system("clear");
 
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("cls");
+            system("clear");
         }
         else if (opcao == 6)
         {
             // Salvar
-            system("cls");
+            system("clear");
 
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("cls");
+            system("clear");
         }
         else if (opcao == 7)
         {
             // Sobre
-            system("cls");
+            system("clear");
             sobre();
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("cls");
+            system("clear");
         }
         else
         {

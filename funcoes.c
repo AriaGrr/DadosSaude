@@ -1073,19 +1073,21 @@ void inserirAno(ABB *arvore, Registro *dados)
     }
     else if (arvore->raiz != NULL)
     {
-        EABB *anterior = cria_vertice(0);
+        EABB *anterior = NULL;
         EABB *atual = arvore->raiz;
         while (atual != NULL)
         {
+            anterior = atual;
+
             if (novo->dados->entrada->ano > atual->dados->entrada->ano)
             {
-                anterior = atual;
+                
                 atual = atual->dir;
 
             }
             else if (novo->dados->entrada->ano < atual->dados->entrada->ano)
             {
-                anterior = atual;
+                
                 atual = atual->esq;
             }
             if (atual == NULL)
@@ -1093,27 +1095,35 @@ void inserirAno(ABB *arvore, Registro *dados)
                 if (novo->dados->entrada->ano < anterior->dados->entrada->ano)
                 {
                     anterior->esq = novo;
-                    arvore->qtde++;
+                    
                 }
                 else
                 {
                     anterior->dir = novo;
-                    arvore->qtde++;
+                    
                     
                 }
+                arvore->qtde++;
+
             }
         }
     }
 }
-void mostrar_ano(EABB *raiz)
-{
-    if (raiz != NULL)
-    {
-        mostrar_ano(raiz->esq);
-        printf("%d ", raiz->dados->entrada->ano);
-        mostrar_ano(raiz->dir);
-    }
-}
+ void mostrar_ano(EABB *arvore)
+ {
+   EABB *raiz = arvore;
+   if (raiz != NULL)
+   {
+     mostrar_ano(raiz->esq);
+     printf("----------------------------------------\n");
+     printf("Nome: %s\n", raiz->dados->nome);
+     printf("Idade: %d\n", raiz->dados->idade);
+     printf("RG: %s\n", raiz->dados->rg);
+     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+     mostrar_ano(raiz->dir);
+   }
+   if()
+ }
 // CONCERTAR ITENS DA PESQUISA!!
 
 // Funções para print dos menus:
