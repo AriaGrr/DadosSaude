@@ -122,11 +122,13 @@ void main()
 
             if (opcao4 == 1)
             {
-                ABB *arvore_ano = cria_arvore();
+               ABB *arvore_ano = inicializaArvore();
                 Registro *atual = lista->inicio->dados;
-                for(int i = 0; i < lista->qtde; i++){
+                ELista *lugar_atual = lista->inicio;
+                while(lugar_atual != NULL){
                     inserirAno(arvore_ano,atual);
-                    atual = atual->proximo;
+                    lugar_atual = lugar_atual->proximo;
+                    atual = lugar_atual->dados;
                 }
                 // Registros ordenados por ano
                  mostrar_ano(arvore_ano->raiz);

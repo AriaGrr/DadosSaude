@@ -1064,7 +1064,56 @@ ABB *inicializaArvore()
 
   return arvore;
 }
+void inserirAno(ABB *arvore, Registro *dados)
+{
+    EABB *novo = cria_vertice(dados);
+    if (arvore->raiz == NULL)
+    {
+        arvore->raiz = novo;
+    }
+    else if (arvore->raiz != NULL)
+    {
+        EABB *anterior = cria_vertice(0);
+        EABB *atual = arvore->raiz;
+        while (atual != NULL)
+        {
+            if (novo->dados->entrada->ano > atual->dados->entrada->ano)
+            {
+                anterior = atual;
+                atual = atual->dir;
 
+            }
+            else if (novo->dados->entrada->ano < atual->dados->entrada->ano)
+            {
+                anterior = atual;
+                atual = atual->esq;
+            }
+            if (atual == NULL)
+            {
+                if (novo->dados->entrada->ano < anterior->dados->entrada->ano)
+                {
+                    anterior->esq = novo;
+                    arvore->qtde++;
+                }
+                else
+                {
+                    anterior->dir = novo;
+                    arvore->qtde++;
+                    
+                }
+            }
+        }
+    }
+}
+void mostrar_ano(EABB *raiz)
+{
+    if (raiz != NULL)
+    {
+        mostrar_ano(raiz->esq);
+        printf("%d ", raiz->dados->entrada->ano);
+        mostrar_ano(raiz->dir);
+    }
+}
 // CONCERTAR ITENS DA PESQUISA!!
 
 // Funções para print dos menus:
@@ -1155,66 +1204,5 @@ void sobre()
   printf("\n----------------------------------------\n");
 }
 
-//Pesquisa:
- //Mostrar registros ordenados por ano de registro;
-//▶ Mostrar registros ordenados por mês de registro;
-//▶ Mostrar registros ordenados por dia de registro;
-//▶ Mostrar registros ordenados por idade do paciente.
-ABB *cria_arvore()
-{
-    ABB *arvore = malloc(sizeof(ABB));
-    arvore->raiz = NULL;
-    arvore->qtde = 0;
 
-    return arvore;
-}
-void inserirAno(ABB *arvore, Registro *dados)
-{
-    EABB *novo = cria_vertice(dados);
-    if (arvore->raiz == NULL)
-    {
-        arvore->raiz = novo;
-    }
-    else if (arvore->raiz != NULL)
-    {
-        EABB *anterior = cria_vertice(0);
-        EABB *atual = arvore->raiz;
-        while (atual != NULL)
-        {
-            if (novo->dados->entrada->ano > atual->dados->entrada->ano)
-            {
-                anterior = atual;
-                atual = atual->dir;
 
-            }
-            else if (novo->dados->entrada->ano < atual->dados->entrada->ano)
-            {
-                anterior = atual;
-                atual = atual->esq;
-            }
-            if (atual == NULL)
-            {
-                if (novo->dados->entrada->ano < anterior->dados->entrada->ano)
-                {
-                    anterior->esq = novo;
-                    arvore->qtde++;
-                }
-                else
-                {
-                    anterior->dir = novo;
-                    arvore->qtde++;
-                    
-                }
-            }
-        }
-    }
-}
-void mostrar_ano(EABB *raiz)
-{
-    if (raiz != NULL)
-    {
-        mostrar_ano(raiz->esq);
-        printf("%d ", raiz->dados->entrada->ano);
-        mostrar_ano(raiz->dir);
-    }
-}
