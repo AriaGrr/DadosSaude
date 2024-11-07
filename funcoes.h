@@ -126,7 +126,7 @@ Pilha *inicializaPilha();
 // Funções do menu de cadastro
 
 // Cadastrar paciente
-void cadastrarPaciente(Lista *lista);
+void cadastrarPaciente(Lista *lista, ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade);
 // Consultar paciente
 void consultarPaciente(Lista *lista);
 // Mostrar lista completa
@@ -153,14 +153,7 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
 // Funções do menu de pesquisa
 
 // Funções de mostrar ordenado 
-
-// Ano
-
-// Mês
-
-// Dia
-
-// Idade
-
+void ordenado(EABB *raiz);
+void inserirArvore(ABB *ano, ABB *mes, ABB*dia, ABB *idade, Registro *dados);
 
 #endif //FUNCOES_H
