@@ -4,17 +4,30 @@
 // Retirando acentos e caracteres especiais
 
 // Alterar main pro projeto atual
-void main()
+int main()
 {
+    int cod;
+    char arquivo[] = "pacientes";
+
     // Inicializações
     // Inicializa a lista
     Lista *lista = inicializaLista();
     // Inicializa a fila
     Fila *fila = inicializaFila();
-    // Inicializa a árvore
-    ABB *abb = inicializaArvore();
     // Inicializa a pilha
     Pilha *pilha = inicializaPilha();
+    // Inicializa as árvores
+    // Arvore *arvore = cria_arvore(); EXEMPLO
+    // ABB *arvoreAno = inicializaArvore();
+    // ABB *arvoreMes = inicializaArvore();
+    // ABB *arvoreDia = inicializaArvore();
+    // ABB *arvoreIdade = inicializaArvore();
+
+    cod = carregarLista(lista, arquivo);
+    if (cod == 1)
+    {
+        lista->qtde = 0;
+    }
 
     int opcao;
     do
@@ -38,6 +51,7 @@ void main()
             if (opcao2 == 1)
             {
                 // Cadastrar novo paciente
+                // cadastrarPaciente(lista, arvoreAno, arvoreMes, arvoreDia, arvoreIdade);
                 cadastrarPaciente(lista);
             }
             else if (opcao2 == 2)
@@ -96,7 +110,7 @@ void main()
             else if (opcao3 == 3)
             {
                 // Mostrar fila de espera
-                mostrarFila(fila); 
+                mostrarFila(fila);
             }
             else if (opcao3 == 0)
             {
@@ -123,22 +137,68 @@ void main()
             if (opcao4 == 1)
             {
                 // Registros ordenados por ano
-                
+                printf("Registros ordenados por ano:\n");
+                ABB *arvoreAno = inicializaArvore();
+
+                ELista *atual = lista->inicio;
+
+                while (atual != NULL)
+                {
+                    Registro *novo = atual->dados;
+                    inserirAno(arvoreAno, novo);
+                    atual = atual->proximo;
+                }
+                // // Registros ordenados por ano
+                mostrarArvore(arvoreAno->raiz);
+                printf("----------------------------------------\n");
             }
             else if (opcao4 == 2)
             {
                 // Registros ordenados por mês
-                
+                printf("Registros ordenados por mes:\n");
+                ABB *arvoreMes = inicializaArvore();
+                ELista *atual = lista->inicio;
+
+                while (atual != NULL)
+                {
+                    Registro *novo = atual->dados;
+                    inserirAno(arvoreMes, novo);
+                    atual = atual->proximo;
+                }
+                mostrarArvore(arvoreMes->raiz);
+                printf("----------------------------------------\n");
             }
             else if (opcao4 == 3)
             {
                 // Registros ordenados por dia
-                
+                printf("Registros ordenados por dia:\n");
+                ABB *arvoreDia = inicializaArvore();
+                ELista *atual = lista->inicio;
+
+                while (atual != NULL)
+                {
+                    Registro *novo = atual->dados;
+                    inserirAno(arvoreDia, novo);
+                    atual = atual->proximo;
+                }
+                mostrarArvore(arvoreDia->raiz);
+                printf("----------------------------------------\n");
             }
             else if (opcao4 == 4)
             {
                 // Registros ordenados por idade
-                
+                printf("Registros ordenados por idade:\n");
+                ABB *arvoreIdade = inicializaArvore();
+                ELista *atual = lista->inicio;
+
+                while (atual != NULL)
+                {
+                    Registro *novo = atual->dados;
+                    inserirAno(arvoreIdade, novo);
+                    atual = atual->proximo;
+                }
+                mostrarArvore(arvoreIdade->raiz);
+                printf("----------------------------------------\n");
             }
             else if (opcao4 == 0)
             {
@@ -158,7 +218,7 @@ void main()
         {
             // Desfazer
             system("cls");
-            desfazer(pilha, fila, lista);
+            desfazer(pilha, fila);
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
@@ -169,7 +229,16 @@ void main()
         {
             // Carregar
             system("cls");
-
+            // Limpar a lista antes de carregar
+            liberarLista(lista);
+            cod = carregarLista(lista, arquivo);
+            if (cod == 1)
+            {
+                lista->qtde = 0;
+                printf("Nao foi possivel carregar os pacientes!\n");
+            } else {
+                printf("Pacientes carregados com sucesso!\n");
+            }
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
@@ -180,7 +249,15 @@ void main()
         {
             // Salvar
             system("cls");
-
+            cod = salvarLista(lista, arquivo);
+            if (cod == 0)
+            {
+                printf("Pacientes salvos com sucesso!\n");
+            }
+            else
+            {
+                printf("Erro ao salvar pacientes!\n");
+            }
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
@@ -202,7 +279,11 @@ void main()
         {
             printf("Opcao nao existe!\n");
         }
-        //     cod = salvarLista(lt, arquivo);
+        cod = salvarLista(lista, arquivo);
     } while (opcao != 0);
-
+    if (cod != 0)
+    {
+        printf("Erro ao salvar pacientes!\n");
+    }
+    return 0;
 }

@@ -19,7 +19,6 @@ void clearBuffer()
 // Ponteiro para fila
 Fila *inicializaFila()
 {
-  // Fila *fila = (Fila *)malloc(sizeof(Fila));
   Fila *fila = malloc(sizeof(Fila));
   fila->head = NULL;
   fila->tail = NULL;
@@ -38,7 +37,26 @@ EFila *criarCelula(Registro *dados)
   return celula;
 }
 
+Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data) {
+  Registro *pessoa = malloc(sizeof(Registro));
+  strcpy(pessoa->nome, nome);
+  pessoa->idade = idade;
+  strcpy(pessoa->rg, rg);
+  pessoa->entrada = data;
+  return pessoa;
+}
+
+Data *criaData(int dia, int mes, int ano) {
+  Data *data = malloc(sizeof(Data));
+  data->dia = dia;
+  data->mes = mes;
+  data->ano = ano;
+  return data;
+}
+
 // Item de menu: Cadastrar em uma LDE
+// Cadastrar novo paciente em uma lista dinâmica encadeada, mantendo a
+// ordem de registro (inserção no início);
 // Operações:
 // ▶ Cadastrar novo paciente;
 // ▶ Consultar paciente cadastrado;
@@ -57,8 +75,8 @@ Lista *inicializaLista()
   return lista;
 }
 
-// Verificar se é Registro *dados mesmo
-ELista *inicializa_celula(Registro *dados)
+// // Verificar se é Registro *dados mesmo
+ELista *inicializaCelula(Registro *dados)
 {
   ELista *celula = malloc(sizeof(ELista));
   celula->proximo = NULL;
@@ -68,42 +86,10 @@ ELista *inicializa_celula(Registro *dados)
 
 void inserir(Lista *lista, Registro *dados)
 {
-  ELista *nova = inicializa_celula(dados);
-  ELista *atual = lista->inicio;
-  ELista *anterior = NULL;
-  if (lista->qtde == 0)
-  {
-    lista->inicio = nova;
-    lista->qtde++;
-  }
-  else
-  {
-    while (atual != NULL && nova->dados >= atual->dados)
-    {
-      anterior = atual;
-      atual = atual->proximo;
-    }
-    if (anterior == NULL)
-    {
-      nova->proximo = lista->inicio;
-      lista->inicio = nova;
-      lista->qtde++;
-    }
-    else
-    {
-      if (atual == NULL)
-      {
-        anterior->proximo = nova;
-        lista->qtde++;
-      }
-      else
-      {
-        anterior->proximo = nova;
-        nova->proximo = atual;
-        lista->qtde++;
-      }
-    }
-  }
+  ELista *nova = inicializaCelula(dados);
+  nova->proximo = lista->inicio;
+  lista->inicio = nova;
+  lista->qtde++;
 }
 
 // Mostrar lista de pacientes completa
@@ -112,7 +98,7 @@ void mostrarLista(Lista *lista)
   ELista *atual = lista->inicio;
   if (atual == NULL)
   {
-    printf("Lista vazia\n");
+    printf("Nenhum paciente cadastrado!\n");
     return;
   }
   printf("Lista de pacientes\n");
@@ -254,6 +240,7 @@ Registro *cadastrar(Lista *lista)
   return novo;
 }
 
+// void cadastrarPaciente(Lista *lista, ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade)
 void cadastrarPaciente(Lista *lista)
 {
   Registro *novo = cadastrar(lista);
@@ -277,6 +264,7 @@ void cadastrarPaciente(Lista *lista)
     if (opcao == 1)
     {
       inserir(lista, novo);
+      //inserirArvore(arvoreAno, arvoreMes, arvoreDia, arvoreIdade, novo);
     }
     else if (opcao == 2)
     {
@@ -290,7 +278,9 @@ void cadastrarPaciente(Lista *lista)
       {
         free(novo->entrada);
         free(novo);
+        // cadastrarPaciente(lista, arvoreAno, arvoreMes, arvoreDia, arvoreIdade);
         cadastrarPaciente(lista);
+        // inserirArvore(arvoreAno, arvoreMes, arvoreDia, arvoreIdade, novo);
       }
       else if (opcao2 == 2)
       {
@@ -757,7 +747,7 @@ void mostra(Pilha *pilha)
 }
 
 // Erro intermitente: As vezes a variável operacao é alterada para 0 mesmo que a pilha não esteja vazia, o que faz com que o programa não funcione. Motivo desconhecido.
-void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
+void desfazer(Pilha *pilha, Fila *fila)
 {
   printf("Desfazer\n");
   printf("----------------------------------------\n");
@@ -1063,10 +1053,268 @@ ABB *inicializaArvore()
   return arvore;
 }
 
+void *inserirAno(ABB *arvore, Registro *dados)
+{
+  EABB *novo = criaVertice(dados);
+  if (arvore->raiz == NULL)
+  {
+    arvore->raiz = novo;
+  }
+  else if (arvore->raiz != NULL)
+  {
+    EABB *anterior = NULL;
+    EABB *atual = arvore->raiz;
+    while (atual != NULL)
+    {
+      anterior = atual;
+      if (novo->dados->entrada->ano > atual->dados->entrada->ano)
+      {
+        atual = atual->dir;
+      }
+      else
+      {
+        atual = atual->esq;
+      }
+      if (atual == NULL)
+      {
+        if (novo->dados->entrada->ano < anterior->dados->entrada->ano)
+        {
+          anterior->esq = novo;
+        }
+        else
+        {
+          anterior->dir = novo;
+        }
+        arvore->qtde++;
+        // return novo;
+      }
+    }
+  }
+}
+
+void *inserirMes(ABB *arvore, Registro *dados)
+{
+  EABB *novo = criaVertice(dados);
+  if (arvore->raiz == NULL)
+  {
+    arvore->raiz = novo;
+  }
+  else if (arvore->raiz != NULL)
+  {
+    EABB *anterior = NULL;
+    EABB *atual = arvore->raiz;
+    while (atual != NULL)
+    {
+      anterior = atual;
+      if (novo->dados->entrada->mes > atual->dados->entrada->mes)
+      {
+        atual = atual->dir;
+      }
+      else
+      {
+        atual = atual->esq;
+      }
+      if (atual == NULL)
+      {
+        if (novo->dados->entrada->mes < anterior->dados->entrada->mes)
+        {
+          anterior->esq = novo;
+        }
+        else
+        {
+          anterior->dir = novo;
+        }
+        arvore->qtde++;
+        // return novo;
+      }
+    }
+  }
+}
+
+void *inserirDia(ABB *arvore, Registro *dados)
+{
+    EABB *novo = criaVertice(dados);
+    if (arvore->raiz == NULL)
+    {
+        arvore->raiz = novo;
+    }
+    else if (arvore->raiz != NULL)
+    {
+        EABB *anterior = NULL;
+        EABB *atual = arvore->raiz;
+        while (atual != NULL)
+        {
+            anterior = atual;
+            if (novo->dados->entrada->dia > atual->dados->entrada->dia)
+            {
+                atual = atual->dir;
+            }
+            else
+            { 
+                atual = atual->esq;
+            }
+            if (atual == NULL)
+            {
+                if (novo->dados->entrada->dia < anterior->dados->entrada->dia)
+                {
+                    anterior->esq = novo;
+                }
+                else
+                {
+                    anterior->dir = novo;
+                }
+                arvore->qtde++;
+                // return novo;
+            }
+        }
+    }
+}
+
+void *inserirIdade(ABB *arvore, Registro *dados)
+{
+    EABB *novo = criaVertice(dados);
+    if (arvore->raiz == NULL)
+    {
+        arvore->raiz = novo;
+    }
+    else if (arvore->raiz != NULL)
+    {
+        EABB *anterior = NULL;
+        EABB *atual = arvore->raiz;
+        while (atual != NULL)
+        {
+            anterior = atual;
+            if (novo->dados->idade > atual->dados->idade)
+            {
+                atual = atual->dir;
+            }
+            else
+            { 
+                atual = atual->esq;
+            }
+            if (atual == NULL)
+            {
+                if (novo->dados->idade < anterior->dados->idade)
+                {
+                    anterior->esq = novo;
+                }
+                else
+                {
+                    anterior->dir = novo;
+                }
+                arvore->qtde++;
+                // return novo;
+            }
+        }
+    }
+}
+
+void mostrarArvore(EABB *raiz)
+{
+  if (raiz != NULL)
+  {
+    mostrarArvore(raiz->esq);
+    printf("----------------------------------------\n");
+    printf("Nome: %s\n", raiz->dados->nome);
+    printf("Idade: %d\n", raiz->dados->idade);
+    printf("RG: %s\n", raiz->dados->rg);
+    printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+    mostrarArvore(raiz->dir);
+  }
+}
+
+// void *inserirArvore(ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade, Registro *dados)
+// {
+//   inserirAno(arvoreAno, dados);
+//   inserirMes(arvoreMes, dados);
+//   inserirDia(arvoreDia, dados);
+//   inserirIdade(arvoreIdade, dados);
+// }
+
 // O que vou precisar: função de inserir, função pesquisar por um paciente, função de ordenar por ano, mês, dia e idade.
 // Funções básicas como criar nó, inserir, buscar e percorrer (mostrar, inordem, preordem, posordem)
 
 // CONCERTAR ITENS DA PESQUISA!!
+
+// Salva a lista em um arquivo
+// fwrite
+int salvarLista(Lista *lista, char nome[])
+{
+  FILE *arquivo;
+  arquivo = fopen(nome, "wb");
+
+  if (arquivo == NULL)
+  {
+    printf("Erro ao abrir o arquivo.\n");
+    return 1;
+  }
+
+  ELista *atual = lista->inicio;
+  while (atual != NULL)
+  {
+    fwrite(atual->dados, sizeof(Registro), 1, arquivo);
+    fwrite(atual->dados->entrada, sizeof(Data), 1, arquivo);
+    atual = atual->proximo;
+  }
+
+  fclose(arquivo);
+  return 0;
+}
+
+// Para liberar a memória e evitar duplicidade ao carregar a lista
+void liberarLista(Lista *lista) {
+    ELista *atual, *proximo;
+    atual = lista->inicio;
+    while (atual != NULL) {
+        proximo = atual->proximo;
+        free(atual);
+        atual = proximo;
+    }
+    lista->inicio = NULL;
+    lista->qtde = 0;
+}
+
+// Carrega a lista de um arquivo
+// fread
+int carregarLista(Lista *lista, char *nomeArquivo){
+  FILE *arquivo = fopen(nomeArquivo, "rb");
+  if (arquivo == NULL) {
+    printf("Falha ao abrir o arquivo");
+    return 1;
+  }
+  Registro registro;
+  Data data;
+  while (fread(&registro, sizeof(Registro), 1, arquivo) == 1) { 
+      fread(&data, sizeof(Data), 1, arquivo); 
+      Data *novaData = criaData(data.dia, data.mes, data.ano);
+      Registro *pessoa = salvarPessoa(registro.nome, registro.idade, registro.rg, novaData);
+      if (pessoa != NULL) {
+         ELista *novo = inicializaCelula(pessoa);
+         //Adicionar no final da lista
+         if (lista->inicio == NULL) {
+           lista->inicio = novo;
+         }else{
+           ELista *atual = lista->inicio;
+            ELista *anterior = NULL;
+            while (atual != NULL) {
+              anterior = atual;
+              atual = atual->proximo;
+            }
+            anterior->proximo = novo;
+         }
+        lista->qtde++;
+        //Adicionar na arvore
+        // registroOrdenadoAno(arvoreAno, pessoa);
+        // registroOrdenadoMes(arvoreMes, pessoa);
+        // registroOrdenadoDia(arvoreDia, pessoa);
+        // registroOrdenadoIdade(arvoreIdade, pessoa);
+      }
+  }
+  fclose(arquivo);
+  return 0;
+  // printf("Dados carregados com sucesso!\n");
+  // printf("\n");
+}
 
 // Funções para print dos menus:
 void printMenu()

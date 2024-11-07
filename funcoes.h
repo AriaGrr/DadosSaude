@@ -95,15 +95,6 @@ typedef struct
      int qtd;
 } Pilha;
 
-// Estrutura contêiner para armazenar as estruturas de dados do programa no JSON
-// typedef struct
-// {
-//      Lista *lista;
-//      Fila *fila;
-//      //ABB *abb;
-//      Pilha *pilha;
-// } Dados;
-
 // Aqui devemos colocar as funções que serão utilizadas do arquivo funcoes.c
 // DEVO CHAMAR TODAS QUE NÃO ESTÃO NO MAIN?
 
@@ -126,6 +117,7 @@ Pilha *inicializaPilha();
 // Funções do menu de cadastro
 
 // Cadastrar paciente
+// void cadastrarPaciente(Lista *lista, ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade);
 void cadastrarPaciente(Lista *lista);
 // Consultar paciente
 void consultarPaciente(Lista *lista);
@@ -148,19 +140,23 @@ void mostrarFila(Fila *fila);
 // Funções do menu de desfazer
 
 // Desfazer operação
-void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
+void desfazer(Pilha *pilha, Fila *fila);
 
 // Funções do menu de pesquisa
 
 // Funções de mostrar ordenado 
+void mostrarArvore(EABB *raiz);
+// void *inserirArvore(ABB *arvoreAno, ABB *arvoreMes, ABB*arvoreDia, ABB *arvoreIdade, Registro *dados);
+void *inserirAno(ABB *arvoreAno, Registro *dados);
+void *inserirMes(ABB *arvoreMes, Registro *dados);
+void *inserirDia(ABB *arvoreDia, Registro *dados);
+void *inserirIdade(ABB *arvoreIdade, Registro *dados);
 
-// Ano
-
-// Mês
-
-// Dia
-
-// Idade
-
+// Carregar lista
+int carregarLista(Lista *lista, char *arquivo);
+// Salvar lista
+int salvarLista(Lista *lista, char *arquivo);
+// Excluir lista
+void liberarLista(Lista *lista);
 
 #endif //FUNCOES_H

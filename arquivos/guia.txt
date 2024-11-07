@@ -1,0 +1,1 @@
+Nesta pasta irei colocar alguns arquivos prontos para que você consiga testar o funcionamento. Quando for usar um dos arquivos de teste desta pasta, copie e coloque fora da pasta com o nome "pacientes".
