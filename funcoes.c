@@ -1076,7 +1076,8 @@ ABB *inicializaArvore()
   //    mostrar_ano(raiz->dir);
   //  }
 // Exemplo dado em aula
-void ordenado(EABB *raiz) {
+void ordenado(EABB *arvore) {
+    EABB *raiz = arvore;
     if(raiz != NULL){
     	ordenado(raiz->esq);
     	printf("%d ", raiz->dados->nome);
@@ -1124,6 +1125,8 @@ void inserirAno(EABB *raiz, Registro *dados)
       inserirAno(raiz->dir, dados);
     }
   }
+
+  
 }
 
 void inserirMes(EABB *raiz, Registro *dados){
@@ -1162,11 +1165,11 @@ void inserirDia(EABB *raiz, Registro *dados){
   }
 }
 
-void inserirArvore(ABB *ano, ABB *mes, ABB*dia, ABB *idade, Registro *registro){
-    inserirAno(ano->raiz, registro);
-    inserirMes(mes->raiz, registro);
-    inserirDia(dia->raiz, registro);
-    inserirIdade(idade->raiz, registro);
+void inserirArvore(ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade, Registro *registro){
+    inserirAno(arvoreAno->raiz, registro);
+    inserirMes(arvoreMes->raiz, registro);
+    inserirDia(arvoreDia->raiz, registro);
+    inserirIdade(arvoreIdade->raiz, registro);
 }
 
 // O que vou precisar: função de inserir, função pesquisar por um paciente, função de ordenar por ano, mês, dia e idade.
