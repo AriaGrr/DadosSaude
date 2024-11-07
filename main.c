@@ -1,6 +1,6 @@
 #include "funcoes.h"
 // system("cls"); Limpa o terminal Windows
-// system("clear"); Limpa o terminal Linux (Replit usa Linux)
+// system("cls"); Limpa o terminal Linux (Replit usa Linux)
 // Retirando acentos e caracteres especiais
 
 // Alterar main pro projeto atual
@@ -12,14 +12,14 @@ void main()
     // Inicializa a fila
     Fila *fila = inicializaFila();
     // Inicializa a árvore
-    ABB *abb = inicializaArvore();
+    //ABB *abb = inicializaArvore();
     // Inicializa a pilha
     Pilha *pilha = inicializaPilha();
 
     int opcao;
     do
     {
-        system("clear");
+        system("cls");
         printMenu();
         scanf("%d", &opcao);
         // printf("%d\n", opcao);
@@ -30,11 +30,11 @@ void main()
         else if (opcao == 1)
         {
             // Menu de cadastro
-            system("clear");
+            system("cls");
             menuCadastro();
             int opcao2;
             scanf("%d", &opcao2);
-            system("clear");
+            system("cls");
             if (opcao2 == 1)
             {
                 // Cadastrar novo paciente
@@ -73,15 +73,15 @@ void main()
             // Pausar o terminal
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 2)
         {
-            system("clear");
+            system("cls");
             menuAtendimento();
             int opcao3;
             scanf("%d", &opcao3);
-            system("clear");
+            system("cls");
 
             if (opcao3 == 1)
             {
@@ -110,15 +110,15 @@ void main()
             // Pausar o terminal
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 3)
         {
-            system("clear");
+            system("cls");
             menuPesquisa();
             int opcao4;
             scanf("%d", &opcao4);
-            system("clear");
+            system("cls");
 
             if (opcao4 == 1)
             {
@@ -162,51 +162,51 @@ void main()
             // Pausar o terminal
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 4)
         {
             // Desfazer
-            system("clear");
+            system("cls");
             desfazer(pilha, fila, lista);
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 5)
         {
             // Carregar
-            system("clear");
+            system("cls");
 
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 6)
         {
             // Salvar
-            system("clear");
+            system("cls");
 
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 7)
         {
             // Sobre
-            system("clear");
+            system("cls");
             sobre();
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else
         {
