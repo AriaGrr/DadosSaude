@@ -140,7 +140,7 @@ void main()
                 }
                 // Registros ordenados por ano
                 mostrarArvore(arvoreAno->raiz);
-                print("----------------------------------------\n");
+                printf("----------------------------------------\n");
             }
             else if (opcao4 == 2)
             {
