@@ -1064,7 +1064,85 @@ ABB *inicializaArvore()
   return arvore;
 }
 
-void inserirAno(ABB *arvore, Registro *dados)
+void *inserirAno(ABB *arvore, Registro *dados)
+{
+  EABB *novo = criaVertice(dados);
+  if (arvore->raiz == NULL)
+  {
+    arvore->raiz = novo;
+  }
+  else if (arvore->raiz != NULL)
+  {
+    EABB *anterior = NULL;
+    EABB *atual = arvore->raiz;
+    while (atual != NULL)
+    {
+      anterior = atual;
+      if (novo->dados->entrada->ano > atual->dados->entrada->ano)
+      {
+        atual = atual->dir;
+      }
+      else
+      {
+        atual = atual->esq;
+      }
+      if (atual == NULL)
+      {
+        if (novo->dados->entrada->ano < anterior->dados->entrada->ano)
+        {
+          anterior->esq = novo;
+        }
+        else
+        {
+          anterior->dir = novo;
+        }
+        arvore->qtde++;
+        return novo;
+      }
+    }
+  }
+}
+
+void *inserirMes(ABB *arvore, Registro *dados)
+{
+  EABB *novo = criaVertice(dados);
+  if (arvore->raiz == NULL)
+  {
+    arvore->raiz = novo;
+  }
+  else if (arvore->raiz != NULL)
+  {
+    EABB *anterior = NULL;
+    EABB *atual = arvore->raiz;
+    while (atual != NULL)
+    {
+      anterior = atual;
+      if (novo->dados->entrada->mes > atual->dados->entrada->mes)
+      {
+        atual = atual->dir;
+      }
+      else
+      {
+        atual = atual->esq;
+      }
+      if (atual == NULL)
+      {
+        if (novo->dados->entrada->mes < anterior->dados->entrada->mes)
+        {
+          anterior->esq = novo;
+        }
+        else
+        {
+          anterior->dir = novo;
+        }
+        arvore->qtde++;
+        return novo;
+      }
+    }
+  }
+}
+
+void *inserirDia(ABB *arvore, Registro *dados)
 {
     EABB *novo = criaVertice(dados);
     if (arvore->raiz == NULL)
@@ -1078,17 +1156,17 @@ void inserirAno(ABB *arvore, Registro *dados)
         while (atual != NULL)
         {
             anterior = atual;
-            if (novo->dados->entrada->ano > atual->dados->entrada->ano)
+            if (novo->dados->entrada->dia > atual->dados->entrada->dia)
             {
                 atual = atual->dir;
             }
-            else if (novo->dados->entrada->ano < atual->dados->entrada->ano)
+            else
             { 
                 atual = atual->esq;
             }
             if (atual == NULL)
             {
-                if (novo->dados->entrada->ano < anterior->dados->entrada->ano)
+                if (novo->dados->entrada->dia < anterior->dados->entrada->dia)
                 {
                     anterior->esq = novo;
                 }
@@ -1097,127 +1175,128 @@ void inserirAno(ABB *arvore, Registro *dados)
                     anterior->dir = novo;
                 }
                 arvore->qtde++;
+                return novo;
             }
         }
     }
 }
 
- void mostrarArvore(EABB *arvore)
- {
-   EABB *raiz = arvore;
-   if (raiz != NULL)
-   {
-     mostrarArvore(raiz->esq);
-     printf("----------------------------------------\n");
-     printf("Nome: %s\n", raiz->dados->nome);
-     printf("Idade: %d\n", raiz->dados->idade);
-     printf("RG: %s\n", raiz->dados->rg);
-     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
-     mostrarArvore(raiz->dir);
-   }
- }
+void *inserirIdade(ABB *arvore, Registro *dados)
+{
+    EABB *novo = criaVertice(dados);
+    if (arvore->raiz == NULL)
+    {
+        arvore->raiz = novo;
+    }
+    else if (arvore->raiz != NULL)
+    {
+        EABB *anterior = NULL;
+        EABB *atual = arvore->raiz;
+        while (atual != NULL)
+        {
+            anterior = atual;
+            if (novo->dados->idade > atual->dados->idade)
+            {
+                atual = atual->dir;
+            }
+            else
+            { 
+                atual = atual->esq;
+            }
+            if (atual == NULL)
+            {
+                if (novo->dados->idade < anterior->dados->idade)
+                {
+                    anterior->esq = novo;
+                }
+                else
+                {
+                    anterior->dir = novo;
+                }
+                arvore->qtde++;
+                return novo;
+            }
+        }
+    }
+}
 
-// // Exemplo dado em aula
-// void ordenado(EABB *arvore) {
-//     EABB *raiz = arvore;
-//     if(raiz != NULL){
-//     	ordenado(raiz->esq);
-//     	printf("%d ", raiz->dados->nome);
-//       printf("%d ", raiz->dados->rg);
-//       printf("%d ", raiz->dados->idade);
-//       printf("%d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
-//     	ordenado(raiz->dir);
-//     }
-// }
-
-// void inserirIdade(EABB *raiz, Registro *dados)
-// {
-//   if (raiz == NULL)
-//   {
-//     raiz = criaVertice(dados);
-//   }
-//   else
-//   {
-//     if (dados->idade < raiz->dados->idade)
-//     {
-//       inserirIdade(raiz->esq, dados);
-//     }
-//     else
-//     {
-//       inserirIdade(raiz->dir, dados);
-//     }
-//   }
-  
-// }
-
-// void inserirAno(EABB *raiz, Registro *dados)
-// {
-//   if (raiz == NULL)
-//   {
-//     raiz = criaVertice(dados);
-//   }
-//   else
-//   {
-//     if (dados->entrada->ano < raiz->dados->entrada->ano)
-//     {
-//       inserirAno(raiz->esq, dados);
-//     }
-//     else
-//     {
-//       inserirAno(raiz->dir, dados);
-//     }
-//   }
-
-  
-// }
-
-// void inserirMes(EABB *raiz, Registro *dados){
-//   if (raiz == NULL)
-//   {
-//     raiz = criaVertice(dados);
-//   }
-//   else
-//   {
-//     if (dados->entrada->mes < raiz->dados->entrada->mes)
-//     {
-//       inserirMes(raiz->esq, dados);
-//     }
-//     else
-//     {
-//       inserirMes(raiz->dir, dados);
-//     }
-//   }
-// }
-
-// void inserirDia(EABB *raiz, Registro *dados){
-//   if (raiz == NULL)
-//   {
-//     raiz = criaVertice(dados);
-//   }
-//   else
-//   {
-//     if (dados->entrada->dia < raiz->dados->entrada->dia)
-//     {
-//       inserirDia(raiz->esq, dados);
-//     }
-//     else
-//     {
-//       inserirDia(raiz->dir, dados);
-//     }
-//   }
-// }
-
-// void inserirArvore(ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade, Registro *registro){
-//     inserirAno(arvoreAno, registro);
-//     // inserirMes(arvoreMes->raiz, registro);
-//     // inserirDia(arvoreDia->raiz, registro);
-//     // inserirIdade(arvoreIdade->raiz, registro);
-// }
+void mostrarArvore(EABB *arvore)
+{
+  EABB *raiz = arvore;
+  if (raiz != NULL)
+  {
+    mostrarArvore(raiz->esq);
+    printf("----------------------------------------\n");
+    printf("Nome: %s\n", raiz->dados->nome);
+    printf("Idade: %d\n", raiz->dados->idade);
+    printf("RG: %s\n", raiz->dados->rg);
+    printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+    mostrarArvore(raiz->dir);
+  }
+}
 
 // O que vou precisar: função de inserir, função pesquisar por um paciente, função de ordenar por ano, mês, dia e idade.
 // Funções básicas como criar nó, inserir, buscar e percorrer (mostrar, inordem, preordem, posordem)
 
 // CONCERTAR ITENS DA PESQUISA!!
+
+
+// REFERENCIAS PARA FUNÇÕES DE SALVAR E CARREGAR COM BASE NAS DO LEO
+// void salvaArquivo(Lista *lista, char *nomeArquivo){
+//   FILE *arquivo = fopen(nomeArquivo, "wb");
+//   if (arquivo == NULL) { // vê se valor do ponteiro ta apontando pra NULL
+//     printf("Falha ao abrir o arquivo");
+//     return;
+//   }
+//   Elista *atual = lista->inicio;
+//   while (atual != NULL) {
+//     fwrite(atual->dados, sizeof(Registro), 1, arquivo); 
+//     fwrite(atual->dados->entrada, sizeof(Data), 1, arquivo); 
+//     atual = atual->prox;
+//   } //Guarda um elemento por vez
+//   fclose(arquivo);
+//   printf("Dados salvos com sucesso!\n");
+//   printf("\n");
+// }
+
+// void lerArquivo(Lista *lista, char *nomeArquivo, Arvore_busca *arvoreAno, Arvore_busca *arvoreMes, Arvore_busca *arvoreDia, Arvore_busca *arvoreIdade){
+//   FILE *arquivo = fopen(nomeArquivo, "rb");
+//   if (arquivo == NULL) {
+//     printf("Falha ao abrir o arquivo");
+//     return;
+//   }
+//   Registro registro;
+//   Data data;
+//   while (fread(&registro, sizeof(Registro), 1, arquivo) == 1) { 
+//       fread(&data, sizeof(Data), 1, arquivo); 
+//       Data *novaData = criaData(data.dia, data.mes, data.ano);
+//       Registro *pessoa = salvarPessoa(registro.nome, registro.idade, registro.rg, novaData);
+//       if (pessoa != NULL) {
+//          Elista *novo = criaElista(pessoa);
+//          //Adicionar no final da lista
+//          if (lista->inicio == NULL) {
+//            lista->inicio = novo;
+//          }else{
+//            Elista *atual = lista->inicio;
+//             Elista *anterior = NULL;
+//             while (atual != NULL) {
+//               anterior = atual;
+//               atual = atual->prox;
+//             }
+//             anterior->prox = novo;
+//          }
+//         lista->qtde++;
+//         //Adicionar na arvore
+//         registroOrdenadoAno(arvoreAno, pessoa);
+//         registroOrdenadoMes(arvoreMes, pessoa);
+//         registroOrdenadoDia(arvoreDia, pessoa);
+//         registroOrdenadoIdade(arvoreIdade, pessoa);
+//       }
+//   }
+//   fclose(arquivo);
+//   printf("Dados carregados com sucesso!\n");
+//   printf("\n");
+// }
 
 // Funções para print dos menus:
 void printMenu()

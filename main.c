@@ -15,10 +15,10 @@ void main()
     Pilha *pilha = inicializaPilha();
     // Inicializa as árvores
     // Arvore *arvore = cria_arvore(); EXEMPLO
-    // ABB *arvoreAno = inicializaArvore();
-    // ABB *arvoreMes = inicializaArvore();
-    // ABB *arvoreDia = inicializaArvore();
-    // ABB *arvoreIdade = inicializaArvore();
+    ABB *arvoreAno = inicializaArvore();
+    ABB *arvoreMes = inicializaArvore();
+    ABB *arvoreDia = inicializaArvore();
+    ABB *arvoreIdade = inicializaArvore();
 
     int opcao;
     do
@@ -128,17 +128,17 @@ void main()
             {
                 // Registros ordenados por ano
                 printf("Registros ordenados por ano:\n");
-                ABB *arvoreAno = inicializaArvore();
+                // ABB *arvoreAno = inicializaArvore();
 
-                ELista *atual = lista->inicio;
+                // ELista *atual = lista->inicio;
 
-                while (atual != NULL)
-                {
-                    Registro *novo = atual->dados;
-                    inserirAno(arvoreAno, novo);
-                    atual = atual->proximo;
-                }
-                // Registros ordenados por ano
+                // while (atual != NULL)
+                // {
+                //     Registro *novo = atual->dados;
+                //     inserirAno(arvoreAno, novo);
+                //     atual = atual->proximo;
+                // }
+                // // Registros ordenados por ano
                 mostrarArvore(arvoreAno->raiz);
                 printf("----------------------------------------\n");
             }

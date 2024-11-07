@@ -95,15 +95,6 @@ typedef struct
      int qtd;
 } Pilha;
 
-// Estrutura contêiner para armazenar as estruturas de dados do programa no JSON
-// typedef struct
-// {
-//      Lista *lista;
-//      Fila *fila;
-//      ABB *abb;
-//      Pilha *pilha;
-// } Dados;
-
 // Aqui devemos colocar as funções que serão utilizadas do arquivo funcoes.c
 // DEVO CHAMAR TODAS QUE NÃO ESTÃO NO MAIN?
 
@@ -155,6 +146,9 @@ void desfazer(Pilha *pilha, Fila *fila);
 // Funções de mostrar ordenado 
 void mostrarArvore(EABB *raiz);
 //void inserirArvore(ABB *ano, ABB *mes, ABB*dia, ABB *idade, Registro *dados);
-void inserirAno(ABB *arvoreAno, Registro *dados);
+void *inserirAno(ABB *arvoreAno, Registro *dados);
+void *inserirMes(ABB *arvoreMes, Registro *dados);
+void *inserirDia(ABB *arvoreDia, Registro *dados);
+void *inserirIdade(ABB *arvoreIdade, Registro *dados);
 
 #endif //FUNCOES_H
