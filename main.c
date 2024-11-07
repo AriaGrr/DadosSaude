@@ -100,7 +100,7 @@ void main()
             else if (opcao3 == 3)
             {
                 // Mostrar fila de espera
-                mostrarFila(fila); 
+                mostrarFila(fila);
             }
             else if (opcao3 == 0)
             {
@@ -128,25 +128,38 @@ void main()
             {
                 // Registros ordenados por ano
                 printf("Registros ordenados por ano:\n");
-                ordenado(arvoreAno->raiz);
+                mostrarArvore(arvoreAno->raiz);
+
+                // ABB *arvore_ano = inicializaArvore();
+
+                ELista *atual = lista->inicio;
+
+                while (atual != NULL)
+                {
+                    Registro *atual = atual->dados;
+                    inserirAno(arvoreAno, atual);
+                    atual = atual->proximo;
+                }
+                // Registros ordenados por ano
+                mostrarArvore(arvoreAno->raiz);
             }
             else if (opcao4 == 2)
             {
                 // Registros ordenados por mês
                 printf("Registros ordenados por mes:\n");
-                ordenado(arvoreMes->raiz);
+                // ordenado(arvoreMes->raiz);
             }
             else if (opcao4 == 3)
             {
                 // Registros ordenados por dia
                 printf("Registros ordenados por dia:\n");
-                ordenado(arvoreDia->raiz);
+                // ordenado(arvoreDia->raiz);
             }
             else if (opcao4 == 4)
             {
                 // Registros ordenados por idade
                 printf("Registros ordenados por idade:\n");
-                ordenado(arvoreIdade->raiz);
+                // ordenado(arvoreIdade->raiz);
             }
             else if (opcao4 == 0)
             {
@@ -212,5 +225,4 @@ void main()
         }
         //     cod = salvarLista(lt, arquivo);
     } while (opcao != 0);
-
 }

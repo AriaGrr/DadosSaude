@@ -277,7 +277,7 @@ void cadastrarPaciente(Lista *lista, ABB *arvoreAno, ABB *arvoreMes, ABB *arvore
     if (opcao == 1)
     {
       inserir(lista, novo);
-      inserirArvore(arvoreAno, arvoreMes, arvoreDia, arvoreIdade, novo);
+      //inserirArvore(arvoreAno, arvoreMes, arvoreDia, arvoreIdade, novo);
     }
     else if (opcao == 2)
     {
@@ -1066,7 +1066,7 @@ ABB *inicializaArvore()
 
 void inserirAno(ABB *arvore, Registro *dados)
 {
-    EABB *novo = cria_vertice(dados);
+    EABB *novo = criaVertice(dados);
     if (arvore->raiz == NULL)
     {
         arvore->raiz = novo;
@@ -1081,7 +1081,6 @@ void inserirAno(ABB *arvore, Registro *dados)
             if (novo->dados->entrada->ano > atual->dados->entrada->ano)
             {
                 atual = atual->dir;
-
             }
             else if (novo->dados->entrada->ano < atual->dados->entrada->ano)
             { 
@@ -1098,24 +1097,23 @@ void inserirAno(ABB *arvore, Registro *dados)
                     anterior->dir = novo;
                 }
                 arvore->qtde++;
-
             }
         }
     }
 }
 
- void ordenado(EABB *arvore)
+ void mostrarArvore(EABB *arvore)
  {
    EABB *raiz = arvore;
    if (raiz != NULL)
    {
-     ordenado(raiz->esq);
+     mostrarArvore(raiz->esq);
      printf("----------------------------------------\n");
      printf("Nome: %s\n", raiz->dados->nome);
      printf("Idade: %d\n", raiz->dados->idade);
      printf("RG: %s\n", raiz->dados->rg);
      printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
-     ordenado(raiz->dir);
+     mostrarArvore(raiz->dir);
    }
  }
 
@@ -1209,12 +1207,12 @@ void inserirAno(ABB *arvore, Registro *dados)
 //   }
 // }
 
-void inserirArvore(ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade, Registro *registro){
-    inserirAno(arvoreAno, registro);
-    // inserirMes(arvoreMes->raiz, registro);
-    // inserirDia(arvoreDia->raiz, registro);
-    // inserirIdade(arvoreIdade->raiz, registro);
-}
+// void inserirArvore(ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade, Registro *registro){
+//     inserirAno(arvoreAno, registro);
+//     // inserirMes(arvoreMes->raiz, registro);
+//     // inserirDia(arvoreDia->raiz, registro);
+//     // inserirIdade(arvoreIdade->raiz, registro);
+// }
 
 // O que vou precisar: função de inserir, função pesquisar por um paciente, função de ordenar por ano, mês, dia e idade.
 // Funções básicas como criar nó, inserir, buscar e percorrer (mostrar, inordem, preordem, posordem)

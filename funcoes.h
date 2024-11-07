@@ -153,7 +153,8 @@ void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
 // Funções do menu de pesquisa
 
 // Funções de mostrar ordenado 
-void ordenado(EABB *raiz);
-void inserirArvore(ABB *ano, ABB *mes, ABB*dia, ABB *idade, Registro *dados);
+void mostrarArvore(EABB *raiz);
+//void inserirArvore(ABB *ano, ABB *mes, ABB*dia, ABB *idade, Registro *dados);
+void inserirAno(ABB *arvoreAno, Registro *dados);
 
 #endif //FUNCOES_H
