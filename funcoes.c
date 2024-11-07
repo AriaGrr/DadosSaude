@@ -1064,112 +1064,156 @@ ABB *inicializaArvore()
   return arvore;
 }
 
-  //  EABB *raiz = arvore;
-  //  if (raiz != NULL)
-  //  {
-  //    mostrar_ano(raiz->esq);
-  //    printf("----------------------------------------\n");
-  //    printf("Nome: %s\n", raiz->dados->nome);
-  //    printf("Idade: %d\n", raiz->dados->idade);
-  //    printf("RG: %s\n", raiz->dados->rg);
-  //    printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
-  //    mostrar_ano(raiz->dir);
-  //  }
-// Exemplo dado em aula
-void ordenado(EABB *arvore) {
-    EABB *raiz = arvore;
-    if(raiz != NULL){
-    	ordenado(raiz->esq);
-    	printf("%d ", raiz->dados->nome);
-      printf("%d ", raiz->dados->rg);
-      printf("%d ", raiz->dados->idade);
-      printf("%d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
-    	ordenado(raiz->dir);
-    }
-}
-
-void inserirIdade(EABB *raiz, Registro *dados)
+void inserirAno(ABB *arvore, Registro *dados)
 {
-  if (raiz == NULL)
-  {
-    raiz = criaVertice(dados);
-  }
-  else
-  {
-    if (dados->idade < raiz->dados->idade)
+    EABB *novo = cria_vertice(dados);
+    if (arvore->raiz == NULL)
     {
-      inserirIdade(raiz->esq, dados);
+        arvore->raiz = novo;
     }
-    else
+    else if (arvore->raiz != NULL)
     {
-      inserirIdade(raiz->dir, dados);
+        EABB *anterior = NULL;
+        EABB *atual = arvore->raiz;
+        while (atual != NULL)
+        {
+            anterior = atual;
+            if (novo->dados->entrada->ano > atual->dados->entrada->ano)
+            {
+                atual = atual->dir;
+
+            }
+            else if (novo->dados->entrada->ano < atual->dados->entrada->ano)
+            { 
+                atual = atual->esq;
+            }
+            if (atual == NULL)
+            {
+                if (novo->dados->entrada->ano < anterior->dados->entrada->ano)
+                {
+                    anterior->esq = novo;
+                }
+                else
+                {
+                    anterior->dir = novo;
+                }
+                arvore->qtde++;
+
+            }
+        }
     }
-  }
+}
+
+ void ordenado(EABB *arvore)
+ {
+   EABB *raiz = arvore;
+   if (raiz != NULL)
+   {
+     ordenado(raiz->esq);
+     printf("----------------------------------------\n");
+     printf("Nome: %s\n", raiz->dados->nome);
+     printf("Idade: %d\n", raiz->dados->idade);
+     printf("RG: %s\n", raiz->dados->rg);
+     printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+     ordenado(raiz->dir);
+   }
+ }
+
+// // Exemplo dado em aula
+// void ordenado(EABB *arvore) {
+//     EABB *raiz = arvore;
+//     if(raiz != NULL){
+//     	ordenado(raiz->esq);
+//     	printf("%d ", raiz->dados->nome);
+//       printf("%d ", raiz->dados->rg);
+//       printf("%d ", raiz->dados->idade);
+//       printf("%d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+//     	ordenado(raiz->dir);
+//     }
+// }
+
+// void inserirIdade(EABB *raiz, Registro *dados)
+// {
+//   if (raiz == NULL)
+//   {
+//     raiz = criaVertice(dados);
+//   }
+//   else
+//   {
+//     if (dados->idade < raiz->dados->idade)
+//     {
+//       inserirIdade(raiz->esq, dados);
+//     }
+//     else
+//     {
+//       inserirIdade(raiz->dir, dados);
+//     }
+//   }
   
-}
+// }
 
-void inserirAno(EABB *raiz, Registro *dados)
-{
-  if (raiz == NULL)
-  {
-    raiz = criaVertice(dados);
-  }
-  else
-  {
-    if (dados->entrada->ano < raiz->dados->entrada->ano)
-    {
-      inserirAno(raiz->esq, dados);
-    }
-    else
-    {
-      inserirAno(raiz->dir, dados);
-    }
-  }
+// void inserirAno(EABB *raiz, Registro *dados)
+// {
+//   if (raiz == NULL)
+//   {
+//     raiz = criaVertice(dados);
+//   }
+//   else
+//   {
+//     if (dados->entrada->ano < raiz->dados->entrada->ano)
+//     {
+//       inserirAno(raiz->esq, dados);
+//     }
+//     else
+//     {
+//       inserirAno(raiz->dir, dados);
+//     }
+//   }
 
   
-}
+// }
 
-void inserirMes(EABB *raiz, Registro *dados){
-  if (raiz == NULL)
-  {
-    raiz = criaVertice(dados);
-  }
-  else
-  {
-    if (dados->entrada->mes < raiz->dados->entrada->mes)
-    {
-      inserirMes(raiz->esq, dados);
-    }
-    else
-    {
-      inserirMes(raiz->dir, dados);
-    }
-  }
-}
+// void inserirMes(EABB *raiz, Registro *dados){
+//   if (raiz == NULL)
+//   {
+//     raiz = criaVertice(dados);
+//   }
+//   else
+//   {
+//     if (dados->entrada->mes < raiz->dados->entrada->mes)
+//     {
+//       inserirMes(raiz->esq, dados);
+//     }
+//     else
+//     {
+//       inserirMes(raiz->dir, dados);
+//     }
+//   }
+// }
 
-void inserirDia(EABB *raiz, Registro *dados){
-  if (raiz == NULL)
-  {
-    raiz = criaVertice(dados);
-  }
-  else
-  {
-    if (dados->entrada->dia < raiz->dados->entrada->dia)
-    {
-      inserirDia(raiz->esq, dados);
-    }
-    else
-    {
-      inserirDia(raiz->dir, dados);
-    }
-  }
-}
+// void inserirDia(EABB *raiz, Registro *dados){
+//   if (raiz == NULL)
+//   {
+//     raiz = criaVertice(dados);
+//   }
+//   else
+//   {
+//     if (dados->entrada->dia < raiz->dados->entrada->dia)
+//     {
+//       inserirDia(raiz->esq, dados);
+//     }
+//     else
+//     {
+//       inserirDia(raiz->dir, dados);
+//     }
+//   }
+// }
 
 void inserirArvore(ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade, Registro *registro){
-    inserirAno(arvoreAno->raiz, registro);
-    inserirMes(arvoreMes->raiz, registro);
-    inserirDia(arvoreDia->raiz, registro);
-    inserirIdade(arvoreIdade->raiz, registro);
+    inserirAno(arvoreAno, registro);
+    // inserirMes(arvoreMes->raiz, registro);
+    // inserirDia(arvoreDia->raiz, registro);
+    // inserirIdade(arvoreIdade->raiz, registro);
 }
 
 // O que vou precisar: função de inserir, função pesquisar por um paciente, função de ordenar por ano, mês, dia e idade.
