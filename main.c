@@ -23,11 +23,11 @@ int main()
     // ABB *arvoreDia = inicializaArvore();
     // ABB *arvoreIdade = inicializaArvore();
 
-    // cod = carregarLista(lista, arquivo);
-    // if (cod == 1)
-    // {
-    //     lista->qtde = 0;
-    // }
+    cod = carregarLista(lista, arquivo);
+    if (cod == 1)
+    {
+        lista->qtde = 0;
+    }
 
     int opcao;
     do
@@ -277,11 +277,11 @@ int main()
         {
             printf("Opcao nao existe!\n");
         }
-        // cod = salvarLista(lista, arquivo);
+        cod = salvarLista(lista, arquivo);
     } while (opcao != 0);
-    // if (cod != 0)
-    // {
-    //     printf("Erro ao salvar pacientes!\n");
-    // }
+    if (cod != 0)
+    {
+        printf("Erro ao salvar pacientes!\n");
+    }
     return 0;
 }

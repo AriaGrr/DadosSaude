@@ -56,6 +56,8 @@ Data *criaData(int dia, int mes, int ano) {
 }
 
 // Item de menu: Cadastrar em uma LDE
+// Cadastrar novo paciente em uma lista dinâmica encadeada, mantendo a
+// ordem de registro (inserção no início);
 // Operações:
 // ▶ Cadastrar novo paciente;
 // ▶ Consultar paciente cadastrado;
@@ -74,7 +76,7 @@ Lista *inicializaLista()
   return lista;
 }
 
-// Verificar se é Registro *dados mesmo
+// // Verificar se é Registro *dados mesmo
 ELista *inicializaCelula(Registro *dados)
 {
   ELista *celula = malloc(sizeof(ELista));
@@ -86,41 +88,9 @@ ELista *inicializaCelula(Registro *dados)
 void inserir(Lista *lista, Registro *dados)
 {
   ELista *nova = inicializaCelula(dados);
-  ELista *atual = lista->inicio;
-  ELista *anterior = NULL;
-  if (lista->qtde == 0)
-  {
-    lista->inicio = nova;
-    lista->qtde++;
-  }
-  else
-  {
-    while (atual != NULL && nova->dados >= atual->dados)
-    {
-      anterior = atual;
-      atual = atual->proximo;
-    }
-    if (anterior == NULL)
-    {
-      nova->proximo = lista->inicio;
-      lista->inicio = nova;
-      lista->qtde++;
-    }
-    else
-    {
-      if (atual == NULL)
-      {
-        anterior->proximo = nova;
-        lista->qtde++;
-      }
-      else
-      {
-        anterior->proximo = nova;
-        nova->proximo = atual;
-        lista->qtde++;
-      }
-    }
-  }
+  nova->proximo = lista->inicio;
+  lista->inicio = nova;
+  lista->qtde++;
 }
 
 // Mostrar lista de pacientes completa
@@ -129,7 +99,7 @@ void mostrarLista(Lista *lista)
   ELista *atual = lista->inicio;
   if (atual == NULL)
   {
-    printf("Lista vazia\n");
+    printf("Nenhum paciente cadastrado!\n");
     return;
   }
   printf("Lista de pacientes\n");
