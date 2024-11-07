@@ -15,10 +15,10 @@ void main()
     Pilha *pilha = inicializaPilha();
     // Inicializa as árvores
     // Arvore *arvore = cria_arvore(); EXEMPLO
-    ;ABB *arvoreAno = inicializaArvore();
-    ABB *arvoreMes = inicializaArvore();
-    ABB *arvoreDia = inicializaArvore();
-    ABB *arvoreIdade = inicializaArvore();
+    // ABB *arvoreAno = inicializaArvore();
+    // ABB *arvoreMes = inicializaArvore();
+    // ABB *arvoreDia = inicializaArvore();
+    // ABB *arvoreIdade = inicializaArvore();
 
     int opcao;
     do
@@ -42,7 +42,7 @@ void main()
             if (opcao2 == 1)
             {
                 // Cadastrar novo paciente
-                cadastrarPaciente(lista, arvoreAno, arvoreMes, arvoreDia, arvoreIdade);
+                cadastrarPaciente(lista);
             }
             else if (opcao2 == 2)
             {
@@ -128,10 +128,11 @@ void main()
             {
                 // Registros ordenados por ano
                 printf("Registros ordenados por ano:\n");
-                mostrarArvore(arvoreAno->raiz);
+                ABB *arvoreAno = inicializaArvore();
+                // mostrarArvore(arvoreAno->raiz);
 
                 // ABB *arvore_ano = inicializaArvore();
-                ABB *arvoreAno = inicializaArvore();
+                // ABB *arvoreAno = inicializaArvore();
                 ELista *atual = lista->inicio;
 
                 while (atual != NULL)

@@ -126,7 +126,7 @@ Pilha *inicializaPilha();
 // Funções do menu de cadastro
 
 // Cadastrar paciente
-void cadastrarPaciente(Lista *lista, ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade);
+void cadastrarPaciente(Lista *lista);
 // Consultar paciente
 void consultarPaciente(Lista *lista);
 // Mostrar lista completa
