@@ -758,7 +758,7 @@ void mostra(Pilha *pilha)
 }
 
 // Erro intermitente: As vezes a variável operacao é alterada para 0 mesmo que a pilha não esteja vazia, o que faz com que o programa não funcione. Motivo desconhecido.
-void desfazer(Pilha *pilha, Fila *fila, Lista *lista)
+void desfazer(Pilha *pilha, Fila *fila)
 {
   printf("Desfazer\n");
   printf("----------------------------------------\n");

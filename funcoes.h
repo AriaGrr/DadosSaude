@@ -148,7 +148,7 @@ void mostrarFila(Fila *fila);
 // Funções do menu de desfazer
 
 // Desfazer operação
-void desfazer(Pilha *pilha, Fila *fila, Lista *lista);
+void desfazer(Pilha *pilha, Fila *fila);
 
 // Funções do menu de pesquisa
 
