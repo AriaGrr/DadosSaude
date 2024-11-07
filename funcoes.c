@@ -19,7 +19,6 @@ void clearBuffer()
 // Ponteiro para fila
 Fila *inicializaFila()
 {
-  // Fila *fila = (Fila *)malloc(sizeof(Fila));
   Fila *fila = malloc(sizeof(Fila));
   fila->head = NULL;
   fila->tail = NULL;
@@ -1262,51 +1261,21 @@ int salvarLista(Lista *lista, char nome[])
   return 0;
 }
 
+// Para liberar a memória e evitar duplicidade ao carregar a lista
+void liberarLista(Lista *lista) {
+    ELista *atual, *proximo;
+    atual = lista->inicio;
+    while (atual != NULL) {
+        proximo = atual->proximo;
+        free(atual);
+        atual = proximo;
+    }
+    lista->inicio = NULL;
+    lista->qtde = 0;
+}
+
 // Carrega a lista de um arquivo
 // fread
-// int carregarLista(Lista *lista, char nome[])
-// {
-//   FILE *arquivo;
-//   arquivo = fopen(nome, "rb");
-
-//   if (arquivo == NULL)
-//   {
-//     printf("Erro ao abrir o arquivo.\n");
-//     return 1;
-//   }
-
-//   Registro *registro = malloc(sizeof(Registro));
-//   Data *data = malloc(sizeof(Data));
-//   while (fread(registro, sizeof(Registro), 1, arquivo) == 1)
-//   {
-//     fread(data, sizeof(Data), 1, arquivo);
-//     Registro *pessoa = salvarPessoa(registro->nome, registro->idade, registro->rg, data);
-//     if (pessoa != NULL)
-//     {
-//       ELista *novo = inicializaCelula(pessoa);
-//       if (lista->inicio == NULL)
-//       {
-//         lista->inicio = novo;
-//       }
-//       else
-//       {
-//         ELista *atual = lista->inicio;
-//         ELista *anterior = NULL;
-//         while (atual != NULL)
-//         {
-//           anterior = atual;
-//           atual = atual->proximo;
-//         }
-//         anterior->proximo = novo;
-//       }
-//       lista->qtde++;
-//     }
-//   }
-
-//   fclose(arquivo);
-//   return 0;
-// }
-
 int carregarLista(Lista *lista, char *nomeArquivo){
   FILE *arquivo = fopen(nomeArquivo, "rb");
   if (arquivo == NULL) {

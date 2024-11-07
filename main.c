@@ -229,6 +229,8 @@ int main()
         {
             // Carregar
             system("cls");
+            // Limpar a lista antes de carregar
+            liberarLista(lista);
             cod = carregarLista(lista, arquivo);
             if (cod == 1)
             {

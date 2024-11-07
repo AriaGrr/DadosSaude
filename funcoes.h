@@ -156,5 +156,7 @@ void *inserirIdade(ABB *arvoreIdade, Registro *dados);
 int carregarLista(Lista *lista, char *arquivo);
 // Salvar lista
 int salvarLista(Lista *lista, char *arquivo);
+// Excluir lista
+void liberarLista(Lista *lista);
 
 #endif //FUNCOES_H
