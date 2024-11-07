@@ -37,7 +37,8 @@ EFila *criarCelula(Registro *dados)
   return celula;
 }
 
-Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data) {
+Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data)
+{
   Registro *pessoa = malloc(sizeof(Registro));
   strcpy(pessoa->nome, nome);
   pessoa->idade = idade;
@@ -46,7 +47,8 @@ Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data) {
   return pessoa;
 }
 
-Data *criaData(int dia, int mes, int ano) {
+Data *criaData(int dia, int mes, int ano)
+{
   Data *data = malloc(sizeof(Data));
   data->dia = dia;
   data->mes = mes;
@@ -1067,7 +1069,7 @@ void *inserirAno(ABB *arvore, Registro *dados)
     while (atual != NULL)
     {
       anterior = atual;
-      if (novo->dados->entrada->ano > atual->dados->entrada->ano)
+      if (novo->dados->entrada->ano >= atual->dados->entrada->ano)
       {
         atual = atual->dir;
       }
@@ -1085,11 +1087,11 @@ void *inserirAno(ABB *arvore, Registro *dados)
         {
           anterior->dir = novo;
         }
-        arvore->qtde++;
         // return novo;
       }
     }
   }
+  arvore->qtde++;
 }
 
 void *inserirMes(ABB *arvore, Registro *dados)
@@ -1106,7 +1108,7 @@ void *inserirMes(ABB *arvore, Registro *dados)
     while (atual != NULL)
     {
       anterior = atual;
-      if (novo->dados->entrada->mes > atual->dados->entrada->mes)
+      if (novo->dados->entrada->mes >= atual->dados->entrada->mes)
       {
         atual = atual->dir;
       }
@@ -1124,89 +1126,89 @@ void *inserirMes(ABB *arvore, Registro *dados)
         {
           anterior->dir = novo;
         }
-        arvore->qtde++;
         // return novo;
       }
     }
   }
+  arvore->qtde++;
 }
 
 void *inserirDia(ABB *arvore, Registro *dados)
 {
-    EABB *novo = criaVertice(dados);
-    if (arvore->raiz == NULL)
+  EABB *novo = criaVertice(dados);
+  if (arvore->raiz == NULL)
+  {
+    arvore->raiz = novo;
+  }
+  else if (arvore->raiz != NULL)
+  {
+    EABB *anterior = NULL;
+    EABB *atual = arvore->raiz;
+    while (atual != NULL)
     {
-        arvore->raiz = novo;
-    }
-    else if (arvore->raiz != NULL)
-    {
-        EABB *anterior = NULL;
-        EABB *atual = arvore->raiz;
-        while (atual != NULL)
+      anterior = atual;
+      if (novo->dados->entrada->dia >= atual->dados->entrada->dia)
+      {
+        atual = atual->dir;
+      }
+      else
+      {
+        atual = atual->esq;
+      }
+      if (atual == NULL)
+      {
+        if (novo->dados->entrada->dia < anterior->dados->entrada->dia)
         {
-            anterior = atual;
-            if (novo->dados->entrada->dia > atual->dados->entrada->dia)
-            {
-                atual = atual->dir;
-            }
-            else
-            { 
-                atual = atual->esq;
-            }
-            if (atual == NULL)
-            {
-                if (novo->dados->entrada->dia < anterior->dados->entrada->dia)
-                {
-                    anterior->esq = novo;
-                }
-                else
-                {
-                    anterior->dir = novo;
-                }
-                arvore->qtde++;
-                // return novo;
-            }
+          anterior->esq = novo;
         }
+        else
+        {
+          anterior->dir = novo;
+        }
+        // return novo;
+      }
+      arvore->qtde++;
     }
+  }
 }
 
 void *inserirIdade(ABB *arvore, Registro *dados)
 {
-    EABB *novo = criaVertice(dados);
-    if (arvore->raiz == NULL)
+  EABB *novo = criaVertice(dados);
+  if (arvore->raiz == NULL)
+  {
+    arvore->raiz = novo;
+  }
+  else if (arvore->raiz != NULL)
+  {
+    EABB *anterior = NULL;
+    EABB *atual = arvore->raiz;
+    while (atual != NULL)
     {
-        arvore->raiz = novo;
-    }
-    else if (arvore->raiz != NULL)
-    {
-        EABB *anterior = NULL;
-        EABB *atual = arvore->raiz;
-        while (atual != NULL)
+      anterior = atual;
+      if (novo->dados->idade >= atual->dados->idade)
+      {
+        atual = atual->dir;
+      }
+      else
+      {
+        atual = atual->esq;
+      }
+      if (atual == NULL)
+      {
+        if (novo->dados->idade < anterior->dados->idade)
         {
-            anterior = atual;
-            if (novo->dados->idade > atual->dados->idade)
-            {
-                atual = atual->dir;
-            }
-            else
-            { 
-                atual = atual->esq;
-            }
-            if (atual == NULL)
-            {
-                if (novo->dados->idade < anterior->dados->idade)
-                {
-                    anterior->esq = novo;
-                }
-                else
-                {
-                    anterior->dir = novo;
-                }
-                arvore->qtde++;
-                // return novo;
-            }
+          anterior->esq = novo;
         }
+        else
+        {
+          anterior->dir = novo;
+        }
+        // return novo;
+      }
+      arvore->qtde++;
     }
+  }
 }
 
 void mostrarArvore(EABB *raiz)
@@ -1262,53 +1264,63 @@ int salvarLista(Lista *lista, char nome[])
 }
 
 // Para liberar a memória e evitar duplicidade ao carregar a lista
-void liberarLista(Lista *lista) {
-    ELista *atual, *proximo;
-    atual = lista->inicio;
-    while (atual != NULL) {
-        proximo = atual->proximo;
-        free(atual);
-        atual = proximo;
-    }
-    lista->inicio = NULL;
-    lista->qtde = 0;
+void liberarLista(Lista *lista)
+{
+  ELista *atual, *proximo;
+  atual = lista->inicio;
+  while (atual != NULL)
+  {
+    proximo = atual->proximo;
+    free(atual);
+    atual = proximo;
+  }
+  lista->inicio = NULL;
+  lista->qtde = 0;
 }
 
 // Carrega a lista de um arquivo
 // fread
-int carregarLista(Lista *lista, char *nomeArquivo){
+int carregarLista(Lista *lista, char *nomeArquivo)
+{
   FILE *arquivo = fopen(nomeArquivo, "rb");
-  if (arquivo == NULL) {
+  if (arquivo == NULL)
+  {
     printf("Falha ao abrir o arquivo");
     return 1;
   }
   Registro registro;
   Data data;
-  while (fread(&registro, sizeof(Registro), 1, arquivo) == 1) { 
-      fread(&data, sizeof(Data), 1, arquivo); 
-      Data *novaData = criaData(data.dia, data.mes, data.ano);
-      Registro *pessoa = salvarPessoa(registro.nome, registro.idade, registro.rg, novaData);
-      if (pessoa != NULL) {
-         ELista *novo = inicializaCelula(pessoa);
-         //Adicionar no final da lista
-         if (lista->inicio == NULL) {
-           lista->inicio = novo;
-         }else{
-           ELista *atual = lista->inicio;
-            ELista *anterior = NULL;
-            while (atual != NULL) {
-              anterior = atual;
-              atual = atual->proximo;
-            }
-            anterior->proximo = novo;
-         }
-        lista->qtde++;
-        //Adicionar na arvore
-        // registroOrdenadoAno(arvoreAno, pessoa);
-        // registroOrdenadoMes(arvoreMes, pessoa);
-        // registroOrdenadoDia(arvoreDia, pessoa);
-        // registroOrdenadoIdade(arvoreIdade, pessoa);
+  while (fread(&registro, sizeof(Registro), 1, arquivo) == 1)
+  {
+    fread(&data, sizeof(Data), 1, arquivo);
+    Data *novaData = criaData(data.dia, data.mes, data.ano);
+    Registro *pessoa = salvarPessoa(registro.nome, registro.idade, registro.rg, novaData);
+    if (pessoa != NULL)
+    {
+      ELista *novo = inicializaCelula(pessoa);
+      //Adicionar no final da lista
+      if (lista->inicio == NULL)
+      {
+        lista->inicio = novo;
       }
+      else
+      {
+        ELista *atual = lista->inicio;
+        ELista *anterior = NULL;
+        while (atual != NULL)
+        {
+          anterior = atual;
+          atual = atual->proximo;
+        }
+        anterior->proximo = novo;
+      }
+      lista->qtde++;
+      //Adicionar na arvore
+      // registroOrdenadoAno(arvoreAno, pessoa);
+      // registroOrdenadoMes(arvoreMes, pessoa);
+      // registroOrdenadoDia(arvoreDia, pessoa);
+      // registroOrdenadoIdade(arvoreIdade, pessoa);
+    }
   }
   fclose(arquivo);
   return 0;

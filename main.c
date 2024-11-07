@@ -148,7 +148,8 @@ int main()
                     inserirAno(arvoreAno, novo);
                     atual = atual->proximo;
                 }
-                // // Registros ordenados por ano
+                printf("Quantidade de elementos na arvore: %d\n", arvoreAno->qtde);
+                // Registros ordenados por ano
                 mostrarArvore(arvoreAno->raiz);
                 printf("----------------------------------------\n");
             }
@@ -162,9 +163,10 @@ int main()
                 while (atual != NULL)
                 {
                     Registro *novo = atual->dados;
-                    inserirAno(arvoreMes, novo);
+                    inserirMes(arvoreMes, novo);
                     atual = atual->proximo;
                 }
+                printf("Quantidade de elementos na arvore: %d\n", arvoreMes->qtde);
                 mostrarArvore(arvoreMes->raiz);
                 printf("----------------------------------------\n");
             }
@@ -178,9 +180,10 @@ int main()
                 while (atual != NULL)
                 {
                     Registro *novo = atual->dados;
-                    inserirAno(arvoreDia, novo);
+                    inserirDia(arvoreDia, novo);
                     atual = atual->proximo;
                 }
+                printf("Quantidade de elementos na arvore: %d\n", arvoreDia->qtde);
                 mostrarArvore(arvoreDia->raiz);
                 printf("----------------------------------------\n");
             }
@@ -194,9 +197,10 @@ int main()
                 while (atual != NULL)
                 {
                     Registro *novo = atual->dados;
-                    inserirAno(arvoreIdade, novo);
+                    inserirIdade(arvoreIdade, novo);
                     atual = atual->proximo;
                 }
+                printf("Quantidade de elementos na arvore: %d\n", arvoreIdade->qtde);
                 mostrarArvore(arvoreIdade->raiz);
                 printf("----------------------------------------\n");
             }

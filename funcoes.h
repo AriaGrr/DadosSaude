@@ -25,10 +25,8 @@ typedef struct
 typedef struct
 {
      char nome[maxNOME];
-     // char nome;
      int idade;
      char rg[maxRG];
-     // char rg;
      Data *entrada;
 } Registro;
 
