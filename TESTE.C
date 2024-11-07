@@ -1,6 +1,6 @@
 #include "funcoes.h"
 // system("cls"); Limpa o terminal Windows
-// system("clear"); Limpa o terminal Linux (Replit usa Linux)
+// system("cls"); Limpa o terminal Linux (Replit usa Linux)
 // Retirando acentos e caracteres especiais
 
 // Alterar main pro projeto atual
@@ -11,14 +11,10 @@ void main()
     Lista *lista = inicializaLista();
     // Inicializa a fila
     Fila *fila = inicializaFila();
+    // Inicializa a árvore
+    //ABB *abb = inicializaArvore();
     // Inicializa a pilha
     Pilha *pilha = inicializaPilha();
-    // Inicializa as árvores
-    // Arvore *arvore = cria_arvore(); EXEMPLO
-    // ABB *arvoreAno = inicializaArvore();
-    // ABB *arvoreMes = inicializaArvore();
-    // ABB *arvoreDia = inicializaArvore();
-    // ABB *arvoreIdade = inicializaArvore();
 
     int opcao;
     do
@@ -100,7 +96,7 @@ void main()
             else if (opcao3 == 3)
             {
                 // Mostrar fila de espera
-                mostrarFila(fila);
+                mostrarFila(fila); 
             }
             else if (opcao3 == 0)
             {
@@ -126,39 +122,33 @@ void main()
 
             if (opcao4 == 1)
             {
-                // Registros ordenados por ano
-                printf("Registros ordenados por ano:\n");
-                ABB *arvoreAno = inicializaArvore();
-
-                ELista *atual = lista->inicio;
-
-                while (atual != NULL)
-                {
-                    Registro *novo = atual->dados;
-                    inserirAno(arvoreAno, novo);
-                    atual = atual->proximo;
+               ABB *arvore_ano = inicializaArvore();
+                
+                ELista *lugar_atual = lista->inicio;
+                
+                while(lugar_atual != NULL){
+                    Registro *atual = lugar_atual->dados;
+                    inserirAno(arvore_ano,atual);
+                    lugar_atual = lugar_atual->proximo;
+                    
                 }
                 // Registros ordenados por ano
-                mostrarArvore(arvoreAno->raiz);
-                print("----------------------------------------\n");
+                 mostrar_ano(arvore_ano->raiz);
             }
             else if (opcao4 == 2)
             {
                 // Registros ordenados por mês
-                printf("Registros ordenados por mes:\n");
-                
+                // mostrar_mes(abb);
             }
             else if (opcao4 == 3)
             {
                 // Registros ordenados por dia
-                printf("Registros ordenados por dia:\n");
-                
+                // mostrar_dia(abb);
             }
             else if (opcao4 == 4)
             {
                 // Registros ordenados por idade
-                printf("Registros ordenados por idade:\n");
-                
+                // mostrar_idade(abb);
             }
             else if (opcao4 == 0)
             {
@@ -178,7 +168,7 @@ void main()
         {
             // Desfazer
             system("cls");
-            desfazer(pilha, fila);
+            desfazer(pilha, fila, lista);
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
@@ -224,4 +214,5 @@ void main()
         }
         //     cod = salvarLista(lt, arquivo);
     } while (opcao != 0);
+
 }
