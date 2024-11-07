@@ -1064,6 +1064,17 @@ ABB *inicializaArvore()
   return arvore;
 }
 
+  //  EABB *raiz = arvore;
+  //  if (raiz != NULL)
+  //  {
+  //    mostrar_ano(raiz->esq);
+  //    printf("----------------------------------------\n");
+  //    printf("Nome: %s\n", raiz->dados->nome);
+  //    printf("Idade: %d\n", raiz->dados->idade);
+  //    printf("RG: %s\n", raiz->dados->rg);
+  //    printf("Data de entrada: %d/%d/%d\n", raiz->dados->entrada->dia, raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+  //    mostrar_ano(raiz->dir);
+  //  }
 // Exemplo dado em aula
 void ordenado(EABB *raiz) {
     if(raiz != NULL){
