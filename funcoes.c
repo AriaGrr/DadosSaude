@@ -46,7 +46,7 @@ Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data)
   return pessoa;
 }
 
-// Salvando data de entrada da pessoa completa 
+// Salvando data de entrada da pessoa completa
 Data *criaData(int dia, int mes, int ano)
 {
   Data *data = malloc(sizeof(Data));
@@ -714,7 +714,6 @@ void push(Pilha *pilha, int valor, Registro *dados)
     nova->anterior = pilha->topo;
     pilha->topo->proximo = nova;
   }
-
   pilha->topo = nova;
   pilha->qtd++;
 }
@@ -797,7 +796,6 @@ void desfazer(Pilha *pilha, Fila *fila)
     printf("Opcao invalida\n");
     return;
   }
-
   int operacao;
   Registro *dados = malloc(sizeof(Registro));
   char rg[maxRG];
@@ -850,7 +848,6 @@ void desfazer(Pilha *pilha, Fila *fila)
     }
     else if (operacao == 2)
     {
-
       // Se a operação for enfileirar, retire o ultimo paciente da fila (desenfileirar retira o primeiro paciente)
 
       EFila *atual = fila->head;
@@ -1328,6 +1325,7 @@ int carregarLista(Lista *lista, char *nomeArquivo)
 }
 
 // Funções para print dos menus:
+// Menu principal
 void printMenu()
 {
   printf("Menu\n");
@@ -1346,7 +1344,7 @@ void printMenu()
   printf("Digite a opcao desejada: ");
 }
 
-// Cadastrar novo paciente em uma lista dinâmica encadeada, mantendo a ordem de registro (inserção no início);
+// Cadastrar novo paciente em uma lista dinâmica encadeada, mantendo a ordem de registro (inserção no início)
 void menuCadastro()
 {
   printf("Menu Cadastro\n");
