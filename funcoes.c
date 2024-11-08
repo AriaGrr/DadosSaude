@@ -1,5 +1,3 @@
-// COMENTAR O CÓDIGO
-
 #include "funcoes.h"
 
 #include <ctype.h> // isalpha
@@ -31,12 +29,13 @@ Fila *inicializaFila()
 EFila *criarCelula(Registro *dados)
 {
   EFila *celula = malloc(sizeof(EFila));
-  // celula->anterior = NULL;
+
   celula->proximo = NULL;
   celula->dados = dados;
   return celula;
 }
 
+// Salvando dados gerais da pessoa(RG, idade, nome e data de entrada)
 Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data)
 {
   Registro *pessoa = malloc(sizeof(Registro));
@@ -47,6 +46,7 @@ Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data)
   return pessoa;
 }
 
+// Salvando data de entrada da pessoa completa |
 Data *criaData(int dia, int mes, int ano)
 {
   Data *data = malloc(sizeof(Data));
@@ -65,8 +65,6 @@ Data *criaData(int dia, int mes, int ano)
 // ▶ Mostrar lista completa;
 // ▶ Atualizar dados de paciente;
 // ▶ Remover paciente.
-// CONFERIR SE ESTÁ CORRETO
-// As funções estão repetitivas, buscar uma forma de otimizar.
 // Funções para manipulação de listas dinâmicas encadeadas
 
 Lista *inicializaLista()
@@ -77,7 +75,6 @@ Lista *inicializaLista()
   return lista;
 }
 
-// // Verificar se é Registro *dados mesmo
 ELista *inicializaCelula(Registro *dados)
 {
   ELista *celula = malloc(sizeof(ELista));
@@ -98,12 +95,14 @@ void inserir(Lista *lista, Registro *dados)
 void mostrarLista(Lista *lista)
 {
   ELista *atual = lista->inicio;
+  // Checagem para se a lista está vazia
   if (atual == NULL)
   {
     printf("Nenhum paciente cadastrado!\n");
     return;
   }
   printf("Lista de pacientes\n");
+  // Atravessa a lista, imprimindo cada componente.
   while (atual != NULL)
   {
     printf("----------------------------------------\n");
@@ -134,6 +133,7 @@ int validarNome(char *nome)
   return 1;
 }
 
+// Checa tamanho e jeito que o RG é escrito
 int validarRg(char *rg, Lista *lista)
 {
   int passou = 0;
@@ -161,7 +161,7 @@ int validarRg(char *rg, Lista *lista)
 
   return 0;
 }
-
+// Olha se a idade da pessoa é correta
 int validarIdade(int idade)
 {
   if (idade < 0 || idade > 120)
@@ -170,7 +170,7 @@ int validarIdade(int idade)
   }
   return 1;
 }
-
+// Checa se o dia sendo inserido existe
 int validarData(Data *data)
 {
   if (data->dia < 1 || data->dia > 31)
@@ -188,7 +188,7 @@ int validarData(Data *data)
 
   return 1;
 }
-
+// Cadastro das informações do paciente
 Registro *cadastrar(Lista *lista)
 {
   Registro *novo = malloc(sizeof(Registro));
@@ -200,6 +200,7 @@ Registro *cadastrar(Lista *lista)
   printf("----------------------------------------\n");
   printf("Nome: ");
   clearBuffer();
+  // Registro do nome
   fgets(nome, maxNOME, stdin);
   nome[strcspn(nome, "\n")] = '\0';
   while (!validarNome(nome))
@@ -212,6 +213,7 @@ Registro *cadastrar(Lista *lista)
   }
   // SE VOCÊ COLOCAR LETRAS NA IDADE OU DATA O PROGRAMA VAI BUGAR
   strcpy(novo->nome, nome);
+  // Registro da idade
   printf("Idade: ");
   scanf("%d", &idade);
   while (!validarIdade(idade))
@@ -221,6 +223,7 @@ Registro *cadastrar(Lista *lista)
     scanf("%d", &idade);
   }
   novo->idade = idade;
+  // Registro do RG
   printf("RG: ");
   scanf("%s", rg);
   while (!validarRg(rg, lista))
@@ -230,6 +233,7 @@ Registro *cadastrar(Lista *lista)
     scanf("%s", rg);
   }
   strcpy(novo->rg, rg);
+  // Registro da data de entrada
   printf("Data de entrada: ");
   scanf("%d/%d/%d", &entrada->dia, &entrada->mes, &entrada->ano);
   while (!validarData(entrada))
@@ -242,7 +246,7 @@ Registro *cadastrar(Lista *lista)
   return novo;
 }
 
-// void cadastrarPaciente(Lista *lista, ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade)
+// Usuário pode cancelar o registro, alterar alguma informação ou confirmar o registro do paciente
 void cadastrarPaciente(Lista *lista)
 {
   Registro *novo = cadastrar(lista);
@@ -266,7 +270,6 @@ void cadastrarPaciente(Lista *lista)
     if (opcao == 1)
     {
       inserir(lista, novo);
-      //inserirArvore(arvoreAno, arvoreMes, arvoreDia, arvoreIdade, novo);
     }
     else if (opcao == 2)
     {
@@ -280,9 +283,8 @@ void cadastrarPaciente(Lista *lista)
       {
         free(novo->entrada);
         free(novo);
-        // cadastrarPaciente(lista, arvoreAno, arvoreMes, arvoreDia, arvoreIdade);
+
         cadastrarPaciente(lista);
-        // inserirArvore(arvoreAno, arvoreMes, arvoreDia, arvoreIdade, novo);
       }
       else if (opcao2 == 2)
       {
@@ -360,6 +362,7 @@ void cadastrarPaciente(Lista *lista)
     {
       free(novo->entrada);
       free(novo);
+      return;
     }
     else
     {
@@ -368,6 +371,7 @@ void cadastrarPaciente(Lista *lista)
   } while (opcao != 1 && opcao != 3);
 }
 
+// Imprime informações do paciente quando é usado a pesquisa de nome em algum momento
 void consultando(ELista *atual)
 {
   system("cls");
@@ -443,6 +447,7 @@ void consultarPaciente(Lista *lista)
   }
 }
 
+// Pode ser atualizado qualquer aspecto do registro de um paciente.
 void atualizando(Lista *lista, ELista *atual)
 {
   consultando(atual);
@@ -540,6 +545,7 @@ void atualizarRg(Lista *lista, char *rg)
   printf("Paciente nao encontrado\n");
 }
 
+// Junção das funções necessárias para atualizar o registro do usuário
 void atualizarPaciente(Lista *lista)
 {
   int opcao;
@@ -571,6 +577,7 @@ void atualizarPaciente(Lista *lista)
   }
 }
 
+// Retirada do paciente necessário da lista
 void removendo(Lista *lista, ELista *atual, ELista *anterior)
 {
   if (anterior == NULL)
@@ -606,6 +613,7 @@ void removerNome(Lista *lista, char *nome)
   printf("Paciente nao encontrado\n");
 }
 
+// Procura do paciente por RG
 void removerRg(Lista *lista, char *rg)
 {
   ELista *atual = lista->inicio;
@@ -661,6 +669,7 @@ void removerPaciente(Lista *lista)
 // atendimento;
 // ▶ Informe ao usuário a operação a ser desfeita e solicite confirmação.
 
+// Inicialização das células
 Celula *cria_celula(int operacao, Registro *dados)
 {
   Celula *celula = malloc(sizeof(Celula));
@@ -681,6 +690,7 @@ Pilha *inicializaPilha()
   return stack;
 }
 
+// Inserção de um elemento dentro da pilha
 void push(Pilha *pilha, int valor, Registro *dados)
 {
   Celula *nova = cria_celula(valor, dados);
@@ -700,14 +710,9 @@ void push(Pilha *pilha, int valor, Registro *dados)
   pilha->qtd++;
 }
 
+//retirada de algum elemento da pilha
 void pop(Pilha *pilha, int *operacao, char *rg, Registro *dados)
 {
-  // if (pilha->qtd == 0)
-  // {
-  //   *operacao = 0;
-  //   return;
-  // }
-
   *operacao = pilha->topo->operacao;
   strcpy(rg, pilha->topo->dados->rg);
   *dados = *pilha->topo->dados;
@@ -729,10 +734,9 @@ void mostra(Pilha *pilha)
   Celula *celula = pilha->topo;
   int qtd = pilha->qtd;
   printf("Operacoes: %d\n", qtd);
-  // printf("----------------------------------------\n");
   while (celula != NULL)
   {
-    // printf("%d -> ", celula->operacao);
+
     printf("%d -> ", qtd);
     qtd--;
     if (celula->operacao == 1)
@@ -748,7 +752,7 @@ void mostra(Pilha *pilha)
   printf("----------------------------------------\n");
 }
 
-// Erro intermitente: As vezes a variável operacao é alterada para 0 mesmo que a pilha não esteja vazia, o que faz com que o programa não funcione. Motivo desconhecido.
+// Desfazer operações
 void desfazer(Pilha *pilha, Fila *fila)
 {
   printf("Desfazer\n");
@@ -837,7 +841,7 @@ void desfazer(Pilha *pilha, Fila *fila)
     }
     else if (operacao == 2)
     {
-      // CORRETO?
+
       // Se a operação for enfileirar, retire o ultimo paciente da fila (desenfileirar retira o primeiro paciente)
       EFila *atual = fila->head;
       EFila *anterior = NULL;
@@ -925,6 +929,7 @@ void desenfileirarPaciente(Fila *fila, Pilha *pilha)
   fila->qtde--;
 }
 
+// Inserção de um paciente na fila através de pesquisa pelo nome
 void enfileirarNome(Fila *fila, Lista *lista, Pilha *pilha, char *nome)
 {
   ELista *atual = lista->inicio;
@@ -950,6 +955,7 @@ void enfileirarNome(Fila *fila, Lista *lista, Pilha *pilha, char *nome)
   printf("Paciente nao encontrado\n");
 }
 
+// Inserção do paciente na fila a partir do seu RG
 void enfileirarRg(Fila *fila, Lista *lista, Pilha *pilha, char *rg)
 {
   ELista *atual = lista->inicio;
@@ -975,6 +981,7 @@ void enfileirarRg(Fila *fila, Lista *lista, Pilha *pilha, char *rg)
   printf("Paciente nao encontrado\n");
 }
 
+// Função completa de enfileirar, junção de todas as funcionalidades e opções
 void enfileirarPaciente(Fila *fila, Lista *lista, Pilha *pilha)
 {
   int opcao;
@@ -1055,6 +1062,7 @@ ABB *inicializaArvore()
   return arvore;
 }
 
+// Classificação dos pacientes registrados a partir do ano da sua data de entrada
 void *inserirAno(ABB *arvore, Registro *dados)
 {
   EABB *novo = criaVertice(dados);
@@ -1087,13 +1095,13 @@ void *inserirAno(ABB *arvore, Registro *dados)
         {
           anterior->dir = novo;
         }
-        // return novo;
       }
     }
   }
   arvore->qtde++;
 }
 
+// Classificação dos pacientes a partir do mes de sua data de entrada
 void *inserirMes(ABB *arvore, Registro *dados)
 {
   EABB *novo = criaVertice(dados);
@@ -1126,13 +1134,13 @@ void *inserirMes(ABB *arvore, Registro *dados)
         {
           anterior->dir = novo;
         }
-        // return novo;
       }
     }
   }
   arvore->qtde++;
 }
 
+// Classificação dos pacientes registrados a partir do dia da sua data de entrada
 void *inserirDia(ABB *arvore, Registro *dados)
 {
   EABB *novo = criaVertice(dados);
@@ -1165,13 +1173,13 @@ void *inserirDia(ABB *arvore, Registro *dados)
         {
           anterior->dir = novo;
         }
-        // return novo;
       }
-      arvore->qtde++;
     }
   }
+  arvore->qtde++;
 }
 
+// Classificação dos pacientes registrados a partir de sua idade cadastrada
 void *inserirIdade(ABB *arvore, Registro *dados)
 {
   EABB *novo = criaVertice(dados);
@@ -1204,13 +1212,13 @@ void *inserirIdade(ABB *arvore, Registro *dados)
         {
           anterior->dir = novo;
         }
-        // return novo;
       }
-      arvore->qtde++;
     }
   }
+  arvore->qtde++;
 }
 
+// Impressão das informações de cada paciente dentro da árvore
 void mostrarArvore(EABB *raiz)
 {
   if (raiz != NULL)
@@ -1224,19 +1232,6 @@ void mostrarArvore(EABB *raiz)
     mostrarArvore(raiz->dir);
   }
 }
-
-// void *inserirArvore(ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade, Registro *dados)
-// {
-//   inserirAno(arvoreAno, dados);
-//   inserirMes(arvoreMes, dados);
-//   inserirDia(arvoreDia, dados);
-//   inserirIdade(arvoreIdade, dados);
-// }
-
-// O que vou precisar: função de inserir, função pesquisar por um paciente, função de ordenar por ano, mês, dia e idade.
-// Funções básicas como criar nó, inserir, buscar e percorrer (mostrar, inordem, preordem, posordem)
-
-// CONCERTAR ITENS DA PESQUISA!!
 
 // Salva a lista em um arquivo
 // fwrite
@@ -1258,7 +1253,6 @@ int salvarLista(Lista *lista, char nome[])
     fwrite(atual->dados->entrada, sizeof(Data), 1, arquivo);
     atual = atual->proximo;
   }
-
   fclose(arquivo);
   return 0;
 }
@@ -1315,17 +1309,10 @@ int carregarLista(Lista *lista, char *nomeArquivo)
         anterior->proximo = novo;
       }
       lista->qtde++;
-      //Adicionar na arvore
-      // registroOrdenadoAno(arvoreAno, pessoa);
-      // registroOrdenadoMes(arvoreMes, pessoa);
-      // registroOrdenadoDia(arvoreDia, pessoa);
-      // registroOrdenadoIdade(arvoreIdade, pessoa);
     }
   }
   fclose(arquivo);
   return 0;
-  // printf("Dados carregados com sucesso!\n");
-  // printf("\n");
 }
 
 // Funções para print dos menus:
@@ -1337,7 +1324,6 @@ void printMenu()
   printf("2 - Atendimento\n");
   printf("3 - Pesquisa\n");
   printf("4 - Desfazer\n");
-  // Pode retirar essas opções para serem automáticas?
   // Carrega ao iniciar o programa e salva ao sair
   printf("5 - Carregar\n");
   printf("6 - Salvar\n");
@@ -1400,6 +1386,7 @@ void menuPesquisa()
   printf("Digite a opcao desejada: ");
 }
 
+//Informações sobre os autores do projeto
 void sobre()
 {
   printf("Sistema de atendimento hospitalar\n");

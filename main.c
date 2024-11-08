@@ -16,12 +16,6 @@ int main()
     Fila *fila = inicializaFila();
     // Inicializa a pilha
     Pilha *pilha = inicializaPilha();
-    // Inicializa as árvores
-    // Arvore *arvore = cria_arvore(); EXEMPLO
-    // ABB *arvoreAno = inicializaArvore();
-    // ABB *arvoreMes = inicializaArvore();
-    // ABB *arvoreDia = inicializaArvore();
-    // ABB *arvoreIdade = inicializaArvore();
 
     cod = carregarLista(lista, arquivo);
     if (cod == 1)
@@ -35,7 +29,6 @@ int main()
         system("cls");
         printMenu();
         scanf("%d", &opcao);
-        // printf("%d\n", opcao);
         if (opcao == 0)
         {
             printf("Saindo...\n");
@@ -51,7 +44,6 @@ int main()
             if (opcao2 == 1)
             {
                 // Cadastrar novo paciente
-                // cadastrarPaciente(lista, arvoreAno, arvoreMes, arvoreDia, arvoreIdade);
                 cadastrarPaciente(lista);
             }
             else if (opcao2 == 2)
@@ -137,7 +129,7 @@ int main()
             if (opcao4 == 1)
             {
                 // Registros ordenados por ano
-                printf("Registros ordenados por ano:\n");
+                printf("Registros ordenados por ano\n");
                 ABB *arvoreAno = inicializaArvore();
 
                 ELista *atual = lista->inicio;
@@ -148,7 +140,7 @@ int main()
                     inserirAno(arvoreAno, novo);
                     atual = atual->proximo;
                 }
-                printf("Quantidade de elementos na arvore: %d\n", arvoreAno->qtde);
+                //printf("Quantidade de elementos na arvore: %d\n", arvoreAno->qtde);
                 // Registros ordenados por ano
                 mostrarArvore(arvoreAno->raiz);
                 printf("----------------------------------------\n");
@@ -156,7 +148,7 @@ int main()
             else if (opcao4 == 2)
             {
                 // Registros ordenados por mês
-                printf("Registros ordenados por mes:\n");
+                printf("Registros ordenados por mes\n");
                 ABB *arvoreMes = inicializaArvore();
                 ELista *atual = lista->inicio;
 
@@ -166,14 +158,14 @@ int main()
                     inserirMes(arvoreMes, novo);
                     atual = atual->proximo;
                 }
-                printf("Quantidade de elementos na arvore: %d\n", arvoreMes->qtde);
+                //printf("Quantidade de elementos na arvore: %d\n", arvoreMes->qtde);
                 mostrarArvore(arvoreMes->raiz);
                 printf("----------------------------------------\n");
             }
             else if (opcao4 == 3)
             {
                 // Registros ordenados por dia
-                printf("Registros ordenados por dia:\n");
+                printf("Registros ordenados por dia\n");
                 ABB *arvoreDia = inicializaArvore();
                 ELista *atual = lista->inicio;
 
@@ -183,14 +175,14 @@ int main()
                     inserirDia(arvoreDia, novo);
                     atual = atual->proximo;
                 }
-                printf("Quantidade de elementos na arvore: %d\n", arvoreDia->qtde);
+                //printf("Quantidade de elementos na arvore: %d\n", arvoreDia->qtde);
                 mostrarArvore(arvoreDia->raiz);
                 printf("----------------------------------------\n");
             }
             else if (opcao4 == 4)
             {
                 // Registros ordenados por idade
-                printf("Registros ordenados por idade:\n");
+                printf("Registros ordenados por idade\n");
                 ABB *arvoreIdade = inicializaArvore();
                 ELista *atual = lista->inicio;
 
@@ -200,7 +192,7 @@ int main()
                     inserirIdade(arvoreIdade, novo);
                     atual = atual->proximo;
                 }
-                printf("Quantidade de elementos na arvore: %d\n", arvoreIdade->qtde);
+                //printf("Quantidade de elementos na arvore: %d\n", arvoreIdade->qtde);
                 mostrarArvore(arvoreIdade->raiz);
                 printf("----------------------------------------\n");
             }
