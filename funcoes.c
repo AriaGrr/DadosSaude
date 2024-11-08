@@ -67,6 +67,7 @@ Data *criaData(int dia, int mes, int ano)
 // ▶ Remover paciente.
 // Funções para manipulação de listas dinâmicas encadeadas
 
+// Inicialização da lista
 Lista *inicializaLista()
 {
   Lista *lista = malloc(sizeof(Lista));
@@ -75,6 +76,7 @@ Lista *inicializaLista()
   return lista;
 }
 
+// Inicialização da célula
 ELista *inicializaCelula(Registro *dados)
 {
   ELista *celula = malloc(sizeof(ELista));
@@ -83,6 +85,7 @@ ELista *inicializaCelula(Registro *dados)
   return celula;
 }
 
+// Inserção de um paciente na lista
 void inserir(Lista *lista, Registro *dados)
 {
   ELista *nova = inicializaCelula(dados);
@@ -115,6 +118,7 @@ void mostrarLista(Lista *lista)
   printf("----------------------------------------\n");
 }
 
+// Validação do nome
 int validarNome(char *nome)
 {
   // Verifica se o nome contém apenas letras e espaços
@@ -125,7 +129,7 @@ int validarNome(char *nome)
       return 0;
     }
   }
-
+  // Verifica se o nome é maior que o limite
   if (strlen(nome) > maxNOME)
   {
     return 0;
@@ -137,6 +141,7 @@ int validarNome(char *nome)
 int validarRg(char *rg, Lista *lista)
 {
   int passou = 0;
+  // Verifica se o RG está dentro do limite de caracteres, e se é maior que 7.
   if (strlen(rg) > maxRG || strlen(rg) < 7)
   {
     passou = 1;
@@ -161,16 +166,19 @@ int validarRg(char *rg, Lista *lista)
 
   return 0;
 }
+
 // Olha se a idade da pessoa é correta
 int validarIdade(int idade)
 {
+  // A pessoa não pode ter menos de 0 anos ou mais de 120 anos
   if (idade < 0 || idade > 120)
   {
     return 0;
   }
   return 1;
 }
-// Checa se o dia sendo inserido existe
+
+// Checa se o dia sendo inserido é válido
 int validarData(Data *data)
 {
   if (data->dia < 1 || data->dia > 31)
@@ -188,6 +196,8 @@ int validarData(Data *data)
 
   return 1;
 }
+
+// SE VOCÊ COLOCAR LETRAS NA IDADE OU DATA O PROGRAMA VAI BUGAR (NÃO TEM TRATAMENTO DESSE ERRO)
 // Cadastro das informações do paciente
 Registro *cadastrar(Lista *lista)
 {
@@ -211,7 +221,6 @@ Registro *cadastrar(Lista *lista)
     fgets(nome, maxNOME, stdin);
     nome[strcspn(nome, "\n")] = '\0';
   }
-  // SE VOCÊ COLOCAR LETRAS NA IDADE OU DATA O PROGRAMA VAI BUGAR
   strcpy(novo->nome, nome);
   // Registro da idade
   printf("Idade: ");
@@ -513,7 +522,7 @@ void atualizando(Lista *lista, ELista *atual)
   }
 }
 
-// Atualizar dados de paciente (por nome ou rg), printar dados do usuario e escolher o que deseja atualizar três funções.
+// Atualizar dados de paciente (por nome ou rg), printar dados do usuario e escolher o que deseja atualizar (são 4 funções divididas)
 void atualizarNome(Lista *lista, char *nome)
 {
   ELista *atual = lista->inicio;
@@ -576,7 +585,7 @@ void atualizarPaciente(Lista *lista)
   }
 }
 
-// Retirada do paciente necessário da lista
+// Remoção do paciente desejado da lista
 void removendo(Lista *lista, ELista *atual, ELista *anterior)
 {
   if (anterior == NULL)
@@ -594,7 +603,7 @@ void removendo(Lista *lista, ELista *atual, ELista *anterior)
   printf("Paciente removido\n");
 }
 
-// Remover paciente por nome ou rg
+// Remover paciente por nome
 void removerNome(Lista *lista, char *nome)
 {
   ELista *atual = lista->inicio;
@@ -680,6 +689,7 @@ Celula *cria_celula(int operacao, Registro *dados)
   return celula;
 }
 
+// Inicialização da pilha
 Pilha *inicializaPilha()
 {
   Pilha *stack = malloc(sizeof(Pilha));
@@ -709,7 +719,7 @@ void push(Pilha *pilha, int valor, Registro *dados)
   pilha->qtd++;
 }
 
-//retirada de algum elemento da pilha
+// Retirada de algum elemento da pilha
 void pop(Pilha *pilha, int *operacao, char *rg, Registro *dados)
 {
   *operacao = pilha->topo->operacao;
@@ -727,7 +737,7 @@ void pop(Pilha *pilha, int *operacao, char *rg, Registro *dados)
   free(temp);
 }
 
-// Não está sendo usado no código, mas pode ser útil para debugar (se é que está correto)
+// Mostrar as operações realizadas
 void mostra(Pilha *pilha)
 {
   Celula *celula = pilha->topo;
@@ -830,7 +840,7 @@ void desfazer(Pilha *pilha, Fila *fila)
       }
       else
       {
-        // Se a fila não estiver vazia, coloque o paciente na primeira posição
+        // Coloque o paciente na primeira posição
         nova->proximo = fila->head;
         fila->head = nova;
       }
@@ -842,6 +852,7 @@ void desfazer(Pilha *pilha, Fila *fila)
     {
 
       // Se a operação for enfileirar, retire o ultimo paciente da fila (desenfileirar retira o primeiro paciente)
+
       EFila *atual = fila->head;
       EFila *anterior = NULL;
       while (atual != NULL)
@@ -936,7 +947,7 @@ void enfileirarNome(Fila *fila, Lista *lista, Pilha *pilha, char *nome)
   {
     if (strcmp(atual->dados->nome, nome) == 0)
     {
-      // CONFERIR SE ELE JÁ ESTÁ NA FILA
+      // Conferir se ele já está na fila
       for (EFila *aux = fila->head; aux != NULL; aux = aux->proximo)
       {
         if (strcmp(aux->dados->nome, nome) == 0)
@@ -1042,6 +1053,7 @@ void mostrarFila(Fila *fila)
 // ▶ Mostrar registros ordenados por dia de registro;
 // ▶ Mostrar registros ordenados por idade do paciente.
 
+// Estrutura da árvore binária de busca
 EABB *criaVertice(Registro *dados)
 {
   EABB *novo = malloc(sizeof(EABB));
@@ -1052,6 +1064,7 @@ EABB *criaVertice(Registro *dados)
   return novo;
 }
 
+// Inicialização da árvore
 ABB *inicializaArvore()
 {
   ABB *arvore = malloc(sizeof(ABB));
@@ -1291,7 +1304,7 @@ int carregarLista(Lista *lista, char *nomeArquivo)
     if (pessoa != NULL)
     {
       ELista *novo = inicializaCelula(pessoa);
-      //Adicionar no final da lista
+      // Adicionar no final da lista
       if (lista->inicio == NULL)
       {
         lista->inicio = novo;
@@ -1366,7 +1379,7 @@ void menuAtendimento()
   printf("Digite a opcao desejada: ");
 }
 
-// Inserir um paciente, que já possua cadastro, em uma árvore binária de busca;
+// Inserir um paciente, que já possua cadastro, em uma árvore binária de busca
 void menuPesquisa()
 {
   printf("Menu Pesquisa\n");
@@ -1385,7 +1398,7 @@ void menuPesquisa()
   printf("Digite a opcao desejada: ");
 }
 
-//Informações sobre os autores do projeto
+// Informações sobre os autores do projeto
 void sobre()
 {
   printf("Sistema de atendimento hospitalar\n");
