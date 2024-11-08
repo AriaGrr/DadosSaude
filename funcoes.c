@@ -1296,8 +1296,8 @@ int carregarLista(Lista *lista, char *nomeArquivo)
   while (fread(&registro, sizeof(Registro), 1, arquivo) == 1)
   {
     fread(&data, sizeof(Data), 1, arquivo);
-    Data *novaData = criaData(data.dia, data.mes, data.ano);
-    Registro *pessoa = salvarPessoa(registro.nome, registro.idade, registro.rg, novaData);
+    Data *novaData = dataEntrada(data.dia, data.mes, data.ano);
+    Registro *pessoa = salvarPaciente(registro.nome, registro.idade, registro.rg, novaData);
     if (pessoa != NULL)
     {
       ELista *novo = inicializaCelula(pessoa);
