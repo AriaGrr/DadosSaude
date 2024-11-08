@@ -36,18 +36,18 @@ EFila *criarCelula(Registro *dados)
 }
 
 // Salvando dados gerais da pessoa (RG, idade, nome e data de entrada)
-Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data)
+Registro *salvarPaciente(char *nome, int idade, char *rg, Data *data)
 {
-  Registro *pessoa = malloc(sizeof(Registro));
-  strcpy(pessoa->nome, nome);
-  pessoa->idade = idade;
-  strcpy(pessoa->rg, rg);
-  pessoa->entrada = data;
-  return pessoa;
+  Registro *paciente = malloc(sizeof(Registro));
+  strcpy(paciente->nome, nome);
+  paciente->idade = idade;
+  strcpy(paciente->rg, rg);
+  paciente->entrada = data;
+  return paciente;
 }
 
 // Salvando data de entrada da pessoa completa
-Data *criaData(int dia, int mes, int ano)
+Data *dataEntrada(int dia, int mes, int ano)
 {
   Data *data = malloc(sizeof(Data));
   data->dia = dia;
