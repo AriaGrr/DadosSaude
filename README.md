@@ -3,6 +3,6 @@
 
 -> Comandos para execução: 
 
-gcc main.c funcoes.c -o main -L./lib -lcJSON
+gcc main.c funcoes.c -o main
 
 ./main

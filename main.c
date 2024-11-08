@@ -16,12 +16,6 @@ int main()
     Fila *fila = inicializaFila();
     // Inicializa a pilha
     Pilha *pilha = inicializaPilha();
-    // Inicializa as árvores
-    // Arvore *arvore = cria_arvore(); EXEMPLO
-    // ABB *arvoreAno = inicializaArvore();
-    // ABB *arvoreMes = inicializaArvore();
-    // ABB *arvoreDia = inicializaArvore();
-    // ABB *arvoreIdade = inicializaArvore();
 
     cod = carregarLista(lista, arquivo);
     if (cod == 1)
@@ -32,10 +26,9 @@ int main()
     int opcao;
     do
     {
-        system("clear");
+        system("cls");
         printMenu();
         scanf("%d", &opcao);
-        // printf("%d\n", opcao);
         if (opcao == 0)
         {
             printf("Saindo...\n");
@@ -43,15 +36,14 @@ int main()
         else if (opcao == 1)
         {
             // Menu de cadastro
-            system("clear");
+            system("cls");
             menuCadastro();
             int opcao2;
             scanf("%d", &opcao2);
-            system("clear");
+            system("cls");
             if (opcao2 == 1)
             {
                 // Cadastrar novo paciente
-                // cadastrarPaciente(lista, arvoreAno, arvoreMes, arvoreDia, arvoreIdade);
                 cadastrarPaciente(lista);
             }
             else if (opcao2 == 2)
@@ -87,15 +79,15 @@ int main()
             // Pausar o terminal
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 2)
         {
-            system("clear");
+            system("cls");
             menuAtendimento();
             int opcao3;
             scanf("%d", &opcao3);
-            system("clear");
+            system("cls");
 
             if (opcao3 == 1)
             {
@@ -124,15 +116,15 @@ int main()
             // Pausar o terminal
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 3)
         {
-            system("clear");
+            system("cls");
             menuPesquisa();
             int opcao4;
             scanf("%d", &opcao4);
-            system("clear");
+            system("cls");
 
             if (opcao4 == 1)
             {
@@ -216,23 +208,23 @@ int main()
             // Pausar o terminal
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 4)
         {
             // Desfazer
-            system("clear");
+            system("cls");
             desfazer(pilha, fila);
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 5)
         {
             // Carregar
-            system("clear");
+            system("cls");
             // Limpar a lista antes de carregar
             liberarLista(lista);
             cod = carregarLista(lista, arquivo);
@@ -247,12 +239,12 @@ int main()
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 6)
         {
             // Salvar
-            system("clear");
+            system("cls");
             cod = salvarLista(lista, arquivo);
             if (cod == 0)
             {
@@ -266,18 +258,18 @@ int main()
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else if (opcao == 7)
         {
             // Sobre
-            system("clear");
+            system("cls");
             sobre();
             // Pausar o terminal
             printf("Pressione Enter para voltar ao menu...");
             clearBuffer();
             clearBuffer();
-            system("clear");
+            system("cls");
         }
         else
         {

@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib/cJSON.h"
-
 // Aqui devemos colocar os structs, tanto do arquivo a ser salvo quanto das estruturas que serão manipuladas
 
 #define maxNOME 50
@@ -115,7 +113,6 @@ Pilha *inicializaPilha();
 // Funções do menu de cadastro
 
 // Cadastrar paciente
-// void cadastrarPaciente(Lista *lista, ABB *arvoreAno, ABB *arvoreMes, ABB *arvoreDia, ABB *arvoreIdade);
 void cadastrarPaciente(Lista *lista);
 // Consultar paciente
 void consultarPaciente(Lista *lista);
@@ -144,7 +141,6 @@ void desfazer(Pilha *pilha, Fila *fila);
 
 // Funções de mostrar ordenado 
 void mostrarArvore(EABB *raiz);
-// void *inserirArvore(ABB *arvoreAno, ABB *arvoreMes, ABB*arvoreDia, ABB *arvoreIdade, Registro *dados);
 void *inserirAno(ABB *arvoreAno, Registro *dados);
 void *inserirMes(ABB *arvoreMes, Registro *dados);
 void *inserirDia(ABB *arvoreDia, Registro *dados);
