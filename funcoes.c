@@ -35,7 +35,7 @@ EFila *criarCelula(Registro *dados)
   return celula;
 }
 
-// Salvando dados gerais da pessoa(RG, idade, nome e data de entrada)
+// Salvando dados gerais da pessoa (RG, idade, nome e data de entrada)
 Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data)
 {
   Registro *pessoa = malloc(sizeof(Registro));
@@ -46,7 +46,7 @@ Registro *salvarPessoa(char *nome, int idade, char *rg, Data *data)
   return pessoa;
 }
 
-// Salvando data de entrada da pessoa completa |
+// Salvando data de entrada da pessoa completa 
 Data *criaData(int dia, int mes, int ano)
 {
   Data *data = malloc(sizeof(Data));
@@ -283,7 +283,6 @@ void cadastrarPaciente(Lista *lista)
       {
         free(novo->entrada);
         free(novo);
-
         cadastrarPaciente(lista);
       }
       else if (opcao2 == 2)
