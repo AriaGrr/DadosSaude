@@ -249,7 +249,7 @@ void cadastrarPaciente(Lista *lista)
   int opcao;
   do
   {
-    system("cls");
+    system("clear");
     printf("Dados do novo paciente\n");
     printf("----------------------------------------\n");
     printf("Nome: %s\n", novo->nome);
@@ -360,6 +360,7 @@ void cadastrarPaciente(Lista *lista)
     {
       free(novo->entrada);
       free(novo);
+      return;
     }
     else
     {
@@ -370,7 +371,7 @@ void cadastrarPaciente(Lista *lista)
 
 void consultando(ELista *atual)
 {
-  system("cls");
+  system("clear");
   printf("Dados do paciente\n");
   printf("----------------------------------------\n");
   printf("Nome: %s\n", atual->dados->nome);
@@ -768,14 +769,14 @@ void desfazer(Pilha *pilha, Fila *fila)
   scanf("%d", &op);
   if (op == 1)
   {
-    system("cls");
+    system("clear");
     printf("Desfazer\n");
     printf("----------------------------------------\n");
     mostra(pilha);
   }
   else if (op == 2)
   {
-    system("cls");
+    system("clear");
     printf("Desfazer\n");
     printf("----------------------------------------\n");
   }
@@ -1167,9 +1168,10 @@ void *inserirDia(ABB *arvore, Registro *dados)
         }
         // return novo;
       }
-      arvore->qtde++;
+      
     }
   }
+  arvore->qtde++;
 }
 
 void *inserirIdade(ABB *arvore, Registro *dados)
@@ -1206,9 +1208,10 @@ void *inserirIdade(ABB *arvore, Registro *dados)
         }
         // return novo;
       }
-      arvore->qtde++;
+      
     }
   }
+  arvore->qtde++;
 }
 
 void mostrarArvore(EABB *raiz)
