@@ -35,27 +35,6 @@ EFila *criarCelula(Registro *dados)
   return celula;
 }
 
-// Salvando dados gerais da pessoa (RG, idade, nome e data de entrada)
-Registro *salvarPaciente(char *nome, int idade, char *rg, Data *data)
-{
-  Registro *paciente = malloc(sizeof(Registro));
-  strcpy(paciente->nome, nome);
-  paciente->idade = idade;
-  strcpy(paciente->rg, rg);
-  paciente->entrada = data;
-  return paciente;
-}
-
-// Salvando data de entrada da pessoa completa
-Data *dataEntrada(int dia, int mes, int ano)
-{
-  Data *data = malloc(sizeof(Data));
-  data->dia = dia;
-  data->mes = mes;
-  data->ano = ano;
-  return data;
-}
-
 // Item de menu: Cadastrar em uma LDE
 // Cadastrar novo paciente em uma lista dinâmica encadeada, mantendo a
 // ordem de registro (inserção no início);
@@ -167,7 +146,7 @@ int validarRg(char *rg, Lista *lista)
   return 0;
 }
 
-// Olha se a idade da pessoa é correta
+// Olha se a idade do paciente é correta
 int validarIdade(int idade)
 {
   // A pessoa não pode ter menos de 0 anos ou mais de 120 anos
@@ -1296,11 +1275,18 @@ int carregarLista(Lista *lista, char *nomeArquivo)
   while (fread(&registro, sizeof(Registro), 1, arquivo) == 1)
   {
     fread(&data, sizeof(Data), 1, arquivo);
-    Data *novaData = dataEntrada(data.dia, data.mes, data.ano);
-    Registro *pessoa = salvarPaciente(registro.nome, registro.idade, registro.rg, novaData);
-    if (pessoa != NULL)
+    Registro *paciente = malloc(sizeof(Registro));
+    strcpy(paciente->nome, registro.nome);
+    paciente->idade = registro.idade;
+    strcpy(paciente->rg, registro.rg);
+    paciente->entrada = malloc(sizeof(Data));
+    paciente->entrada->dia = data.dia;
+    paciente->entrada->mes = data.mes;
+    paciente->entrada->ano = data.ano;
+
+    if (paciente != NULL)
     {
-      ELista *novo = inicializaCelula(pessoa);
+      ELista *novo = inicializaCelula(paciente);
       // Adicionar no final da lista
       if (lista->inicio == NULL)
       {
